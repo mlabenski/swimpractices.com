@@ -42,7 +42,7 @@ export const actions = {
       }
     })
     this.$netlifyIdentity.init({
-      APIUrl: 'https://usewrapper.com/.netlify/identity'
+      APIUrl: 'https://swimpractices.com/.netlify/identity'
     })
   },
   openSignup({ dispatch }) {
