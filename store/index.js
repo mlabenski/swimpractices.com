@@ -23,8 +23,8 @@ export const actions = {
   }),
   bindUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
     console.log('test')
-    const userId = rootState.auth.user.id;
-    const ref = this.$fire.firestore.collection('practices').where('userId', '==', userId);
+    const userID = rootState.auth.user.id;
+    const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
     await bindFirestoreRef('userPractices', ref, { wait: true });
   }),
   unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
