@@ -92,6 +92,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user'
+
     }),
     publicPractices() {
       return this.$fire.firestore.collection('practices')
