@@ -132,7 +132,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ input_text: inputText })
+        body: JSON.stringify({ input_text: inputTextCurrent })
       })
         .then(response => response.json())
         .then(data => {
