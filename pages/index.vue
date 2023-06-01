@@ -49,7 +49,7 @@
             </svg>
             <span>Exercises</span>
           </a>
-          <a href="#" class="flex items-center">
+          <a href="#" class="flex items-center" @click.prevent="openSignup">
             <a class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
               <span class="material-icons ">face</span>
             </a>
@@ -65,6 +65,7 @@
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import practiceSets from '@/data/practiceSetsNew.js';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   head () {
@@ -85,7 +86,17 @@ export default {
       practiceSets
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'auth/user'
+    })
+  },
   methods: {
+    ...mapActions({
+      openLogin: 'auth/openLogin',
+      openSignup: 'auth/openSignup',
+      logout: 'auth/logout'
+    }),
     startEmptyPractice() {
     // Logic to start an empty practice
     },
