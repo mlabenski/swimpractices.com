@@ -14,19 +14,12 @@
           <div v-if="user">
             {{userPractices}}
           </div>
-          <SetList title="My Templates" :practiceSets="practiceSets"></SetList>
+          <SetList title="My Templates" :practiceSets="userPractices"></SetList>
           <!-- Display your custom templates here -->
         </div>
         <div>
-          <div v-if="practices">
-            {{practices}}
-          </div>
           <h3 class="text-lg font-bold mb-2">Recommended Templates</h3>
-          <SetList title="Recommended Templates" :practiceSets="practiceSets"></SetList>
-          <div>
-            <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
-            <button @click="submitPractice">Submit Practice</button>
-          </div>
+          <SetList title="Recommended Templates" :practiceSets="practices"></SetList>
           <!-- Display recommended templates here -->
         </div>
       </div>

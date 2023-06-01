@@ -11,11 +11,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="practiceSet in practiceSets" :key="practiceSet.PracticeID" class="text-center">
-        <td class="px-4 py-2">Practice {{ practiceSet.PracticeID }}</td>
-        <td class="px-4 py-2">{{ getTotalYardage(practiceSet.Sets) }} yards</td>
+      <tr v-for="practice in practices" :key="practice.name" class="text-center">
+        <td class="px-4 py-2">Practice {{ practice.name }}</td>
+        <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
-          <router-link :to="{ name: 'id', params: { id: practiceSet.PracticeID } }" class="text-blue-600 underline">View Details</router-link>
+          <router-link :to="{ name: 'id', params: { id: practice.name } }" class="text-blue-600 underline">View Details</router-link>
         </td>
       </tr>
       </tbody>
@@ -39,9 +39,16 @@ export default {
   },
   data() {
     return {
-      templates: [],
-      isLoading: true,
+      templates: []
     };
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading; // Assuming you have an `isLoading` state in your Vuex store
+    },
+    practices() {
+      return this.$store.getters.practices; // Assuming you have a `practices` getter in your Vuex store
+    },
   },
   created() {
     // Fetch templates based on the component type (my templates or recommended templates)
@@ -71,7 +78,6 @@ export default {
         { id: 2, name: 'Template 2' },
         { id: 3, name: 'Template 3' }
       ];
-      this.isLoading = false;
     },
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend
@@ -85,16 +91,18 @@ export default {
         { id: 2, name: 'Recommended Template 2' },
         { id: 3, name: 'Recommended Template 3' }
       ];
-      this.isLoading = false;
     },
-    getTotalYardage(sets) {
-      return sets.reduce((total, set) => {
-        return total + set.Exercises.reduce((setTotal, exercise) => {
-          return setTotal + (exercise.Distance * exercise.Quantity);
-        }, 0);
-      }, 0);
+      getTotalYardage(sets) {
+        // Calculate the total yardage for a given practice
+        let totalYardage = 0;
+        sets.forEach((set) => {
+          set.exercises.forEach((exercise) => {
+            totalYardage += exercise.distance * exercise.quantity;
+          });
+        });
+        return totalYardage;
+      },
     }
-  }
 };
 </script>
 
