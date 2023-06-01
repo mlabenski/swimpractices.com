@@ -137,6 +137,7 @@ export default {
         .then(response => response.json())
         .then(data => {
           // Handle the API response
+          console.log(data);
           const practiceData = data.generated_text; // Modify this based on the actual response structure
           // Store the practiceData in Firestore using the appropriate logic
 
