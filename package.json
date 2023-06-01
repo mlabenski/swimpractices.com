@@ -19,7 +19,8 @@
     "vue-material-design-icons": "^5.2.0",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
-    "vuefire": "^3.1.0"
+    "vuefire": "^3.1.0",
+    "vuexfire": "^3.2.5"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^5.3.3",
