@@ -15,7 +15,7 @@
         <td class="px-4 py-2">Practice {{ practice.name }}</td>
         <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
-          <router-link :to="{ name: 'id', params: { id: practice.name } }" class="text-blue-600 underline">View Details</router-link>
+          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">View Details</router-link>
         </td>
       </tr>
       </tbody>

@@ -11,9 +11,6 @@
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
         <div>
           <h3 class="text-lg font-bold mb-2">My Templates</h3>
-          <div v-if="user">
-            {{userPractices}}
-          </div>
           <SetList title="My Templates" :practiceSets="userPractices"></SetList>
           <!-- Display your custom templates here -->
         </div>

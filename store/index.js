@@ -51,5 +51,11 @@ export const getters = {
   },
   userPractices(state) {
     return state.userPractices;
+  },
+  getPracticeByID: (state) => (id) => {
+    return state.practices.find((practice) => practice.id === id)
+  },
+  getLoading(state) {
+    return state.isLoading;
   }
 };
