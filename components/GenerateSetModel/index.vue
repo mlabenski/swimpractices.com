@@ -104,12 +104,6 @@ export default {
       }
       console.log('no increment')
     },
-    startPractice() {
-      // Maybe emit a more unique method to generate practice.. I
-      //It'll display near the Templates area
-      this.$emit('close');
-      // Logic to start the personalized practice
-    },
     closeModal() {
       this.$emit('close');
     },
@@ -119,7 +113,7 @@ export default {
         'text-yellow-500': star <= value
       };
     },
-    generatePractice() {
+    startPractice() {
       const inputText = `${this.distance} + ${this.speed} + ${this.difficulty}`; // Customize this based on your requirement
       // We will make this more advanced in the future depending on the user input.
       let distanceRating = '';
