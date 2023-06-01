@@ -5,7 +5,7 @@
 
       <div class="flex flex-col sm:flex-row justify-center">
         <button @click="startEmptyPractice" class="w-full sm:w-auto mx-1 mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Start an Empty Practice</button>
-        <button @startPractice="handleStartPractice" @click="openModal"  class="w-full sm:w-auto mx-1 mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">AI Generate Set</button>
+        <button @startPractice="startPractice" @click="openModal"  class="w-full sm:w-auto mx-1 mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">AI Generate Set</button>
       </div>
       <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
@@ -128,7 +128,7 @@ export default {
     closeModal() {
     this.isModalOpen = false;
     },
-    handleStartPractice(practiceData) {
+    startPractice(practiceData) {
       console.log('emitted back to the main index');
       console.log(practiceData);
       this.practiceData = practiceData;
