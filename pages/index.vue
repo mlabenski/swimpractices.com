@@ -11,7 +11,9 @@
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
         <div>
           <h3 class="text-lg font-bold mb-2">My Templates</h3>
-          {{user}}
+          <div v-if="practices">
+            {{practices}}
+          </div>
           <SetList title="My Templates" :practiceSets="practiceSets"></SetList>
           <!-- Display your custom templates here -->
         </div>
@@ -67,8 +69,6 @@ import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import practiceSets from '@/data/practiceSetsNew.js';
 import { mapGetters, mapActions } from "vuex";
-import { firestoreAction } from 'vuexfire';
-import { firestore } from '~/plugins/firebase';
 
 export default {
   head () {
@@ -83,6 +83,13 @@ export default {
     GenerateSetModel,
     SetList
   },
+  async mounted() {
+    try {
+      await this.$store.dispatch('bindPractices')
+    } catch (e) {
+      console.error(e)
+    }
+  },
   data() {
     return {
       isModalOpen: false,
@@ -91,22 +98,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user'
-
+      user: 'auth/user',
+      practices: 'practices'
     }),
-    publicPractices() {
-      return this.$fire.firestore.collection('practices')
-        .where('public', '==', true)
-        .get()
-        .then((querySnapshot) => {
-          const practices = [];
-          querySnapshot.forEach((doc) => {
-            practices.push({ id: doc.id, ...doc.data() });
-          });
-          console.log(practices);
-          return practices;
-        });
-    },
   },
   methods: {
     ...mapActions({

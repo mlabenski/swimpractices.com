@@ -1,6 +1,6 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  mode: 'universal',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -25,8 +25,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/netlify-identity-widget.js', mode: 'client' },
-    '~/plugins/firebase.js'
+    { src: '~/plugins/netlify-identity-widget.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,7 +44,13 @@ export default {
   ],
   firebase: {
     config: {
-
+      apiKey: process.env.VUE_APP_FIREBASE_apiKey,
+      authDomain: process.env.VUE_APP_FIREBASE_authDomain,
+      projectId: process.env.VUE_APP_FIREBASE_projectId,
+      storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
+      messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
+      appId: process.env.VUE_APP_FIREBASE_appId,
+      measurementId: process.env.VUE_APP_FIREBASE_measurementd,
     },
     services: {
       firestore: true
