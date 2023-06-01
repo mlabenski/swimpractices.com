@@ -1,7 +1,7 @@
 export default [
   {
     "PracticeID": 0,
-    "UserID": "123",
+    "UserID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
     "public": true,
     "review": "This was a great set for endurance building",
     "Sets": [
@@ -99,7 +99,7 @@ export default [
   },
   {
     "PracticeID": 1,
-    "UserID": "1234",
+    "UserID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
     "public": true,
     "review": "Great practice for freestyle technique",
     "Sets": [
@@ -179,7 +179,7 @@ export default [
   },
   {
     "PracticeID": "3",
-    "UserID": "123",
+    "UserID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
     "public": true,
     "review": "Intensive college-level workout",
     "Sets": [
@@ -286,7 +286,7 @@ export default [
   },
   {
     "PracticeID": "4",
-    "UserID": "123",
+    "UserID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
     "public": true,
     "review": "English Channel Preparation Workout",
     "Sets": [
@@ -429,7 +429,7 @@ export default [
   },
   {
     "PracticeID": "P001",
-    "UserID": "U001",
+    "UserID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
     "public": true,
     "review": "This is a full 4200m workout designed for 1hr 15mins practice.",
     "Sets": [

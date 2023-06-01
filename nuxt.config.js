@@ -25,7 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/netlify-identity-widget.js', mode: 'client' }
+    { src: '~/plugins/netlify-identity-widget.js', mode: 'client' },
+    '~/plugins/firebase.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,8 +40,17 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    'nuxt-material-design-icons'
+    'nuxt-material-design-icons',
+    '@nuxtjs/firebase'
   ],
+  firebase: {
+    config: {
+
+    },
+    services: {
+      firestore: true
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

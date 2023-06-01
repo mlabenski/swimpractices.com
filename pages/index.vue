@@ -67,6 +67,8 @@ import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import practiceSets from '@/data/practiceSetsNew.js';
 import { mapGetters, mapActions } from "vuex";
+import { firestoreAction } from 'vuexfire';
+import { firestore } from '~/plugins/firebase';
 
 export default {
   head () {
@@ -90,7 +92,20 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user'
-    })
+    }),
+    publicPractices() {
+      return this.$fire.firestore.collection('practices')
+        .where('public', '==', true)
+        .get()
+        .then((querySnapshot) => {
+          const practices = [];
+          querySnapshot.forEach((doc) => {
+            practices.push({ id: doc.id, ...doc.data() });
+          });
+          console.log(practices);
+          return practices;
+        });
+    },
   },
   methods: {
     ...mapActions({
