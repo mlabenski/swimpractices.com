@@ -132,7 +132,7 @@ export default {
         const practiceData = JSON.parse(this.pastedPractice); // Parse the JSON input
 
         // Submit the practice data to Firestore
-        await this.$fire.firestore.collection('Practices').add(practiceData);
+        await this.$fire.firestore.collection('practices').add(practiceData);
 
         // Optional: Reset the input field or do any other necessary actions
         this.pastedPractice = '';
