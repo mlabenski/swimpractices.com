@@ -20,7 +20,11 @@
           <!-- Display recommended templates here -->
         </div>
       </div>
-    </div>
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4" v-if="user">
+          <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
+          <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
+          <button @click="submitPractice">Submit Practice</button>
+      </div>
 
     <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
       <div class="container mx-auto">
