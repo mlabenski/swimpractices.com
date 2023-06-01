@@ -13,6 +13,7 @@ export const mutations = {
 
 export const actions = {
   bindPractices: firestoreAction(async function ({ bindFirestoreRef }) {
+    console.log('test')
     const ref = this.$fire.firestore.collection('practices');
     await bindFirestoreRef('practices', ref, { wait: true });
   }),
