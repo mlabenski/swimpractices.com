@@ -1,0 +1,98 @@
+{
+  "PracticeID": "1",
+  "UserID": "123",
+  "public": true,
+  "review": "This was a great set for endurance building",
+  "Sets": [
+    {
+      "SetName": "Warmup",
+      "SetTopic": "Getting muscles ready for practice",
+      "Rounds": 1,
+      "TargetHR": "130-150",
+      "purpose": "Increase blood flow to muscles and prepare body for exercise",
+      "Exercises": [
+        {
+          "Distance": 200,
+          "Quantity": 4,
+          "Description": "Freestyle at a moderate pace",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "",
+          "interval": "3:00"
+        }
+      ]
+    },
+    {
+      "SetName": "Sprints",
+      "SetTopic": "Fast, short-distance swimming",
+      "Rounds": 4,
+      "TargetHR": "170-180",
+      "purpose": "Improve speed and power",
+      "Exercises": [
+        {
+          "Distance": 50,
+          "Quantity": 8,
+          "Description": "Sprint freestyle",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "Fins",
+          "interval": "1:00"
+        }
+      ]
+    },
+    {
+      "SetName": "IM Set",
+      "SetTopic": "Balanced, all-stroke swimming",
+      "Rounds": 4,
+      "TargetHR": "150-170",
+      "purpose": "Improve endurance and technique for all strokes",
+      "Exercises": [
+        {
+          "Distance": 100,
+          "Quantity": 4,
+          "Description": "IM",
+          "Stroke": "IM",
+          "drillName": "",
+          "equipment": "",
+          "interval": "2:00"
+        }
+      ]
+    },
+    {
+      "SetName": "Relay Starts",
+      "SetTopic": "Start practice for relay races",
+      "Rounds": 1,
+      "TargetHR": "150-160",
+      "purpose": "Improve speed and coordination for relay starts",
+      "Exercises": [
+        {
+          "Distance": 50,
+          "Quantity": 8,
+          "Description": "Start from block, swim any stroke",
+          "Stroke": "Any",
+          "drillName": "",
+          "equipment": "",
+          "interval": "1:30"
+        }
+      ]
+    },
+    {
+      "SetName": "Warm down",
+      "SetTopic": "Recovery and cool down",
+      "Rounds": 1,
+      "TargetHR": "120-130",
+      "purpose": "Recover and cool down after the main sets",
+      "Exercises": [
+        {
+          "Distance": 100,
+          "Quantity": 4,
+          "Description": "Freestyle at a slow pace",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "",
+          "interval": "2:30"
+        }
+      ]
+    }
+  ]
+}

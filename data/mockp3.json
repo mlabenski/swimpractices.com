@@ -1,0 +1,107 @@
+{
+  "PracticeID": "3",
+  "UserID": "123",
+  "public": true,
+  "review": "Intensive college-level workout",
+  "Sets": [
+    {
+      "SetName": "Warm-up",
+      "SetTopic": "Loosen up and prepare for main sets",
+      "NumberOfRounds": 2,
+      "TargetHR": "60-70%",
+      "Purpose": "Warm-up",
+      "Exercises": [
+        {
+          "Distance": 400,
+          "Quantity": 1,
+          "Description": "Freestyle at relaxed pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 200,
+          "Quantity": 1,
+          "Description": "Backstroke kick with board",
+          "Stroke": "Backstroke",
+          "DrillName": "Kick with board",
+          "Equipment": "Kick board",
+          "Interval": "N/A"
+        }
+      ]
+    },
+    {
+      "SetName": "Drill set",
+      "SetTopic": "Stroke technique refinement",
+      "NumberOfRounds": 3,
+      "TargetHR": "70-75%",
+      "Purpose": "Technique",
+      "Exercises": [
+        {
+          "Distance": 100,
+          "Quantity": 4,
+          "Description": "Freestyle catch-up drill",
+          "Stroke": "Freestyle",
+          "DrillName": "Catch-up",
+          "Equipment": "None",
+          "Interval": "1:30"
+        },
+        {
+          "Distance": 100,
+          "Quantity": 4,
+          "Description": "Breaststroke pull with dolphin kick",
+          "Stroke": "Breaststroke",
+          "DrillName": "Pull with dolphin kick",
+          "Equipment": "Pull buoy",
+          "Interval": "1:40"
+        }
+      ]
+    },
+    {
+      "SetName": "Main set",
+      "SetTopic": "Building endurance and speed",
+      "NumberOfRounds": 5,
+      "TargetHR": "85-95%",
+      "Purpose": "Endurance, Speed",
+      "Exercises": [
+        {
+          "Distance": 200,
+          "Quantity": 1,
+          "Description": "Freestyle sprint",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "2:30"
+        },
+        {
+          "Distance": 200,
+          "Quantity": 1,
+          "Description": "IM",
+          "Stroke": "IM",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "3:00"
+        }
+      ]
+    },
+    {
+      "SetName": "Cool-down",
+      "SetTopic": "Lower heart rate and stretch muscles",
+      "NumberOfRounds": 1,
+      "TargetHR": "50-60%",
+      "Purpose": "Recovery",
+      "Exercises": [
+        {
+          "Distance": 500,
+          "Quantity": 1,
+          "Description": "Slow freestyle",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "PracticeID": "4",
+  "UserID": "123",
+  "public": true,
+  "review": "English Channel Preparation Workout",
+  "Sets": [
+    {
+      "SetName": "Warm up",
+      "SetTopic": "Prepare the body for the intense workout",
+      "NumberOfRounds": 1,
+      "TargetHR": "60-70%",
+      "Purpose": "Warm-up",
+      "Exercises": [
+        {
+          "Distance": 1000,
+          "Quantity": 1,
+          "Description": "Easy freestyle swim",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    },
+    {
+      "SetName": "Ladder 1",
+      "SetTopic": "Increase intensity gradually",
+      "NumberOfRounds": 1,
+      "TargetHR": "70-80%",
+      "Purpose": "Endurance",
+      "Exercises": [
+        {
+          "Distance": 500,
+          "Quantity": 1,
+          "Description": "Freestyle at moderate pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 1000,
+          "Quantity": 1,
+          "Description": "Freestyle at moderate pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 1500,
+          "Quantity": 1,
+          "Description": "Freestyle at moderate pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 2000,
+          "Quantity": 1,
+          "Description": "Freestyle at moderate pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    },
+    {
+      "SetName": "Ladder 2",
+      "SetTopic": "Increase intensity gradually",
+      "NumberOfRounds": 1,
+      "TargetHR": "80-85%",
+      "Purpose": "Endurance",
+      "Exercises": [
+        {
+          "Distance": 2500,
+          "Quantity": 1,
+          "Description": "Freestyle at a fast pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 3000,
+          "Quantity": 1,
+          "Description": "Freestyle at a fast pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        },
+        {
+          "Distance": 3500,
+          "Quantity": 1,
+          "Description": "Freestyle at a fast pace",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    },
+    {
+      "SetName": "Ladder 3",
+      "SetTopic": "Maintain intensity",
+      "NumberOfRounds": 1,
+      "TargetHR": "85-90%",
+      "Purpose": "Endurance",
+      "Exercises": [
+        {
+          "Distance": 4000,
+          "Quantity": 1,
+          "Description": "Freestyle at high intensity",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    },
+    {
+      "SetName": "Cool down",
+      "SetTopic": "Lower heart rate gradually",
+      "NumberOfRounds": 1,
+      "TargetHR": "60-70%",
+      "Purpose": "Cool-down",
+      "Exercises": [
+        {
+          "Distance": 1000,
+          "Quantity": 1,
+          "Description": "Easy freestyle swim",
+          "Stroke": "Freestyle",
+          "DrillName": "N/A",
+          "Equipment": "None",
+          "Interval": "N/A"
+        }
+      ]
+    }
+  ]
+}

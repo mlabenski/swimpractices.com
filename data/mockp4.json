@@ -1,0 +1,107 @@
+{
+  "PracticeID": "P001",
+  "UserID": "U001",
+  "public": true,
+  "review": "This is a full 4200m workout designed for 1hr 15mins practice.",
+  "Sets": [
+    {
+      "SetName": "Warm-Up",
+      "SetTopic": "Freestyle",
+      "NumberOfRounds": 1,
+      "TargetHR": 120,
+      "Purpose": "To increase heart rate and prepare muscles",
+      "Exercises": [
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Standard Swim",
+          "Distance": 200,
+          "Quantity": 4,
+          "Description": "Standard freestyle swim",
+          "Equipment": "None",
+          "Interval": 5
+        },
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Kick Drill",
+          "Distance": 50,
+          "Quantity": 4,
+          "Description": "Freestyle with kick board",
+          "Equipment": "Kick Board",
+          "Interval": 1
+        },
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Pull Drill",
+          "Distance": 50,
+          "Quantity": 4,
+          "Description": "Freestyle with pull buoy",
+          "Equipment": "Pull Buoy",
+          "Interval": 1
+        }
+      ]
+    },
+    {
+      "SetName": "Main Set",
+      "SetTopic": "Endurance",
+      "NumberOfRounds": 2,
+      "TargetHR": 150,
+      "Purpose": "To increase stamina and endurance",
+      "Exercises": [
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Standard Swim",
+          "Distance": 200,
+          "Quantity": 8,
+          "Description": "Standard freestyle swim",
+          "Equipment": "None",
+          "Interval": 4
+        },
+        {
+          "Stroke": "Breaststroke",
+          "DrillName": "Standard Swim",
+          "Distance": 200,
+          "Quantity": 2,
+          "Description": "Standard breaststroke swim",
+          "Equipment": "None",
+          "Interval": 5
+        }
+      ]
+    },
+    {
+      "SetName": "Sprints Set",
+      "SetTopic": "Sprints",
+      "NumberOfRounds": 1,
+      "TargetHR": 170,
+      "Purpose": "To increase speed and muscle power",
+      "Exercises": [
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Sprint",
+          "Distance": 50,
+          "Quantity": 20,
+          "Description": "Sprint freestyle swim",
+          "Equipment": "None",
+          "Interval": 1
+        }
+      ]
+    },
+    {
+      "SetName": "Cool Down",
+      "SetTopic": "Freestyle",
+      "NumberOfRounds": 1,
+      "TargetHR": 120,
+      "Purpose": "To relax the muscles and bring down the heart rate",
+      "Exercises": [
+        {
+          "Stroke": "Freestyle",
+          "DrillName": "Standard Swim",
+          "Distance": 200,
+          "Quantity": 4,
+          "Description": "Standard freestyle swim",
+          "Equipment": "None",
+          "Interval": 4
+        }
+      ]
+    }
+  ]
+}

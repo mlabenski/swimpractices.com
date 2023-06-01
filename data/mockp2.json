@@ -1,0 +1,80 @@
+{
+  "PracticeID": "1",
+  "UserID": "1234",
+  "public": true,
+  "review": "Great practice for freestyle technique",
+  "Sets": [
+    {
+      "SetName": "Warmup",
+      "SetTopic": "Getting muscles ready for workout",
+      "Rounds": 1,
+      "TargetHR": "60-70% of maximum HR",
+      "purpose": "To increase body temperature and prepare muscles",
+      "Exercises": [
+        {
+          "Distance": 400,
+          "Quantity": 1,
+          "Description": "400 yards freestyle at relaxed pace",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "",
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "SetName": "Freestyle Set",
+      "SetTopic": "Endurance and technique",
+      "Rounds": 4,
+      "TargetHR": "70-80% of maximum HR",
+      "purpose": "To build freestyle endurance and technique",
+      "Exercises": [
+        {
+          "Distance": 200,
+          "Quantity": 1,
+          "Description": "200 yards freestyle at medium pace",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "",
+          "interval": "3:00"
+        }
+      ]
+    },
+    {
+      "SetName": "Drill Set",
+      "SetTopic": "Stroke efficiency",
+      "Rounds": 4,
+      "TargetHR": "70-80% of maximum HR",
+      "purpose": "To improve stroke efficiency",
+      "Exercises": [
+        {
+          "Distance": 50,
+          "Quantity": 4,
+          "Description": "4x50 yards freestyle drills, focus on high elbow catch",
+          "Stroke": "Freestyle",
+          "drillName": "High elbow catch",
+          "equipment": "Paddles",
+          "interval": "1:00"
+        }
+      ]
+    },
+    {
+      "SetName": "Warm Down",
+      "SetTopic": "Recovery",
+      "Rounds": 1,
+      "TargetHR": "60-70% of maximum HR",
+      "purpose": "To cool down and start the recovery process",
+      "Exercises": [
+        {
+          "Distance": 200,
+          "Quantity": 1,
+          "Description": "200 yards freestyle at relaxed pace",
+          "Stroke": "Freestyle",
+          "drillName": "",
+          "equipment": "",
+          "interval": ""
+        }
+      ]
+    }
+  ]
+}
