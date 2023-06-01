@@ -1,0 +1,99 @@
+{
+  "review": "This practice aims to enhance the endurance and pacing abilities for freestyle events, tailored specifically for high school swimmers.",
+  "sets": [
+    {
+      "favorites": 10,
+      "heartRate": "120-130",
+      "numRounds": 2,
+      "exercises": [
+        {
+          "interval": 120,
+          "quantity": 5,
+          "drill_id": 0,
+          "Stroke": "Freestyle",
+          "distance": 200,
+          "equipment_id": 0,
+          "description": "Moderate pace freestyle for warm up"
+        },
+        {
+          "Stroke": "BackStroke",
+          "description": "BackStroke at a comfortable pace",
+          "equipment_id": 1,
+          "interval": 120,
+          "quantity": 5,
+          "drill_id": 1,
+          "distance": 200
+        }
+      ],
+      "name": "Warmup",
+      "description": "Prepares muscles for the practice session"
+    },
+    {
+      "favorites": 15,
+      "heartRate": "150-160",
+      "numRounds": 3,
+      "exercises": [
+        {
+          "interval": 420,
+          "quantity": 4,
+          "drill_id": 2,
+          "Stroke": "Freestyle",
+          "distance": 500,
+          "equipment_id": 0,
+          "description": "Race pace freestyle"
+        },
+        {
+          "Stroke": "BackStroke",
+          "description": "Backstroke at a comfortable pace",
+          "equipment_id": 1,
+          "interval": 180,
+          "quantity": 1,
+          "drill_id": 3,
+          "distance": 200
+        },
+        {
+          "interval": 420,
+          "quantity": 4,
+          "drill_id": 2,
+          "Stroke": "Freestyle",
+          "distance": 500,
+          "equipment_id": 0,
+          "description": "Race pace freestyle"
+        }
+      ],
+      "name": "Main Set",
+      "description": "Focuses on building endurance and maintaining race pace"
+    },
+    {
+      "favorites": 10,
+      "heartRate": "130-140",
+      "numRounds": 2,
+      "exercises": [
+        {
+          "interval": 240,
+          "quantity": 3,
+          "drill_id": 4,
+          "Stroke": "Freestyle",
+          "distance": 300,
+          "equipment_id": 0,
+          "description": "Long and relaxed freestyle"
+        },
+        {
+          "Stroke": "Backstroke",
+          "description": "Backstroke at a comfortable pace",
+          "equipment_id": 1,
+          "interval": 180,
+          "quantity": 2,
+          "drill_id": 5,
+          "distance": 200
+        }
+      ],
+      "name": "Cool Down",
+      "description": "Relaxes the body and brings heart rate back to normal"
+    }
+  ],
+  "userID": "ee4e8594-7a6b-4e4d-8cfc-bd089f79fe0e",
+  "name": "AI generated, 6000m, 2h",
+  "public": true,
+  "id": 5
+}

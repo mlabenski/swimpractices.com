@@ -118,7 +118,43 @@ export default {
       return {
         'text-yellow-500': star <= value
       };
-    }
+    },
+    generatePractice() {
+      const inputText = `${this.distance} + ${this.speed} + ${this.difficulty}`; // Customize this based on your requirement
+      // We will make this more advanced in the future depending on the user input.
+      let distanceRating = '';
+      if(this.distance >= 3) {
+        distanceRating = "distance swimmer who should do more than 200 yards per exercise on the main sets"
+      }
+      if(this.distance <= 2) {
+        distanceRating = "sprint swimmer who should do less than 200 yards per exercise"
+      }
+      const difficultyRating = this.difficulty*2000;
+      const inputTextCurrent = `Create a practice for a ${distanceRating}, the total yardage should be ${difficultyRating} and be completed in 2 hours `
+      // Make an API post request here using the inputText
+      // Replace the API_ENDPOINT with the actual API endpoint URL
+      fetch('genhppurl.mlabenski.repl.co/generate/practice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input_text: inputText })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the API response
+          const practiceData = data.generated_text; // Modify this based on the actual response structure
+          // Store the practiceData in Firestore using the appropriate logic
+
+          // Emit the generated practiceData
+          this.$emit('startPractice', practiceData);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+
+      this.$emit('close');
+    },
   }
 }
 </script>
