@@ -127,7 +127,7 @@ export default {
       const inputTextCurrent = `Create a practice for a ${distanceRating}, the total yardage should be ${difficultyRating} and be completed in 2 hours `
       // Make an API post request here using the inputText
       // Replace the API_ENDPOINT with the actual API endpoint URL
-      fetch('http://genhppurl.mlabenski.repl.co/generate/practice', {
+      fetch('https://genhppurl.mlabenski.repl.co/generate/practice', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
