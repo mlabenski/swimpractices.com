@@ -11,13 +11,16 @@
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
         <div>
           <h3 class="text-lg font-bold mb-2">My Templates</h3>
-          <div v-if="practices">
-            {{practices}}
+          <div v-if="user">
+            {{userPractices}}
           </div>
           <SetList title="My Templates" :practiceSets="practiceSets"></SetList>
           <!-- Display your custom templates here -->
         </div>
         <div>
+          <div v-if="practices">
+            {{practices}}
+          </div>
           <h3 class="text-lg font-bold mb-2">Recommended Templates</h3>
           <SetList title="Recommended Templates" :practiceSets="practiceSets"></SetList>
           <!-- Display recommended templates here -->
@@ -99,7 +102,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      practices: 'practices'
+      practices: 'practices',
+      userPractices: 'userPractices';
     }),
   },
   methods: {
