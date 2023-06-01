@@ -23,6 +23,10 @@
           </div>
           <h3 class="text-lg font-bold mb-2">Recommended Templates</h3>
           <SetList title="Recommended Templates" :practiceSets="practiceSets"></SetList>
+          <div>
+            <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
+            <button @click="submitPractice">Submit Practice</button>
+          </div>
           <!-- Display recommended templates here -->
         </div>
       </div>
@@ -97,7 +101,8 @@ export default {
   data() {
     return {
       isModalOpen: false,
-      practiceSets
+      practiceSets,
+      pastedPractice: ''
     }
   },
   computed: {
@@ -121,6 +126,20 @@ export default {
     },
     closeModal() {
     this.isModalOpen = false;
+    },
+    async submitPractice() {
+      try {
+        const practiceData = JSON.parse(this.pastedPractice); // Parse the JSON input
+
+        // Submit the practice data to Firestore
+        await this.$fire.firestore.collection('Practices').add(practiceData);
+
+        // Optional: Reset the input field or do any other necessary actions
+        this.pastedPractice = '';
+      } catch (error) {
+        console.error('Error submitting practice:', error);
+        // Handle the error, e.g., display an error message
+      }
     }
   }
 }
