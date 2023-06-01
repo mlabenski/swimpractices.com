@@ -88,7 +88,8 @@ export default {
   },
   async mounted() {
     try {
-      await this.$store.dispatch('bindPractices')
+      await this.$store.dispatch('bindPractices');
+      await this.$store.dispatch('bindUserPractices');
     } catch (e) {
       console.error(e)
     }
