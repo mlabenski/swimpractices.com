@@ -5,17 +5,17 @@
     <table v-else class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
       <thead class="bg-gray-200">
       <tr>
-        <th class="px-4 py-2">Practice ID</th>
-        <th class="px-4 py-2">Total Yardage</th>
-        <th class="px-4 py-2">Actions</th>
+        <th class="px-4 py-2">Practice Name</th>
+        <th class="px-4 py-2">Distance</th>
+        <th class="px-4 py-2">.</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="practice in practiceSets" :key="practice.name" class="text-center">
-        <td class="px-4 py-2">Practice {{ practice.name }}</td>
+        <td class="px-4 py-2">{{ practice.name }}</td>
         <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">View Details</router-link>
+          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">View</router-link>
         </td>
       </tr>
       </tbody>
