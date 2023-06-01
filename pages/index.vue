@@ -103,7 +103,7 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       practices: 'practices',
-      userPractices: 'userPractices';
+      userPractices: 'userPractices'
     }),
   },
   methods: {
