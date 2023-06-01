@@ -20,15 +20,15 @@ export const mutations = {
 };
 
 export const actions = {
-  bindPractices: firestoreAction(async function ({ bindFirestoreRef }) {
+  bindPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
-      this.$store.commit('SET_LOADING', true)
+      commit('SET_LOADING', true)
       const ref = this.$fire.firestore.collection('practices');
       await bindFirestoreRef('practices', ref, { wait: true });
     } catch (error) {
 
     } finally {
-      this.$store.commit('SET_LOADING', false)
+      commit('SET_LOADING', false)
     }
   }),
   bindUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {

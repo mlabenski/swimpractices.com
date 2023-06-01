@@ -11,7 +11,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="practice in practices" :key="practice.name" class="text-center">
+      <tr v-for="practice in practiceSets" :key="practice.name" class="text-center">
         <td class="px-4 py-2">Practice {{ practice.name }}</td>
         <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     isLoading() {
-      return this.$store.state.isLoading; // Assuming you have an `isLoading` state in your Vuex store
+      return this.$store.getters.isLoading; // Assuming you have an `isLoading` state in your Vuex store
     },
     practices() {
       return this.$store.getters.practices; // Assuming you have a `practices` getter in your Vuex store
