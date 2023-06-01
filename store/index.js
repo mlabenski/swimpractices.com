@@ -28,7 +28,7 @@ export const actions = {
     } catch (error) {
 
     } finally {
-      this.$store.commit('SET_LOADING', false)
+      commit('SET_LOADING', false)
     }
   }),
   bindUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
