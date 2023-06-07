@@ -60,12 +60,18 @@
 <script>
 import { mapGetters } from 'vuex';
 import EditableField from '@/components/EditableField/EditableField.vue';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     EditableField,
   },
   computed: {
+    ...mapGetters({
+      user: 'auth/user',
+      practices: 'practices',
+      userPractices: 'userPractices'
+    }),
     ...mapGetters(['getLoading', 'getPracticeByID']),
     practice() {
       const practiceID = this.$route.params.id;
@@ -88,6 +94,22 @@ export default {
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
     },
+      async savePractice() {
+      const practiceID = this.$route.params.id;
+      const practiceRef = this.$fire.firestore.collection('practices').doc(practiceID);
+      practiceData.userId = this.user.id;
+
+      // Get current practice data
+      const practiceData = this.practice;
+
+      // Update Firestore document
+      try {
+        const newPracticeRef = await firebase.firestore().collection('practices').add(practiceData);
+        console.log('New practice saved with ID: ', newPracticeRef.id);
+      } catch (error) {
+        console.error('Error saving new practice: ', error);
+      }
+    }
   },
 };
 </script>
