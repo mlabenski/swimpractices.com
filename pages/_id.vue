@@ -99,14 +99,29 @@ export default {
 
       // Get current practice data
       const practiceData = this.practice;
-      practiceData.userID = this.user.id;
-      // Update Firestore document
+
+    // Check if user ID matches original
+    if (practiceData.userID === this.user.id) {
+      // Update existing practice
+      try {
+        await this.$fire.firestore.collection('practices').doc(practiceID).update(practiceData);
+        console.log('Practice updated');
+      } catch (error) {
+        console.error('Error updating practice: ', error);
+      }
+    } else {
+      // If user ID does not match original, save as new practice
+      // Replace user.id
+      practiceData.user.id = currentUserId;
+
+      // Create a new document with a new ID
       try {
         const newPracticeRef = await this.$fire.firestore.collection('practices').add(practiceData);
         console.log('New practice saved with ID: ', newPracticeRef.id);
       } catch (error) {
         console.error('Error saving new practice: ', error);
       }
+    }
     }
   },
 };
