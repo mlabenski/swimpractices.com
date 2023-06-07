@@ -110,7 +110,7 @@ export default {
       },
       async deletePractice(practiceId) {
         try {
-          await firebase.firestore().collection('practices').doc(practiceId).delete();
+          await this.$fire.firestore.collection('practices').doc(practiceId).delete();
           console.log('Practice deleted');
         } catch (error) {
           console.error('Error deleting practice: ', error);
