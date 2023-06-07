@@ -7,7 +7,8 @@
       <tr>
         <th class="px-4 py-2">Practice Name</th>
         <th class="px-4 py-2">Distance</th>
-        <th class="px-4 py-2">.</th>
+        <th class="px-4 py-2"></th>
+        <th class="px-4 py-2"></th>
       </tr>
       </thead>
       <tbody>
@@ -16,6 +17,7 @@
         <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
           <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">View</router-link>
+          <button v-if="practice.userID === userID" @click="deletePractice(practice.id)" class="text-red-600 underline ml-4">Delete</button>
         </td>
       </tr>
       </tbody>
@@ -36,6 +38,10 @@ export default {
       type: Array,
       required: true
     },
+    userID: {
+      type: String,
+      required: false
+    }
   },
   data() {
     return {
@@ -48,7 +54,7 @@ export default {
     },
     practices() {
       return this.$store.getters.practices; // Assuming you have a `practices` getter in your Vuex store
-    },
+    }
   },
   created() {
     // Fetch templates based on the component type (my templates or recommended templates)
@@ -102,7 +108,15 @@ export default {
         });
         return totalYardage;
       },
-    }
+      async deletePractice(practiceId) {
+        try {
+          await firebase.firestore().collection('practices').doc(practiceId).delete();
+          console.log('Practice deleted');
+        } catch (error) {
+          console.error('Error deleting practice: ', error);
+        }
+      },
+    },
 };
 </script>
 
