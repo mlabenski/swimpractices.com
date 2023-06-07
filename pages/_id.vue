@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
+  <div class="p-2 md:p-4 bg-gray-900 min-h-screen flex flex-col">
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4">
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div class="font-bold text-lg md:text-xl mb-2 text-white">Practice Name: {{ practice.name }}</div>
@@ -47,14 +47,18 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-around bg-gray-700 p-2 fixed inset-x-0 bottom-0">
-          <button class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded">Close</button>
-          <button class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded">Share</button>
-          <button class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded">Save</button>
-        </div>
-        <router-link to="/" class="inline-block mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Back to list
-        </router-link>
+        <div class="flex justify-around bg-gray-700 p-2 fixed inset-x-0 bottom-0 shadow-lg">
+          <router-link to="/" class="inline-block px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+            Close
+          </router-link>
+      <button class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110" @click="handleShare">Share</button>
+      <button class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110" @click="toggleEditingMode">
+        <span v-if="isEditing">Cancel Edit</span>
+        <span v-else>Edit Practice</span>
+      </button>
+      <button v-if="isEditing" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110" @click="handleSaveDraft">Save Draft</button>
+      <button v-if="isEditing" class="px-2 md:px-3 py-1 md:py-2 bg-red-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110" @click="handleDeleteDraft">Delete Draft</button>
+    </div>
       </div>
     </div>
   </div>
