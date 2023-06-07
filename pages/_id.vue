@@ -2,9 +2,9 @@
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4">
       <div class="px-2 md:px-6 py-2 md:py-4">
-        <EditableField :templateNum="1" :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
         <div v-if="isLoading">Loading...</div>
         <div v-else>
+          <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
           <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
             <div class="flex justify-between items-center mb-2">
               <div>
