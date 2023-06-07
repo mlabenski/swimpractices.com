@@ -9,7 +9,7 @@
             <div class="flex justify-between items-center mb-2">
               <div>
                 <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
-                  {{ set.name }}
+                  <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
                   <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
                     {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
                   </button>
