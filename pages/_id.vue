@@ -96,11 +96,10 @@ export default {
       async savePractice() {
       const practiceID = this.$route.params.id;
       const practiceRef = this.$fire.firestore.collection('practices').doc(practiceID);
-      practiceData.userId = this.user.id;
 
       // Get current practice data
       const practiceData = this.practice;
-
+      practiceData.userId = this.user.id;
       // Update Firestore document
       try {
         const newPracticeRef = await firebase.firestore().collection('practices').add(practiceData);
