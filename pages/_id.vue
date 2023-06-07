@@ -99,7 +99,7 @@ export default {
 
       // Get current practice data
       const practiceData = this.practice;
-      practiceData.userId = this.user.id;
+      practiceData.userID = this.user.id;
       // Update Firestore document
       try {
         const newPracticeRef = await this.$fire.firestore.collection('practices').add(practiceData);
