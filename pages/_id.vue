@@ -35,12 +35,12 @@
                 </thead>
                 <tbody>
                 <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
-                  <td class="border border-gray-700 px-2 md:px-4 py-1 md:py-2">{{ exercise.stroke }}</td>
+                  <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
                   <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
                   <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
-                  <td class="border border-gray-700 px-2 md:px-4 py-1 md:py-2">{{ exercise.description }}</td>
-                  <td class="border border-gray-700 px-2 md:px-4 py-1 md:py-2">{{ exercise.equipment }}</td>
-                  <td class="border border-gray-700 px-2 md:px-4 py-1 md:py-2 text-lg md:text-xl">{{ exercise.interval }}</td>
+                  <EditableField :value="exercise.description" @input="newValue => exercise.description = newValue"></EditableField>
+                  <EditableField :value="exercise.equipment" @input="newValue => exercise.equipment = newValue"></EditableField>
+                  <EditableField :value="exercise.interval" @input="newValue => exercise.interval = newValue"></EditableField>
                 </tr>
                 </tbody>
               </table>
