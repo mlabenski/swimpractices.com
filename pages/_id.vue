@@ -102,7 +102,7 @@ export default {
       practiceData.userId = this.user.id;
       // Update Firestore document
       try {
-        const newPracticeRef = await firebase.firestore().collection('practices').add(practiceData);
+        const newPracticeRef = await this.$fire.firestore.collection('practices').add(practiceData);
         console.log('New practice saved with ID: ', newPracticeRef.id);
       } catch (error) {
         console.error('Error saving new practice: ', error);
