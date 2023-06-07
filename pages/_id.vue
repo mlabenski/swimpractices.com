@@ -58,9 +58,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import EditableField from '@/components/EditableField/EditableField.vue';
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
