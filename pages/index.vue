@@ -39,18 +39,6 @@
             <svg class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
               <!-- Add your icon here -->
             </svg>
-            <span>Profile</span>
-          </a>
-          <a href="#" class="flex items-center">
-            <svg class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <!-- Add your icon here -->
-            </svg>
-            <span>History</span>
-          </a>
-          <a href="#" class="flex items-center">
-            <svg class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <!-- Add your icon here -->
-            </svg>
             <span>Start Practice</span>
           </a>
           <a href="#" class="flex items-center">
