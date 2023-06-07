@@ -32,30 +32,25 @@
       </div>
   </div>
 
-    <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
-      <div class="container mx-auto">
-        <div class="flex justify-between">
-          <a href="#" class="flex items-center">
-            <svg class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <!-- Add your icon here -->
-            </svg>
-            <span>Start Practice</span>
-          </a>
-          <a href="#" class="flex items-center">
-            <svg class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <!-- Add your icon here -->
-            </svg>
-            <span>Exercises</span>
-          </a>
-          <a href="#" class="flex items-center" @click.prevent="openSignup">
-            <a class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <span class="material-icons">face</span>
-            </a>
-            <span>Upgrade</span>
-          </a>
-        </div>
+  <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
+    <div class="container mx-auto">
+      <div class="flex justify-between">
+        <a href="#" class="flex flex-col items-center">
+          <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
+          <span>Learn</span>
+        </a>
+        <a href="#" class="flex flex-col items-center">
+          <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
+          <span>Exercises</span>
+        </a>
+        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup">
+          <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
+          <span>Upgrade</span>
+        </a>
       </div>
-    </nav>
+    </div>
+  </nav>
+
   </div>
 </template>
 
