@@ -49,7 +49,7 @@
           </a>
           <a href="#" class="flex items-center" @click.prevent="openSignup">
             <a class="w-6 h-6 fill-current mr-2" viewBox="0 0 24 24">
-              <span class="material-icons ">face</span>
+              <span class="material-icons">face</span>
             </a>
             <span>Upgrade</span>
           </a>
