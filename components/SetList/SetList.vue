@@ -16,10 +16,10 @@
         <td class="px-4 py-2">{{ practice.name }}</td>
         <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
         <td class="px-4 py-2">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-symbols-outlined">
+          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons-outlined">
 open_in_full
 </span></router-link>
-          <button v-if="practice.userID === userID" @click="deletePractice(practice.id)" class="text-red-600 underline ml-4"><span class="material-symbols-outlined">
+          <button v-if="practice.userID === userID" @click="deletePractice(practice.id)" class="text-red-600 underline ml-4"><span class="material-icons-outlined">
 delete_forever
 </span></button>
         </td>
