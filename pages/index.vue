@@ -61,14 +61,6 @@ import practiceSets from '@/data/practiceSetsNew.js';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  head () {
-    return {
-      link: [
-        // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
-      ],
-    }
-  },
   components: {
     GenerateSetModel,
     SetList
