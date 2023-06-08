@@ -90,7 +90,9 @@ export default {
     return {
       tableVisibility: {},
       isEditing: false,
-      localValue: this.value
+      localValue: this.value,
+      zoom: 1, // Add this
+      isOptionsExpanded: false,
     }
   },
   watch: {
