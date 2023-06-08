@@ -11,7 +11,7 @@
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
         <div>
           <h3 class="text-lg font-bold mb-2">Sign in to save</h3>
-          <SetList title="My Templates" :userID="user.id" :practiceSets="userPractices"></SetList>
+          <SetList title="My Templates" :userID="user ? user.id : null"  :practiceSets="userPractices"></SetList>
           <div v-if="practiceData">
             <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
             <pre>{{ practiceData }}</pre>
@@ -20,7 +20,7 @@
         </div>
         <div>
           <h3 class="text-lg font-bold mb-2">Recommended Templates</h3>
-          <SetList title="Recommended Templates" :practiceSets="practices" :userID="user.id"></SetList>
+          <SetList title="Recommended Templates" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- Display recommended templates here -->
         </div>
       </div>
