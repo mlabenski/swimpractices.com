@@ -1,6 +1,15 @@
 <template>
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
-    <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4">
+    <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
+  <button class="bg-blue-500 text-white rounded p-2 m-1" @click="zoomIn">Zoom In</button>
+  <button class="bg-blue-500 text-white rounded p-2 m-1" @click="zoomOut">Zoom Out</button>
+  <button class="bg-blue-500 text-white rounded p-2 m-1" @click="closeZoom">Close Zoom</button>
+</div>
+<button class="fixed right-0 bottom-0 mb-4 mr-4 bg-blue-500 text-white rounded p-2 sm:hidden" @click="toggleOptions">
+  <span v-if="isOptionsExpanded">Close</span>
+  <span v-else>Open</span>
+</button>
+
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div v-if="isLoading">Loading...</div>
         <div v-else>
@@ -122,7 +131,27 @@ export default {
         console.error('Error saving new practice: ', error);
       }
     }
-    }
+    },
+    zoomIn() {
+    this.zoom += 0.1;
+    document.body.style.transform = `scale(${this.zoom})`;
+  },
+    zoomOut() {
+      if (this.zoom > 0.1) {
+        this.zoom -= 0.1;
+        document.body.style.transform = `scale(${this.zoom})`;
+      }
+    },
+    closeZoom() {
+      this.zoom = 1;
+      document.body.style.transform = 'scale(1)';
+    },
+    toggleOptions() {
+      this.isOptionsExpanded = !this.isOptionsExpanded;
+    },
+  },
+    beforeDestroy() {
+    this.closeZoom();
   },
 };
 </script>
