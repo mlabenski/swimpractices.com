@@ -2,7 +2,7 @@
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
       <div class="fixed right-0 bottom-0 m-4">
-  <div class="flex flex-col items-center bg-white p-2 rounded shadow-lg">
+  <div class="flex flex-col items-center bg-white p-2 rounded shadow-lg" style="padding-bottom: 45px;">
     <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomIn">Zoom In</button>
     <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomOut">Zoom Out</button>
     <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="closeZoom">Close Zoom</button>
@@ -60,6 +60,7 @@
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
             <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Save</button>
             <button @click="deleteDraft" v-if="isEditing" class="px-2 md:px-3 py-1 md:py-2 bg-red-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Delete Draft</button>
+            <button 
           </div>
       </div>
     </div>
