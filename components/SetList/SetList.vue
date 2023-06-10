@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="z-121">
     <h2 class="text-2xl font-bold mb-4" v-if="!changeTheme">{{ title }}</h2>
     <div v-if="isLoading">Loading...</div>
     <table v-else class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
