@@ -104,8 +104,6 @@ export default {
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
      },
-     },
-    };
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend
       // Example using import statement:
