@@ -4,24 +4,32 @@
       <h1 class="text-4xl font-bold mb-4 pt-2">Swim Practice</h1>
 
       <div class="flex flex-col sm:flex-row justify-center">
-        <button @click="openLogin" class="w-full sm:w-auto mx-1 mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Log In | Sign up</button>
-        <button @startPractice="startPractice" @click="openModal"  class="w-full sm:w-auto mx-1 mb-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">AI Generate Set</button>
+        <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       </div>
-      <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
-        <div>
-          <h3 class="text-lg font-bold mb-2">Sign in to save</h3>
-          <SetList title="My Templates" :userID="user ? user.id : null"  :practiceSets="userPractices"></SetList>
-          <div v-if="practiceData">
-            <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
-            <pre>{{ practiceData }}</pre>
+        <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 relative">
+          <div>
+            <SetList title="My Templates" :userID="user ? user.id : null"  :practiceSets="userPractices"></SetList>
+            <div v-if="practiceData">
+              <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
+              <pre>{{ practiceData }}</pre>
+            </div>
+            <!-- Display your custom templates here -->
           </div>
-          <!-- Display your custom templates here -->
+          <div v-if="!user" class="absolute inset-0 bg-gray-900 bg-opacity-45 flex items-center justify-center z-50">
+          <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
+          </div>
         </div>
         <div>
-          <h3 class="text-lg font-bold mb-2">Recommended Templates</h3>
           <SetList title="Recommended Templates" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- Display recommended templates here -->
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Featured Seasons</h2>
+          <!-- Display recommended templates here -->
+          <div class="flex flex-wrap">
+            <SeasonCards v-for="season in seasonSet" :key="season.seasonID" :season="season" />
+          </div>
         </div>
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
@@ -35,17 +43,17 @@
   <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
     <div class="container mx-auto">
       <div class="flex justify-between">
-        <a href="#" class="flex flex-col items-center">
+        <a class="flex flex-col items-center" @startPractice="startPractice" @click="openModal"  >
           <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
-          <span>Learn</span>
+          <span>Create</span>
         </a>
         <a href="#" class="flex flex-col items-center">
           <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
-          <span>Exercises</span>
+          <span>View</span>
         </a>
         <a href="#" class="flex flex-col items-center" @click.prevent="openSignup">
           <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
-          <span>Upgrade</span>
+          <span>Log In</span>
         </a>
       </div>
     </div>
@@ -56,6 +64,7 @@
 <script>
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
+import SeasonCards from "@/components/SeasonCards/index.vue";
 import practiceSets from '@/data/practiceSetsNew.js';
 import { mapGetters, mapActions } from "vuex";
 
@@ -70,7 +79,8 @@ export default {
   },
   components: {
     GenerateSetModel,
-    SetList
+    SetList,
+    SeasonCards
   },
   async mounted() {
     try {
@@ -85,7 +95,57 @@ export default {
       isModalOpen: false,
       practiceSets,
       pastedPractice: '',
-      practiceData: null
+      practiceData: null,
+      seasonSet: [
+        {
+          seasonID: "S01",
+          userID: "U01",
+          setIDs: ["set1", "set2", "set3"],
+          description: "Sets from Villanova Swimming",
+          title: "Villanova",
+          totalYardage: 34000
+        },
+        {
+          seasonID: "S02",
+          userID: "U01",
+          setIDs: ["set4", "set5", "set6"],
+          description: "Swim the distance of an Iron man 77 miles",
+          title: "Iron Man Challenge",
+          totalYardage: 7500
+        },
+        {
+          seasonID: "S03",
+          userID: "U02",
+          setIDs: ["set7", "set8", "set9"],
+          description: "This is season set 3",
+          title: "Season Set 3",
+          totalYardage: 9200
+        },
+        {
+          seasonID: "S04",
+          userID: "U02",
+          setIDs: ["set10", "set11", "set12"],
+          description: "This is season set 4",
+          title: "Season Set 4",
+          totalYardage: 8800
+        },
+        {
+          seasonID: "S05",
+          userID: "U03",
+          setIDs: ["set13", "set14", "set15"],
+          description: "This is season set 5",
+          title: "Season Set 5",
+          totalYardage: 7400
+        },
+        {
+          seasonID: "S06",
+          userID: "U03",
+          setIDs: ["set16", "set17", "set18"],
+          description: "This is season set 6",
+          title: "Season Set 6",
+          totalYardage: 9800
+        },
+      ]
     }
   },
   computed: {

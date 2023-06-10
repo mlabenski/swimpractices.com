@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75">
+  <div class="fixed inset-0 flex justify-center z-80 items-center bg-black bg-opacity-75">
     <div class="bg-white rounded-lg p-4 w-96">
       <h2 class="text-2xl font-bold mb-4">Generate Set Child</h2>
 

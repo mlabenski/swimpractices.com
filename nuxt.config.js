@@ -31,6 +31,8 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
+
+
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
@@ -51,6 +53,9 @@ export default {
       messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
       appId: process.env.VUE_APP_FIREBASE_appId,
       measurementId: process.env.VUE_APP_FIREBASE_measurementd,
+    },
+    tailwindcss: {
+      configPath: '~/tailwind.config.js'
     },
     services: {
       firestore: true
