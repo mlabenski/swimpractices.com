@@ -3,11 +3,11 @@
   <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center">
       <h1 class="font-semibold">Swimpractices.com</h1>
    </header>
-    <div class="container mx-auto px-4 py-2 mt-20">
+    <div class="container mx-auto px-4 py-2">
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
         <div class="relative">
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
           <div v-if="practiceData">
