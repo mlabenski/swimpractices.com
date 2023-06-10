@@ -1,44 +1,40 @@
 <template>
-<div>
+  <div>
     <div class="container mx-auto px-4 py-2">
       <h1 class="text-4xl font-bold mb-4 pt-2">Swim Practice</h1>
 
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       </div>
-      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
-        <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 relative">
-          <div>
-            <SetList title="My Templates" :userID="user ? user.id : null"  :practiceSets="userPractices"></SetList>
-            <div v-if="practiceData">
-              <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
-              <pre>{{ practiceData }}</pre>
-            </div>
-            <!-- Display your custom templates here -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        <div class="relative">
+          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
+          <div v-if="practiceData">
+            <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
+            <pre>{{ practiceData }}</pre>
           </div>
-          <div v-if="!user" class="absolute inset-0 bg-gray-900 bg-opacity-45 flex items-center justify-center z-50">
-          <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
+          <div v-if="!user" class="absolute inset-0 bg-gray-900 bg-opacity-45 flex items-center justify-center z-50 max-h-24">
+            <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
           </div>
         </div>
         <div>
           <SetList title="Recommended Templates" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
-          <!-- Display recommended templates here -->
         </div>
+      </div>
+      <div class="grid grid-cols-1 gap-4 mt-4">
         <div>
           <h2 class="text-2xl font-bold mb-4">Featured Seasons</h2>
-          <!-- Display recommended templates here -->
           <div class="flex flex-wrap">
-            <SeasonCards v-for="season in seasonSet" :key="season.seasonID" :season="season" />
+            <SeasonCards v-for="season in seasonPractices" :season="season" :key="season.id"/>
           </div>
         </div>
       </div>
-      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
-
-          <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
-          <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
-          <button @click="submitPractice">Submit Practice</button>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
+        <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
+        <button @click="submitPractice">Submit Practice</button>
       </div>
-  </div>
+    </div>
 
   <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
     <div class="container mx-auto">
@@ -85,7 +81,10 @@ export default {
   async mounted() {
     try {
       await this.$store.dispatch('bindPractices');
-      await this.$store.dispatch('bindUserPractices');
+      if (this.$store.state.auth.user) {
+        await this.$store.dispatch('bindUserPractices');
+      }
+      await this.$store.dispatch('bindSeasonPractices');
     } catch (e) {
       console.error(e)
     }
@@ -152,7 +151,8 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       practices: 'practices',
-      userPractices: 'userPractices'
+      userPractices: 'userPractices',
+      seasonPractices: 'seasons'
     }),
   },
   methods: {

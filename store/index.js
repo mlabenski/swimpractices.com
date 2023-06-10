@@ -1,9 +1,10 @@
-import { vuexfireMutations, firestoreAction } from 'vuexfire';
+import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 export const state = () => ({
   practices: [],
   userPractices: [],
   isLoading: false,
+  seasons: []
 });
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   SET_USER_PRACTICES: (state, userPractices) => {
     state.userPractices = userPractices;
+  },
+  SET_SEASONS: (state, seasonData) => {
+    state.seasons = seasonData;
   },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
@@ -37,11 +41,25 @@ export const actions = {
     const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
     await bindFirestoreRef('userPractices', ref, { wait: true });
   }),
+  bindSeasonPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+    try {
+      commit('SET_LOADING', true)
+      const ref = this.$fire.firestore.collection('seasons');
+      await bindFirestoreRef('seasons', ref, { wait: true });
+    } catch (error) {
+    console.log(error);
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  }),
   unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
     unbindFirestoreRef('practices', false);
   }),
   unbindUserPractices: firestoreAction(function ({ unbindFirestoreRef }) {
     unbindFirestoreRef('userPractices', false);
+  }),
+  unbindSeasonPractices: firestoreAction(function ({ unbindFirestoreRef }) {
+    unbindFirestoreRef('seasonPractices', false);
   }),
 };
 
@@ -51,6 +69,9 @@ export const getters = {
   },
   userPractices(state) {
     return state.userPractices;
+  },
+  seasons(state) {
+    return state.seasons;
   },
   getPracticeByID: (state) => (id) => {
     return state.practices.find((practice) => practice.id === id)
