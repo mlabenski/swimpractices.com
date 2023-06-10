@@ -1,6 +1,6 @@
 <template>
-  <div class="w-1/2 px-2">
-    <div class="max-w-sm bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
+  <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2">
+    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
       <div class="px-6 py-4">
         <div class="font-bold text-xl mb-2">{{ season.title }}</div>
         <p class="text-gray-700 text-base">
