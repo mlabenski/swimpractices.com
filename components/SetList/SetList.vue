@@ -1,8 +1,14 @@
+
 <template>
   <div class="z-121">
-    <h2 class="text-2xl font-bold mb-4" v-if="!changeTheme">{{ title }}</h2>
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold mb-4" v-if="!changeTheme">{{ title }}</h2>
+          <span class="material-icons cursor-pointer" @click="toggleTable">
+            {{ isTableVisible ? 'expand_less' : 'expand_more' }}
+          </span>
+      </div>
     <div v-if="isLoading">Loading...</div>
-    <table v-else class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
+    <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
       <thead class="bg-gray-200">
       <tr>
         <th class="px-4 py-2">Practice Name</th>
@@ -54,7 +60,8 @@ export default {
   },
   data() {
     return {
-      templates: []
+      templates: [],
+      isTableVisible: true
     };
   },
   computed: {
@@ -94,6 +101,11 @@ export default {
         { id: 3, name: 'Template 3' }
       ];
     },
+    toggleTable() {
+      this.isTableVisible = !this.isTableVisible;
+     },
+     },
+    };
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend
       // Example using import statement:
