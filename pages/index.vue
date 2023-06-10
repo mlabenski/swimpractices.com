@@ -1,9 +1,9 @@
 <template>
   <div>
-  <header class="bg-cyan-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center">
+  <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center">
       <h1 class="font-semibold">Swimpractices.com</h1>
    </header>
-    <div class="container mx-auto px-4 py-2">
+    <div class="container mx-auto px-4 py-2 mt-20">
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
       </div>
