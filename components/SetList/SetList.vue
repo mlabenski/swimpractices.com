@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-2xl font-bold mb-4">{{ title }}</h2>
+    <h2 class="text-2xl font-bold mb-4" v-if="!changeTheme">{{ title }}</h2>
     <div v-if="isLoading">Loading...</div>
     <table v-else class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
       <thead class="bg-gray-200">
@@ -13,7 +13,7 @@
       <tbody>
       <tr v-for="practice in practiceSets" :key="practice.name" class="text-center">
         <td class="px-4 py-2">{{ practice.name }}</td>
-        <td class="px-4 py-2">{{ getTotalYardage(practice.sets) }} yards</td>
+        <td class="px-4 py-2">9200 yards</td>
         <td class="px-4 py-2">
           <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
           open_in_full
@@ -45,6 +45,10 @@ export default {
     },
     userID: {
       type: String,
+      required: false
+    },
+    changeTheme: {
+      type: Number,
       required: false
     }
   },

@@ -18,6 +18,27 @@ export const mutations = {
   SET_SEASONS: (state, seasonData) => {
     state.seasons = seasonData;
   },
+  UPDATE_SEASON_PRACTICES: (state) => {
+    // Loop through each season
+    for (let season of state.seasons) {
+      // Create a new array for the updated practices
+      let updatedPractices = [];
+
+      // Loop through each practice ID in the current season
+      for (let practiceID of season.practices) {
+        // Find the corresponding practice in the Vuex state
+        let practice = state.practices.find(practice => practice.id === practiceID);
+
+        // If a matching practice is found, add it to the updatedPractices array
+        if (practice) {
+          updatedPractices.push(practice);
+        }
+      }
+
+      // Update the current season's practices array with the updatedPractices array
+      season.practices = updatedPractices;
+    }
+  },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
   }
@@ -46,6 +67,7 @@ export const actions = {
       commit('SET_LOADING', true)
       const ref = this.$fire.firestore.collection('seasons');
       await bindFirestoreRef('seasons', ref, { wait: true });
+      commit('UPDATE_SEASON_PRACTICES');
     } catch (error) {
     console.log(error);
     } finally {

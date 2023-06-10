@@ -22,12 +22,9 @@
         </div>
       </div>
       <div class="grid grid-cols-1 gap-4 mt-4">
-        <div>
-          <h2 class="text-2xl font-bold mb-4">Featured Seasons</h2>
           <div class="flex flex-wrap">
-            <SeasonCards v-for="season in seasonPractices" :season="season" :key="season.id"/>
+            <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :key="season.id"/>
           </div>
-        </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
         <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
