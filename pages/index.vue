@@ -4,7 +4,7 @@
       <h1 class="font-semibold">Swimpractices.com</h1>
    </header>
      <div class="md:block hidden">
-      <div class="relative mt-16">
+      <div class="relative">
         <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
