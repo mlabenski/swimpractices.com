@@ -11,7 +11,7 @@
         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ season.totalYardage }} Yards</span>
         <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ season.practices.length }} Days</span>
       </div>
-      <div class="absolute bottom-0 right-0 mb-4 mr-4">
+      <div v-if="user" class="absolute bottom-0 right-0 mb-4 mr-4 cursor-pointer" @click="likeSeason(season.id)">
         <span class="material-icons text-opacity-50">favorite</span>
       </div>
       <div v-if="showPracticeTable" class="px-6 pt-4 pb-2 bg-red-50">
@@ -46,6 +46,11 @@ export default {
     return {
       showPracticeTable: false,
     }
+  },
+  methods: {
+    likeSeason(seasonId) {
+      this.$emit('like', seasonId);
+    },
   },
 }
 </script>
