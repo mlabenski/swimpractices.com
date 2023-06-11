@@ -57,7 +57,7 @@
           <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
           <span>View</span>
         </a>
-        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup" v-if-else="!user">
+        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup" v-if="!user">
           <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
           <span>Log In</span>
         </a>
@@ -204,10 +204,9 @@ export default {
     },
     handleLike(seasonId) {
       if (!this.user) return;
-
-      const seasonRef = firebase.firestore().collection('seasons').doc(seasonId);
+      const seasonRef = this.$fire.firestore.collection('seasons').doc(seasonId);
       seasonRef.update({
-        likes: firebase.firestore.FieldValue.increment(1),
+        likes: this.$fire.firestore.FieldValue.increment(1),
       }).catch((error) => {
         console.error('Error updating likes: ', error);
       });
