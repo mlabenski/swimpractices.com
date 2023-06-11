@@ -57,9 +57,13 @@
           <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
           <span>View</span>
         </a>
-        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup">
+        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup" v-if-else="!user">
           <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
           <span>Log In</span>
+        </a>
+        <a href="#" class="flex flex-col items-center" @click.prevent="logout" v-if-else="user">
+          <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
+          <span>Log Out</span>
         </a>
       </div>
     </div>
