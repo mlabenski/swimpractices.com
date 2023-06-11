@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     likeSeason(seasonId) {
+      console.log('like season clicked!');
       this.$emit('like', seasonId);
     },
   },
