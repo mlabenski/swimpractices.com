@@ -3,6 +3,18 @@
   <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center">
       <h1 class="font-semibold">Swimpractices.com</h1>
    </header>
+     <div class="md:block hidden">
+      <div class="relative mt-16">
+        <img src="@/assets/swim-practices-header.png" class="object-cover w-full h-64" />
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center text-white">
+            <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
+            <p class="text-xl">Log in to create your own</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto px-4 py-2">
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
