@@ -36,7 +36,7 @@
       </div>
       <div class="grid grid-cols-1 gap-4 mt-4">
           <div class="flex flex-wrap">
-            <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :key="season.id" like="handleLike"/>
+            <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :key="season.id" @like="handleLike"/>
           </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">

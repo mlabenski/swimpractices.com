@@ -50,6 +50,7 @@ export default {
   methods: {
     likeSeason(seasonId) {
       console.log('like season clicked!');
+      console.log('like season id'+ seasonId);
       this.$emit('like', seasonId);
     },
   },
