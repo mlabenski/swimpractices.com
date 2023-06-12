@@ -1,8 +1,17 @@
 <template>
   <div>
-  <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center">
+    <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
       <h1 class="font-semibold">Swimpractices.com</h1>
-   </header>
+      <div class="md:hidden relative ml-auto">
+        <button @click="toggleNotifications" class="focus:outline-none">
+    <span class="material-icons text-white text-2xl">
+      lightbulb_outline
+    </span>
+          <!-- Notification Indicator -->
+          <span v-if="notification" class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
+        </button>
+      </div>
+    </header>
      <div class="md:block hidden">
       <div class="relative">
         <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
@@ -10,7 +19,7 @@
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
-            <p class="text-xl">Log in to create your own</p>
+            <p class="text-xl cursor-pointer hover:text-blue-500" @click="openSignup">Log in to create your own</p>
           </div>
         </div>
       </div>
@@ -18,6 +27,7 @@
     <div class="container mx-auto px-4 py-2">
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
+        <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
         <div class="relative">
@@ -61,7 +71,7 @@
           <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
           <span>Log In</span>
         </a>
-        <a href="#" class="flex flex-col items-center" @click.prevent="logout" v-if-else="user">
+        <a href="#" class="flex flex-col items-center" @click.prevent="logout" v-if="user">
           <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
           <span>Log Out</span>
         </a>
@@ -74,7 +84,8 @@
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import SeasonCards from "@/components/SeasonCards/index.vue";
-import practiceSets from '@/data/practiceSetsNew.js';
+import notificationsData from '@/data/notifications';
+import NotificationModal from '@/components/NotificationModal';
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -89,7 +100,8 @@ export default {
   components: {
     GenerateSetModel,
     SetList,
-    SeasonCards
+    SeasonCards,
+    NotificationModal
   },
   async mounted() {
     try {
@@ -105,9 +117,11 @@ export default {
   data() {
     return {
       isModalOpen: false,
-      practiceSets,
       pastedPractice: '',
+      hasNotification: false,
+      isNotificationModalOpen: false,
       practiceData: null,
+      notification: notificationsData.notifications[0],
       seasonSet: [
         {
           seasonID: "S01",
@@ -168,12 +182,18 @@ export default {
       seasonPractices: 'seasons'
     }),
   },
+  created() {
+   this.checkNotifications();
+  },
   methods: {
     ...mapActions({
       openLogin: 'auth/openLogin',
       openSignup: 'auth/openSignup',
       logout: 'auth/logout'
     }),
+    toggleNotifications() {
+      this.isNotificationModalOpen = !this.isNotificationModalOpen;
+    },
     startEmptyPractice() {
     // Logic to start an empty practice
     },
@@ -183,10 +203,16 @@ export default {
     closeModal() {
     this.isModalOpen = false;
     },
+    closeNotificationModal() {
+      this.isNotificationModalOpen = false;
+    },
     startPractice(practiceData) {
       console.log('emitted back to the main index');
       console.log(practiceData);
       this.practiceData = practiceData;
+    },
+    checkNotifications() {
+      this.hasNotification = notificationsData.notifications.length > 0;
     },
     async submitPractice() {
       try {
