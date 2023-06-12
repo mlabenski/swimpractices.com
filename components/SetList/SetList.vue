@@ -8,8 +8,8 @@
           </span>
       </div>
     <div v-if="isLoading">Loading...</div>
-    <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-200 divide-y divide-gray-200">
-      <thead class="bg-gray-200">
+    <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
+      <thead class="bg-customYellow">
       <tr>
         <th class="px-4 py-2">Practice Name</th>
         <th class="px-4 py-2">Distance</th>
