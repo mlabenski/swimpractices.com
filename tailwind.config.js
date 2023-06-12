@@ -1,6 +1,10 @@
 module.exports = {
   theme: {
     extend: {
+      colors: {
+        customColor: {
+          DEFAULT: '#cfd7d7'
+      },
       keyframes: {
         shake: {
           '0%, 100%': { transform: 'translateX(0)' },
