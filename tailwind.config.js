@@ -4,6 +4,10 @@ module.exports = {
       colors: {
         customColor: {
           DEFAULT: '#cfd7d7'
+         },
+        customYellow: {
+          DEFAULT: '#F7F052'
+        },
       },
       keyframes: {
         shake: {
