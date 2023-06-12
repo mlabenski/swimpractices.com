@@ -248,6 +248,6 @@ export default {
 
 }
 html {
-  background-color: lightgrey;
+  background-color: #CFD7D7;
 }
 </style>
