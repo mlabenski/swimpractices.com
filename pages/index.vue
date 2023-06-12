@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="bg-customColor text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
+    <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
       <h1 class="font-semibold">Swimpractices.com</h1>
       <div class="md:hidden relative ml-auto">
         <button @click="toggleNotifications" class="focus:outline-none">
