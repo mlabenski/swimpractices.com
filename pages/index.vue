@@ -248,28 +248,29 @@ export default {
 
 }
 html {
-  background-image: url(/static/background-414-896-iphone-xr.svg);
+  background-image: url(@/static/background-414-896-iphone-xr.svg);
   background-color: #CFD7D7;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover; 
+  background-size: cover;
+  font: handwritten;
 }
 
 @media (min-width: 600px) {
   #app {
-    background-image: url(/static/background-912-1368-pro.svg);
+    background-image: url(@/static/background-912-1368-pro.svg);
   }
 }
 
 @media (min-width: 768px) {
   #app {
-    background-image: url(/static/background-1368-912-wide.svg);
+    background-image: url(@/static/background-1368-912-wide.svg);
   }
 }
 
 @media (min-width: 1024px) {
   #app {
-    background-image: url(/static/desktop-1920-1260.svg);
+    background-image: url(@/static/desktop-1920-1260.svg);
   }
 }
 </style>

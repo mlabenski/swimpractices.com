@@ -9,6 +9,9 @@ module.exports = {
           DEFAULT: '#F7F052'
         },
       },
+      fontFamily: {
+        handwritten: ['Architects Daughter']
+      },
       keyframes: {
         shake: {
           '0%, 100%': { transform: 'translateX(0)' },
