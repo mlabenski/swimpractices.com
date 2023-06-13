@@ -8,6 +8,9 @@ module.exports = {
         customYellow: {
           DEFAULT: '#F7F052'
         },
+        customGrey: {
+          DEFAULT: '#D9D00A'
+        }
       },
       fontFamily: {
         handwritten: ['Architects Daughter']

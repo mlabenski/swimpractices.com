@@ -16,22 +16,23 @@
         <th class="px-4 py-2 pl-2">Actions</th>
       </tr>
       </thead>
-      <tbody>
-      <tr v-for="practice in practiceSets" :key="practice.name" class="text-center">
-        <td class="px-4 py-2">{{ practice.name }}</td>
-        <td class="px-4 py-2">9200 yards</td>
-        <td class="px-4 py-2">
+      <tbody class="bg-customGrey">
+      <tr v-for="practice in practiceSets" :key="practice.name" class="text-center bg-white shadow-md">
+        <td class="px-4 py-2 border">{{ practice.name }}</td>
+        <td class="px-4 py-2 border">9200 yards</td>
+        <td class="px-4 py-2 border">
           <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
-          open_in_full
-          </span></router-link>
+      open_in_full
+      </span></router-link>
         </td>
-        <td>
+        <td class="px-4 py-2 border">
           <button v-if="practice.userID === userID" @click="deletePractice(practice.id)" class="text-red-600 underline ml-4"><span class="material-icons">
-        delete_forever
-        </span></button>
+    delete_forever
+    </span></button>
         </td>
       </tr>
       </tbody>
+
     </table>
   </div>
 </template>

@@ -30,8 +30,16 @@
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
+        <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block">
+          <option v-for="option in setListOptions" :value="option">
+            {{ option }}
+          </option>
+        </select>
         <div class="relative">
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
+          <SetList v-if="selectedSetList === 'My Practices'" title="My Practices" :practiceSets="userPractices" :userID="user ? user.id : null" class="hidden md:block lg:block"></SetList>
+          <!-- Add similar conditions for the other two SetList options -->
+
           <div v-if="practiceData">
             <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
             <pre>{{ practiceData }}</pre>
@@ -42,10 +50,16 @@
         </div>
         <div>
           <SetList title="Recommended Templates" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
+          <SetList v-if="selectedSetList === 'Recommended Practices'" title="Recommended Practices" :practiceSets="practices" :userID="user ? user.id : null"  class="hidden md:block lg:block" ></SetList>
         </div>
       </div>
       <div class="grid grid-cols-1 gap-4 mt-4">
           <div class="flex flex-wrap">
+            <div class="flex items-center justify-between">
+              <h2 class="text-2xl font-bold mb-4">Grouped Practices</h2>
+              <span class="material-icons cursor-pointer">
+          </span>
+            </div>
             <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :key="season.id" @like="handleLike"/>
           </div>
       </div>
@@ -120,7 +134,13 @@ export default {
       pastedPractice: '',
       hasNotification: false,
       isNotificationModalOpen: false,
+      selectedSetList: 'Recommended Practices',
       practiceData: null,
+      setListOptions: [ // Available SetList's titles
+        'Recommended Practices',
+        'Practice of the Day',
+        'My Practices'
+      ],
       notification: notificationsData.notifications[0],
       seasonSet: [
         {
@@ -236,7 +256,10 @@ export default {
       }).catch((error) => {
         console.error('Error updating likes: ', error);
       });
-    }
+    },
+    onSetListChange(e) {
+      this.selectedSetList = e.target.value;
+    },
   }
 }
 </script>
@@ -245,8 +268,8 @@ export default {
 .container {
   padding-left: 1em;
   padding-right: 1em;
-
 }
+
 html {
   background-image: url(@/static/background-414-896-iphone-xr.svg);
   background-color: #CFD7D7;
@@ -273,4 +296,15 @@ html {
     background-image: url(@/static/desktop-1920-1260.svg);
   }
 }
+
+.setlist-dropdown {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .setlist-dropdown {
+    display: block;
+  }
+}
+
 </style>
