@@ -67,7 +67,7 @@
       <div class="grid grid-cols-1 gap-4 mt-4">
           <div class="flex flex-wrap">
             <div class="flex items-center justify-between">
-              <h2 class="text-2xl font-bold mb-4 hidden md:block lg:block">Grouped Practices</h2>
+              <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
               <span class="material-icons cursor-pointer">
           </span>
             </div>
