@@ -47,7 +47,7 @@ export default {
       required: false
     },
     rank: {
-    type: Number,
+    type: String,
     required: true
     }
   },
