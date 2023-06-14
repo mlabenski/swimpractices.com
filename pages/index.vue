@@ -71,7 +71,7 @@
               <span class="material-icons cursor-pointer">
           </span>
             </div>
-            <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :key="season.id" @like="handleLike"/>
+            <SeasonCards v-for="season in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike"/>
           </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
