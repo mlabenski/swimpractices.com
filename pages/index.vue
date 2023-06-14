@@ -3,7 +3,11 @@
     <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
       <h1 class="font-semibold">Swimpractices.com</h1>
       <div class="hidden md:block relative ml-auto">
-        <h1 class="font-semibold">View the Daily Practice</h1>
+        <h1 class="font-semibold text-md">View the Daily Practice</h1>
+          <span class="material-icons text-white text-2xl">
+            lightbulb_outline
+          </span>
+        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
       </div>
       <div class="md:hidden relative ml-auto">
         <button @click="toggleNotifications" class="focus:outline-none">
