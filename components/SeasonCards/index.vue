@@ -64,8 +64,8 @@ export default {
       else {
       console.log('you must be logged in to like a season');
       }
-    }
-  },
+    },
+  }
 }
 </script>
 
