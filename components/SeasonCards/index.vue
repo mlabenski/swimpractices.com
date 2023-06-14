@@ -58,10 +58,12 @@ export default {
   methods: {
     likeSeason(seasonId) {
       if(this.user) {
+      console.log('season like event emitted');
       this.$emit('like', seasonId);
       }
+      else {
       console.log('you must be logged in to like a season');
-    },
+      }
   },
 }
 </script>
