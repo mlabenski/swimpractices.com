@@ -2,10 +2,10 @@
   <div>
     <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
       <h1 class="font-semibold">Swimpractices.com</h1>
-      <div class="md:hidden relative ml-auto">
+      <div class="relative ml-auto">
       <h1 class="font-semibold sm:hidden">View the Daily Practice</h1>
-        <button @click="toggleNotifications" class="focus:outline-none">
-    <span class="material-icons text-white text-2xl">
+        <button @click="toggleNotifications" class="focus:outline-none md:hidden">
+    <span class="material-icons text-white text-2xl md:hidden">
       lightbulb_outline
     </span>
           <!-- Notification Indicator -->
