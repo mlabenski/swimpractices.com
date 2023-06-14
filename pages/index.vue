@@ -1,19 +1,28 @@
 <template>
+  <!-- Root Div -->
   <div>
+
+    <!-- Header -->
     <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
+      <!-- Website title -->
       <h1 class="font-semibold">Swimpractices.com</h1>
+
+      <!-- Daily practice link for desktop -->
       <div class="hidden md:flex relative ml-auto items-center">
+        <!-- Using router-link to route to the daily practice view -->
         <router-link :to="{ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } }" class="flex items-center">
           <h1 class="font-semibold text-md mr-2">View the Daily Practice</h1>
           <span class="material-icons text-white text-2xl mr-2">
             lightbulb_outline
           </span>
+          <!-- Notification indicator -->
           <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
         </router-link>
       </div>
 
-
+      <!-- Daily practice button for mobile -->
       <div class="md:hidden relative ml-auto">
+        <!-- Clicking the button will trigger toggleNotifications method -->
         <button @click="toggleNotifications" class="focus:outline-none">
           <span class="material-icons text-white text-2xl">
             lightbulb_outline
@@ -23,57 +32,77 @@
         </button>
       </div>
     </header>
-     <div class="md:block hidden">
+
+    <!-- Banner image section -->
+    <div class="md:block hidden">
       <div class="relative">
         <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
+            <!-- Login button -->
             <p class="text-xl cursor-pointer hover:text-blue-500" @click="openSignup">Log in to create your own</p>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Container for all the components below the header -->
     <div class="container mx-auto px-4 py-2">
+
+      <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
+
+      <!-- Set lists -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
+        <!-- Dropdown for selecting set list -->
         <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block">
           <option v-for="option in setListOptions" :value="option">
             {{ option }}
           </option>
         </select>
+
+        <!-- My Templates set list -->
         <div class="relative">
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
-          <SetList v-if="selectedSetList === 'My Practices' && user" title="My Practices" :practiceSets="userPractices" :userID="user ? user.id : null" class="hidden md:block lg:block"></SetList>
-          <!-- Add similar conditions for the other two SetList options -->
+          <!-- More SetList components here as needed -->
 
+          <!-- Generated practice data display -->
           <div v-if="practiceData">
             <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
             <pre>{{ practiceData }}</pre>
           </div>
+
+          <!-- Log in reminder for unauthenticated users -->
           <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 max-h-24">
             <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
           </div>
         </div>
+
+        <!-- Free sets list -->
         <div>
           <SetList title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
-          <SetList v-if="selectedSetList === 'Recommended Practices'" title="Recommended Practices" :practiceSets="practices" :userID="user ? user.id : null"  class="hidden md:block lg:block" ></SetList>
+          <!-- More SetList components here as needed -->
         </div>
       </div>
-      <div class="grid grid-cols-1 gap-4 mt-4">
-          <div class="flex flex-wrap">
-            <div class="flex items-center justify-between">
-              <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
-              <span class="material-icons cursor-pointer">
-          </span>
-            </div>
-            <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :key="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike"/>
+
+      <!-- Grouped Practices section -->
+      <div class="grid grid-cols-1 gap-4 mt-4 pt-24 sm:pt-0">
+        <div class="flex flex-wrap">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
           </div>
+          <!-- Grouped Practices cards -->
+          <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :key="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike"/>
+        </div>
       </div>
+
+
+      <!-- Manual practice entry -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
         <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
@@ -81,30 +110,37 @@
       </div>
     </div>
 
-  <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
-    <div class="container mx-auto">
-      <div class="flex justify-between">
-        <a class="flex flex-col items-center" @startPractice="startPractice" @click="openModal"  >
-          <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
-          <span>Create</span>
-        </a>
-        <a href="#" class="flex flex-col items-center">
-          <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
-          <span>View</span>
-        </a>
-        <a href="#" class="flex flex-col items-center" @click.prevent="openSignup" v-if="!user">
-          <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
-          <span>Log In</span>
-        </a>
-        <a href="#" class="flex flex-col items-center" @click.prevent="logout" v-if="user">
-          <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
-          <span>Log Out</span>
-        </a>
+    <!-- Bottom navigation bar -->
+    <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
+      <div class="container mx-auto">
+        <div class="flex justify-between">
+          <!-- Create practice button -->
+          <a class="flex flex-col items-center" @startPractice="startPractice" @click="openModal"  >
+            <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
+            <span>Create</span>
+          </a>
+
+          <!-- View practice button -->
+          <a href="#" class="flex flex-col items-center">
+            <span class="material-icons w-6 h-6 fill-current mb-2">pool</span>
+            <span>View</span>
+          </a>
+
+          <!-- Login / Logout button -->
+          <a href="#" class="flex flex-col items-center" @click.prevent="openSignup" v-if="!user">
+            <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
+            <span>Log In</span>
+          </a>
+          <a href="#" class="flex flex-col items-center" @click.prevent="logout" v-if="user">
+            <span class="material-icons w-6 h-6 fill-current mb-2">lock_open</span>
+            <span>Log Out</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
   </div>
 </template>
+
 <script>
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
