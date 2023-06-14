@@ -48,7 +48,7 @@
         </select>
         <div class="relative">
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
-          <SetList v-if="selectedSetList === 'My Practices'" title="My Practices" :practiceSets="userPractices" :userID="user ? user.id : null" class="hidden md:block lg:block"></SetList>
+          <SetList v-if="selectedSetList === 'My Practices' && user.id !== null" title="My Practices" :practiceSets="userPractices" :userID="user ? user.id : null" class="hidden md:block lg:block"></SetList>
           <!-- Add similar conditions for the other two SetList options -->
 
           <div v-if="practiceData">
