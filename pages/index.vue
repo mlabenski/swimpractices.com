@@ -149,7 +149,7 @@ export default {
       practiceData: null,
       setListOptions: [ // Available SetList's titles
         'Recommended Practices',
-        'Practice of the Day',
+        'Featured Practice',
         'My Practices'
       ],
       notification: notificationsData.notifications[0],
@@ -270,6 +270,9 @@ export default {
     },
     onSetListChange(e) {
       this.selectedSetList = e.target.value;
+      if (this.selectedSetList === 'Featured Practice') {
+          this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
+      }
     },
   }
 }
