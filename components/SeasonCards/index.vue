@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2">
+   <div class="flex justify-center items-center min-h-screen">
+    <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2">
     <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
       <div class="flex justify-center items-center bg-customBlue text-white text-2xl font-bold py-2">
         <span class="mr-2">#{{ rank }}</span>
@@ -23,6 +24,7 @@
         <SetList title="Season Table" :userID="user ? user: null" :practiceSets="season.practices"></SetList>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
