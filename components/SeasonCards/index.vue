@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     likeSeason(seasonId) {
-      if(this.user) {
+      if (this.user) {
       console.log('season like event emitted');
       this.$emit('like', seasonId);
       }
@@ -66,6 +66,7 @@ export default {
       }
     },
   }
+}
 }
 </script>
 
