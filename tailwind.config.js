@@ -10,7 +10,10 @@ module.exports = {
         },
         customGrey: {
           DEFAULT: '#D9D00A'
-        }
+        },
+        customBlue: {
+          DEFAULT: '#4281A4'
+        },
       },
       fontFamily: {
         handwritten: ['Architects Daughter']
