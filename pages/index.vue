@@ -2,22 +2,14 @@
   <div>
     <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
       <h1 class="font-semibold">Swimpractices.com</h1>
-       <div class="sm:hidden relative ml-auto">
-        <h1 class="font-semibold sm:hidden">View the Daily Practice</h1>
-          <button @click="toggleNotifications" class="focus:outline-none">
-      <span class="material-icons text-white text-2xl">
-        lightbulb_outline
-      </span>
-            <!-- Notification Indicator -->
-            <span v-if="notification" class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
-          </button>
+      <div class="hidden md:block relative ml-auto">
+        <h1 class="font-semibold">View the Daily Practice</h1>
       </div>
       <div class="md:hidden relative ml-auto">
-      <h1 class="font-semibold sm:hidden">View the Daily Practice</h1>
         <button @click="toggleNotifications" class="focus:outline-none">
-    <span class="material-icons text-white text-2xl">
-      lightbulb_outline
-    </span>
+          <span class="material-icons text-white text-2xl">
+            lightbulb_outline
+          </span>
           <!-- Notification Indicator -->
           <span v-if="notification" class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
         </button>
