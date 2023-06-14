@@ -49,6 +49,7 @@ export default {
     rank: {
     type: Number,
     required: true
+    }
   },
   data() {
     return {
@@ -64,9 +65,8 @@ export default {
       else {
       console.log('you must be logged in to like a season');
       }
+     }
     },
-  }
-}
 }
 </script>
 
