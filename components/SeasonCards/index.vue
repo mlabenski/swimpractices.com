@@ -1,6 +1,10 @@
 <template>
   <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2">
-    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake background-red">
+    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
+      <div class="flex justify-center items-center bg-red-500 text-white text-2xl font-bold py-2">
+        <span class="mr-2"># {{ rank }}</span>
+        <span class="material-icons">emoji_events</span>
+      </div>
       <div class="px-6 py-4" @click="showPracticeTable = !showPracticeTable">
         <div class="font-bold text-xl mb-2">{{ season.title }}</div>
         <p class="text-gray-700 text-base">
@@ -40,7 +44,11 @@ export default {
     user: {
       type: String,
       required: false
-    }
+    },
+    rank: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
@@ -65,3 +73,4 @@ export default {
   z-index: 2;
 }
 </style>
+
