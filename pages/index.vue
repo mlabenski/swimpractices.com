@@ -44,12 +44,12 @@
             <h2 class="text-2xl font-bold mb-4">Generated Practice</h2>
             <pre>{{ practiceData }}</pre>
           </div>
-          <div v-if="!user" class="absolute inset-0 bg-gray-900 bg-opacity-45 flex items-center justify-center z-50 max-h-24">
+          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 max-h-24">
             <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
           </div>
         </div>
         <div>
-          <SetList title="Recommended Templates" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
+          <SetList title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <SetList v-if="selectedSetList === 'Recommended Practices'" title="Recommended Practices" :practiceSets="practices" :userID="user ? user.id : null"  class="hidden md:block lg:block" ></SetList>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default {
       pastedPractice: '',
       hasNotification: false,
       isNotificationModalOpen: false,
-      selectedSetList: 'Recommended Practices',
+      selectedSetList: 'My Practices',
       practiceData: null,
       setListOptions: [ // Available SetList's titles
         'Recommended Practices',

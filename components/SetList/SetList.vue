@@ -2,7 +2,7 @@
 <template>
   <div class="z-121">
         <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-bold mb-4" v-if="!changeTheme">{{ title }}</h2>
+          <h2 class="text-2xl font-bold mb-4 text-white" v-if="!changeTheme">{{ title }}</h2>
           <span class="material-icons cursor-pointer" @click="toggleTable">
             {{ isTableVisible ? 'expand_less' : 'expand_more' }}
           </span>
@@ -13,13 +13,14 @@
       <tr>
         <th class="px-4 py-2">Practice Name</th>
         <th class="px-4 py-2">Distance</th>
-        <th class="px-4 py-2 pl-2">Actions</th>
+        <th class="px-4 py-2 pl-2"><br></th>
+        <th class="px-4 py-2 pl-2"><br></th>
       </tr>
       </thead>
       <tbody class="bg-customGrey">
       <tr v-for="practice in practiceSets" :key="practice.name" class="text-center bg-white shadow-md">
         <td class="px-4 py-2 border">{{ practice.name }}</td>
-        <td class="px-4 py-2 border">9200 yards</td>
+        <td class="px-4 py-2 border" >distance {{getTotalYardage(practice.sets)}}</td>
         <td class="px-4 py-2 border">
           <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
       open_in_full
@@ -71,7 +72,7 @@ export default {
     },
     practices() {
       return this.$store.getters.practices; // Assuming you have a `practices` getter in your Vuex store
-    }
+    },
   },
   created() {
     // Fetch templates based on the component type (my templates or recommended templates)

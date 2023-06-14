@@ -4,13 +4,17 @@ export const state = () => ({
   practices: [],
   userPractices: [],
   isLoading: false,
-  seasons: []
+  seasons: [],
+  totalYards: 0,
 });
 
 export const mutations = {
   ...vuexfireMutations,
   SET_PRACTICES: (state, practices) => {
     state.practices = practices;
+  },
+  SET_TOTAL_YARDS(state, yards) {
+    state.totalYards = yards;
   },
   SET_USER_PRACTICES: (state, userPractices) => {
     state.userPractices = userPractices;
@@ -45,13 +49,35 @@ export const mutations = {
 };
 
 export const actions = {
-  bindPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+  bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
       commit('SET_LOADING', true)
       const ref = this.$fire.firestore.collection('practices');
       await bindFirestoreRef('practices', ref, { wait: true });
     } catch (error) {
 
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  }),
+  bindPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+    try {
+      commit('SET_LOADING', true)
+      const ref = this.$fire.firestore.collection('practices');
+      await bindFirestoreRef('practices', ref, { wait: true });
+
+      let totalYards = 0;
+      state.practices.forEach(practice => {
+        practice.sets.forEach(set => {
+          set.exercises.forEach(exercise => {
+            totalYards += exercise.distance * exercise.quantity;
+          });
+        });
+      });
+      commit('SET_TOTAL_YARDS', totalYards);
+
+    } catch (error) {
+      // handle error
     } finally {
       commit('SET_LOADING', false)
     }
