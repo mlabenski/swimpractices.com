@@ -3,7 +3,7 @@
   <div>
 
     <!-- Header -->
-    <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between">
+    <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between backdrop-filter backdrop-blur-lg">
       <!-- Website title -->
       <h1 class="font-semibold">Swimpractices.com</h1>
 
@@ -42,7 +42,7 @@
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
             <!-- Login button -->
-            <p class="text-xl cursor-pointer hover:text-blue-500" @click="openSignup">Log in to create your own</p>
+            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup">Log in to create your own</p>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@
           </div>
 
           <!-- Log in reminder for unauthenticated users -->
-          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 max-h-24">
+          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14">
             <p class="text-white text-2xl" @click="openSignup">Log in to save practices</p>
           </div>
         </div>
@@ -91,13 +91,13 @@
       </div>
 
       <!-- Grouped Practices section -->
-      <div class="grid grid-cols-1 gap-4 mt-4 pt-24 sm:pt-0">
-        <div class="flex flex-wrap">
+      <div class="grid grid-cols-1 gap-4 mt-4 pb-2 sm:pb-2 pt-12 sm:pt-0">
+        <div class="flex flex-wrap w-full">
           <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
           </div>
           <!-- Grouped Practices cards -->
-          <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :key="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike"/>
+          <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
         </div>
       </div>
 
