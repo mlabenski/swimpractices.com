@@ -90,20 +90,10 @@
         </div>
       </div>
 
-      <!-- Grouped Practices section -->
-      <div class="grid grid-cols-1 gap-4 mt-4 pb-2 sm:pb-2 pt-12 sm:pt-0">
-        <div class="flex flex-wrap w-full">
-          <div class="flex items-center justify-between">
-            <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
-          </div>
-          <!-- Grouped Practices cards -->
-          <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
-        </div>
-      </div>
 
 
       <!-- Manual practice entry -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4" v-if="user">
         <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
         <button @click="submitPractice">Submit Practice</button>
@@ -111,7 +101,7 @@
     </div>
 
     <!-- Bottom navigation bar -->
-    <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2">
+    <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-4 py-2 z-50">
       <div class="container mx-auto">
         <div class="flex justify-between">
           <!-- Create practice button -->
@@ -138,6 +128,18 @@
         </div>
       </div>
     </nav>
+
+    <!-- Grouped Practices section -->
+
+    <div class="grid grid-cols-1 gap-4 mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
+      <div class="flex flex-wrap w-full">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold mb-4 setlist-dropdown">Grouped Practices</h2>
+        </div>
+        <!-- Grouped Practices cards -->
+        <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
+      </div>
+    </div>
   </div>
 </template>
 
