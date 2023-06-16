@@ -2,6 +2,7 @@ import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 export const state = () => ({
   practices: [],
+  practicesNew: [],
   userPractices: [],
   isLoading: false,
   seasons: [],
@@ -11,6 +12,9 @@ export const state = () => ({
 export const mutations = {
   ...vuexfireMutations,
   SET_PRACTICES: (state, practices) => {
+    state.practices = practices;
+  },
+  SET_PRACTICESNEW: (state, practices) => {
     state.practices = practices;
   },
   SET_TOTAL_YARDS(state, yards) {
@@ -49,6 +53,32 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchPractices({ commit }) {
+    commit('SET_LOADING', true);
+    try {
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686930237037.json');
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      const practices = await response.json();
+      commit('SET_PRACTICES_NEW', practicesNew);
+
+      let totalYards = 0;
+      practices.forEach(practice => {
+        practice.sets.forEach(set => {
+          set.exercises.forEach(exercise => {
+            totalYards += exercise.distance * exercise.quantity;
+          });
+        });
+      });
+      commit('SET_TOTAL_YARDS', totalYards);
+
+    } catch (error) {
+      console.log('Fetch Error: ', error);
+    } finally {
+      commit('SET_LOADING', false);
+    }
+  },
   bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
       commit('SET_LOADING', true)
