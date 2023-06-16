@@ -14,7 +14,7 @@ export const mutations = {
   SET_PRACTICES: (state, practices) => {
     state.practices = practices;
   },
-  SET_PRACTICESNEW: (state, practices) => {
+  SET_PRACTICES_NEW: (state, practices) => {
     state.practices = practices;
   },
   SET_TOTAL_YARDS(state, yards) {
@@ -56,12 +56,12 @@ export const actions = {
   async fetchPractices({ commit }) {
     commit('SET_LOADING', true);
     try {
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686930237037.json');
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
       if (!response.ok) {
         throw new Error('HTTP error ' + response.status);
       }
       const practices = await response.json();
-      commit('SET_PRACTICES_NEW', practicesNew);
+      commit('SET_PRACTICES_NEW', practices);
 
       let totalYards = 0;
       practices.forEach(practice => {
