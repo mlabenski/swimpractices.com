@@ -156,5 +156,8 @@ export const getters = {
   },
   getLoading(state) {
     return state.isLoading;
+  },
+  newPractices(state) {
+    return state.practicesNew
   }
 };

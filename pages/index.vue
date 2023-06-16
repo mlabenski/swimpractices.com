@@ -98,6 +98,7 @@
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
         <button @click="submitPractice">Submit Practice</button>
       </div>
+      <h2>{{ newPractices }}</h2>
     </div>
 
     <!-- Bottom navigation bar -->
@@ -150,6 +151,7 @@ import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
 import { mapGetters, mapActions } from "vuex";
+import practiceSetsNew from "../data/practiceSetsNew";
 
 export default {
  head () {
@@ -173,6 +175,7 @@ export default {
         await this.$store.dispatch('bindUserPractices');
       }
       await this.$store.dispatch('bindSeasonPractices');
+      await this.$store.dispatch('fetchPractices');
     } catch (e) {
       console.error(e)
     }
@@ -248,13 +251,17 @@ export default {
       user: 'auth/user',
       practices: 'practices',
       userPractices: 'userPractices',
-      seasonPractices: 'seasons'
+      seasonPractices: 'seasons',
+      newPractices: 'newPractices'
     }),
   },
   created() {
    this.checkNotifications();
   },
   methods: {
+    practiceSetsNew() {
+      return practiceSetsNew
+    },
     ...mapActions({
       openLogin: 'auth/openLogin',
       openSignup: 'auth/openSignup',
