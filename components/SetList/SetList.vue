@@ -17,22 +17,22 @@
         <th class="px-4 py-2 pl-2"><br></th>
       </tr>
       </thead>
-      <tbody class="bg-customGrey">
-      <tr v-for="practice in practiceSets" :key="practice.name" class="text-center bg-white shadow-md">
-        <td class="px-4 py-2 border">{{ practice.name }}</td>
-        <td class="px-4 py-2 border" >distance xxxx</td>
-        <td class="px-4 py-2 border">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
-      open_in_full
-      </span></router-link>
-        </td>
-        <td class="px-4 py-2 border">
-          <button v-if="practice.userID === userID" @click="deletePractice(practice.id)" class="text-red-600 underline ml-4"><span class="material-icons">
-    delete_forever
-    </span></button>
-        </td>
-      </tr>
-      </tbody>
+    <tbody class="bg-customGrey">
+    <tr v-for="(practice, practiceId) in practiceSets" :key="practiceId" class="text-center bg-white shadow-md">
+      <td class="px-4 py-2 border">{{ practice.name }}</td>
+      <td class="px-4 py-2 border" >{{ getTotalYardage(practice.sets) }}</td>
+      <td class="px-4 py-2 border">
+        <router-link :to="{ name: 'id', params: { id: practiceId } }" class="text-blue-600 underline"><span class="material-icons">
+    open_in_full
+    </span></router-link>
+      </td>
+      <td class="px-4 py-2 border">
+        <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
+  delete_forever
+  </span></button>
+      </td>
+    </tr>
+    </tbody>
 
     </table>
   </div>
@@ -71,7 +71,7 @@ export default {
       return this.$store.getters.isLoading; // Assuming you have an `isLoading` state in your Vuex store
     },
     practices() {
-      return this.$store.getters.practices; // Assuming you have a `practices` getter in your Vuex store
+      return this.$store.getters.practicesNew; // Assuming you have a `practices` getter in your Vuex store
     },
   },
   created() {
@@ -119,16 +119,16 @@ export default {
         { id: 3, name: 'Recommended Template 3' }
       ];
     },
-      getTotalYardage(sets) {
-        // Calculate the total yardage for a given practice
-        let totalYardage = 0;
-        sets.forEach((set) => {
-          set.exercises.forEach((exercise) => {
-            totalYardage += exercise.distance * exercise.quantity;
-          });
+    getTotalYardage(sets) {
+      let totalYardage = 0;
+      for (const setId in sets) {
+        const set = sets[setId];
+        set.exercises.forEach((exercise) => {
+          totalYardage += exercise.distance * exercise.quantity;
         });
-        return totalYardage;
-      },
+      }
+      return totalYardage;
+    },
       async deletePractice(practiceId) {
         try {
           await this.$fire.firestore.collection('practices').doc(practiceId).delete();
