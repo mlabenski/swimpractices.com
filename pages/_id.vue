@@ -14,20 +14,20 @@
         <div v-if="!practice">Loading...</div>
         <div v-else>
           <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
-          <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
+            <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
             <div class="flex justify-between items-center mb-2">
               <div>
                 <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
-                  <EditableField :value="set[setIndex].name" @input="newValue => set[setIndex].name = newValue"></EditableField>
+                  <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
                   <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
                     {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
                   </button>
                 </h3>
-                <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set[setIndex].description }}</p>
+                <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set.description }}</p>
               </div>
               <div>
-                <p class="mt-1 text-white font-bold text-xs md:text-sm">{{ set[setIndex].numRounds }} round</p>
-                <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set[setIndex].heartRate }}</p>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">{{ set.numRounds }} round</p>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set.heartRate }}</p>
               </div>
             </div>
             <div class="overflow-x-auto">
