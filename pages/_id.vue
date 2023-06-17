@@ -78,13 +78,11 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      practices: 'practices',
-      userPractices: 'userPractices'
+      getPracticeByID: 'getPracticeByID',
+      isLoading: 'getLoading',
     }),
-    ...mapGetters(['getLoading', 'getPracticeByID']),
     practice() {
-      const practiceID = this.$route.params.id;
-      return this.getPracticeByID(practiceID);
+      return this.getPracticeByID(this.$route.params.id);
     },
   },
   data() {
