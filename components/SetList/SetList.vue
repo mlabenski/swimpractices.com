@@ -20,7 +20,7 @@
       <tbody class="bg-customGrey">
       <tr v-for="practice in practiceSets" :key="practice.name" class="text-center bg-white shadow-md">
         <td class="px-4 py-2 border">{{ practice.name }}</td>
-        <td class="px-4 py-2 border" >distance {{getTotalYardage(practice.sets)}}</td>
+        <td class="px-4 py-2 border" >distance xxxx</td>
         <td class="px-4 py-2 border">
           <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
       open_in_full
@@ -48,7 +48,7 @@ export default {
       required: true
     },
     practiceSets: {
-      type: Array,
+      type: Object,
       required: true
     },
     userID: {

@@ -2,7 +2,7 @@ import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 export const state = () => ({
   practices: [],
-  practicesNew: [],
+  practicesNew: {},
   userPractices: [],
   isLoading: false,
   seasons: [],
@@ -12,7 +12,7 @@ export const state = () => ({
 export const mutations = {
   ...vuexfireMutations,
   SET_PRACTICES: (state, practices) => {
-    state.practices = practices;
+    state.practicesNew = practices;
   },
   SET_PRACTICES_NEW: (state, practices) => {
     state.practices = practices;
@@ -62,16 +62,6 @@ export const actions = {
       }
       const practices = await response.json();
       commit('SET_PRACTICES_NEW', practices);
-
-      let totalYards = 0;
-      practices.forEach(practice => {
-        practice.sets.forEach(set => {
-          set.exercises.forEach(exercise => {
-            totalYards += exercise.distance * exercise.quantity;
-          });
-        });
-      });
-      commit('SET_TOTAL_YARDS', totalYards);
 
     } catch (error) {
       console.log('Fetch Error: ', error);

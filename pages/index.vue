@@ -98,7 +98,6 @@
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
         <button @click="submitPractice">Submit Practice</button>
       </div>
-      <h2>{{ newPractices }}</h2>
     </div>
 
     <!-- Bottom navigation bar -->
