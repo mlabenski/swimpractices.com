@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(exercise, exerciseIndex) in set[setIndex].exercises" :key="exerciseIndex">
+                <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
                   <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
                   <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
                   <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
