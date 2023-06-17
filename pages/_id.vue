@@ -18,16 +18,16 @@
             <div class="flex justify-between items-center mb-2">
               <div>
                 <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
-                  <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
+                  <EditableField :value="set[setIndex].name" @input="newValue => set[setIndex].name = newValue"></EditableField>
                   <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
                     {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
                   </button>
                 </h3>
-                <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set.description }}</p>
+                <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set[setIndex].description }}</p>
               </div>
               <div>
-                <p class="mt-1 text-white font-bold text-xs md:text-sm">{{ set.numRounds }} round</p>
-                <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set.heartRate }}</p>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">{{ set[setIndex].numRounds }} round</p>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set[setIndex].heartRate }}</p>
               </div>
             </div>
             <div class="overflow-x-auto">
@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
+                <tr v-for="(exercise, exerciseIndex) in set[setIndex].exercises" :key="exerciseIndex">
                   <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
                   <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
                   <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
