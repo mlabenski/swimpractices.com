@@ -143,7 +143,7 @@ export const getters = {
   },
   getPracticeByID: (state) => (id) => {
     console.log('id is'+ id);
-    return state.practices.find((practice) => practice.id === id)
+    return state.practicesNew.find((practice) => practice[id] === id)
   },
   getLoading(state) {
     return state.isLoading;
