@@ -123,9 +123,10 @@ export default {
       let totalYardage = 0;
       for (const setId in sets) {
         const set = sets[setId];
-        set.exercises.forEach((exercise) => {
+        for (const exerciseId in set.exercises) {
+          const exercise = set.exercises[exerciseId];
           totalYardage += exercise.distance * exercise.quantity;
-        });
+        }
       }
       return totalYardage;
     },
