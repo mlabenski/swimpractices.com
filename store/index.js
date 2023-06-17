@@ -13,8 +13,10 @@ export const mutations = {
   ...vuexfireMutations,
   SET_PRACTICES: (state, practices) => {
     state.practicesNew = practices;
+    state.practices = practices;
   },
   SET_PRACTICES_NEW: (state, practices) => {
+    state.practicesNew = practices;
     state.practices = practices;
   },
   SET_TOTAL_YARDS(state, yards) {
@@ -142,8 +144,8 @@ export const getters = {
     return state.seasons;
   },
 getPracticeByID: (state) => (id) => {
-    console.log(state.practicesNew[id]);
-    return state.practicesNew[id];
+    console.log(state.practices[id]);
+    return state.practices[id];
 },
   getLoading(state) {
     return state.isLoading;
