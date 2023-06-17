@@ -141,10 +141,10 @@ export const getters = {
   seasons(state) {
     return state.seasons;
   },
-  getPracticeByID: (state) => (id) => {
-    console.log('id is'+ id);
-    return state.practicesNew.find((practice) => practice[id] === id)
-  },
+getPracticeByID: (state) => (id) => {
+    console.log('id is' + id);
+    return state.practicesNew[id];
+},
   getLoading(state) {
     return state.isLoading;
   },
