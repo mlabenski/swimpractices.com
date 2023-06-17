@@ -11,7 +11,7 @@
 </div>
 </div>
       <div class="px-2 md:px-6 py-2 md:py-4">
-        <div v-if="practice">Loading...</div>
+        <div v-if="!practice">Loading...</div>
         <div v-else>
           <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
           <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
