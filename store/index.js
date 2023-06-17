@@ -142,7 +142,7 @@ export const getters = {
     return state.seasons;
   },
 getPracticeByID: (state) => (id) => {
-    console.log('id is' + id);
+    console.log(state.practicesNew[id]);
     return state.practicesNew[id];
 },
   getLoading(state) {
