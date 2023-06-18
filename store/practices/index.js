@@ -62,8 +62,12 @@ export const getters = {
     if(!rootState.auth.user){
       return console.log('not signed in, retrieving no user practices')
     }
-    const userID = rootState.auth.user.id;
-    console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
-    return Object.values(state.practices).filter(practice => practice.userID === userID);
+    if(rootState.auth.user){
+      const userID = rootState.auth.user.id;
+      console.log(userID)
+      console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
+      return Object.values(state.practices).filter(practice => practice.userID === userID);
+    }
+    console.log('no user found --- error really')
   },
 }
