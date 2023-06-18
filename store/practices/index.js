@@ -63,6 +63,7 @@ export const getters = {
       return console.log('not signed in, retrieving no user practices')
     }
     const userID = rootState.auth.user.id;
+    console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
     return Object.values(state.practices).filter(practice => practice.userID === userID);
   },
 }

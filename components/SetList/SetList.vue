@@ -73,6 +73,7 @@ export default {
     practices() {
       return this.$store.getters['practices/practices'];
     },
+
   },
   created() {
     // Fetch templates based on the component type (my templates or recommended templates)
