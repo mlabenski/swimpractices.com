@@ -170,11 +170,8 @@ export default {
   async mounted() {
     try {
       await this.$store.dispatch('bindPractices');
-      if (this.$store.state.auth.user) {
-        await this.$store.dispatch('bindUserPractices');
-      }
       await this.$store.dispatch('bindSeasonPractices');
-      await this.$store.dispatch('fetchPractices');
+      await this.$store.dispatch('practices/fetchPractices');
     } catch (e) {
       console.error(e)
     }
@@ -249,9 +246,9 @@ export default {
     ...mapGetters({
       user: 'auth/user',
       practices: 'practices',
-      userPractices: 'userPractices',
       seasonPractices: 'seasons',
-      newPractices: 'newPractices'
+      newPractices: 'newPractices',
+      userPractices: 'practices/userPractices'
     }),
   },
   created() {

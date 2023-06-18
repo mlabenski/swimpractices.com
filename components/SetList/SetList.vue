@@ -68,10 +68,10 @@ export default {
   },
   computed: {
     isLoading() {
-      return this.$store.getters.isLoading; // Assuming you have an `isLoading` state in your Vuex store
+      return this.$store.getters['practices/isLoading'];
     },
     practices() {
-      return this.$store.getters.practicesNew; // Assuming you have a `practices` getter in your Vuex store
+      return this.$store.getters['practices/practices'];
     },
   },
   created() {
