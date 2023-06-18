@@ -65,6 +65,7 @@ export const getters = {
     if(rootState.auth.user){
       const userID = rootState.auth.user.id;
       console.log(userID)
+      console.log(state.practices)
       console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
       return Object.values(state.practices).filter(practice => practice.userID === userID);
     }
