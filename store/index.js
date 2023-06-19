@@ -1,8 +1,6 @@
 import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 export const state = () => ({
-  practices: [],
-  practicesNew: {},
   userPractices: [],
   isLoading: false,
   seasons: [],
@@ -11,20 +9,6 @@ export const state = () => ({
 
 export const mutations = {
   ...vuexfireMutations,
-  SET_PRACTICES: (state, practices) => {
-    state.practicesNew = practices;
-    state.practices = practices;
-  },
-  SET_PRACTICES_NEW: (state, practices) => {
-    state.practicesNew = practices;
-    state.practices = practices;
-  },
-  SET_TOTAL_YARDS(state, yards) {
-    state.totalYards = yards;
-  },
-  SET_USER_PRACTICES: (state, userPractices) => {
-    state.userPractices = userPractices;
-  },
   SET_SEASONS: (state, seasonData) => {
     state.seasons = seasonData;
   },
@@ -55,22 +39,6 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchPractices({ commit }) {
-    commit('SET_LOADING', true);
-    try {
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
-      if (!response.ok) {
-        throw new Error('HTTP error ' + response.status);
-      }
-      const practices = await response.json();
-      commit('SET_PRACTICES_NEW', practices);
-
-    } catch (error) {
-      console.log('Fetch Error: ', error);
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
   bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
       commit('SET_LOADING', true)
@@ -134,23 +102,14 @@ export const actions = {
 };
 
 export const getters = {
-  practices(state) {
-    return state.practices;
-  },
-  userPractices(state) {
-    return state.userPractices;
-  },
   seasons(state) {
     return state.seasons;
   },
-getPracticeByID: (state) => (id) => {
-    console.log(state.practices[id]);
-    return state.practices[id];
-},
+  getPracticeByID: (state) => (id) => {
+      console.log(state.practices[id]);
+      return state.practices[id];
+  },
   getLoading(state) {
     return state.isLoading;
   },
-  newPractices(state) {
-    return state.practicesNew
-  }
 };

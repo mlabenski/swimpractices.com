@@ -68,7 +68,7 @@
 
         <!-- My Templates set list -->
         <div class="relative">
-          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices"></SetList>
+          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices ? userPractices : null"></SetList>
           <!-- More SetList components here as needed -->
 
           <!-- Generated practice data display -->
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Free sets list -->
-        <div>
+        <div v-if="practices">
           <SetList title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
@@ -169,9 +169,10 @@ export default {
   },
   async mounted() {
     try {
-      await this.$store.dispatch('bindPractices');
-      await this.$store.dispatch('bindSeasonPractices');
+      // await this.$store.dispatch('bindPractices');
+      //  await this.$store.dispatch('bindSeasonPractices');
       await this.$store.dispatch('practices/fetchPractices');
+      await this.$store.dispatch('practices/fetchUserPractices');
     } catch (e) {
       console.error(e)
     }
@@ -245,9 +246,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      practices: 'practices',
+      practices: 'practices/practices',
       seasonPractices: 'seasons',
-      newPractices: 'newPractices',
       userPractices: 'practices/userPractices'
     }),
   },

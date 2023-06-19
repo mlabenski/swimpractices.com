@@ -1,15 +1,20 @@
 // /store/practices/index.js
-import { firestoreAction } from 'vuexfire'
 
-export const state = () => ({
+const state = () => ({
   practices: {},
   loading: false,
+  userPractices: {},
   filters: {} // add new property for filters
 });
 
-export const mutations = {
+const mutations = {
   SET_PRACTICES_NEW(state, practices) {
+    console.log('setting practices to: '+ practices);
     state.practices = practices;
+  },
+  SET_USER_PRACTICES(state, userPractices) {
+    console.log('setting user practices to: '+ userPractices);
+    state.userPractices = userPractices;
   },
   SET_LOADING(state, value) {
     state.loading = value;
@@ -19,15 +24,16 @@ export const mutations = {
   }
 }
 
-export const actions = {
+const actions = {
   async fetchPractices({ commit }) {
-    commit('SET_LOADING', true);
     try {
+      commit('SET_LOADING', true);
       const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
       if (!response.ok) {
         throw new Error('HTTP error ' + response.status);
       }
       const practices = await response.json();
+      console.log(practices);
       commit('SET_PRACTICES_NEW', practices);
 
     } catch (error) {
@@ -36,28 +42,32 @@ export const actions = {
       commit('SET_LOADING', false);
     }
   },
-  bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+  async fetchUserPractices({ commit }) {
+    console.log('did u run?')
     try {
-      commit('SET_LOADING', true)
-      const ref = this.$fire.firestore.collection('practices');
-      await bindFirestoreRef('practices', ref, { wait: true });
-    } catch (error) {
+      commit('SET_LOADING', true);
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      const practices = await response.json();
+      commit('SET_USER_PRACTICES', practices);
 
+    } catch (error) {
+      console.log('Fetch Error: ', error);
     } finally {
-      commit('SET_LOADING', false)
+      commit('SET_LOADING', false);
     }
-  }),
+  },
   updateFilters({ commit }, filters) { // new action to trigger filter updates
     commit('SET_FILTERS', filters);
   }
 }
 
-export const getters = {
+const getters = {
   practices(state) {
     return state.practices;
   },
-  isLoading: state => state.loading,
-  filters: state => state.filters, // new getter for filters,
   userPractices: (state, getters, rootState) => {
     if(!rootState.auth.user){
       return console.log('not signed in, retrieving no user practices')
@@ -71,4 +81,14 @@ export const getters = {
     }
     console.log('no user found --- error really')
   },
+  isLoading: state => state.loading,
+  filters: state => state.filters, // new getter for filters,
+}
+
+export default {
+  namedspaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 }
