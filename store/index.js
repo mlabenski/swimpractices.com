@@ -1,9 +1,10 @@
 import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
+import {root} from "postcss";
 
 export const state = () => ({
   userPractices: [],
   isLoading: false,
-  seasons: [],
+  seasons: {},
   totalYards: 0,
 });
 
@@ -12,24 +13,28 @@ export const mutations = {
   SET_SEASONS: (state, seasonData) => {
     state.seasons = seasonData;
   },
-  UPDATE_SEASON_PRACTICES: (state) => {
+  UPDATE_SEASON_PRACTICES: (state, rootPractices) => {
     // Loop through each season
+    console.log('do u even have the seasons here');
+    console.log(rootPractices)
     for (let season of state.seasons) {
-      // Create a new array for the updated practices
-      let updatedPractices = [];
+      // Create a new object for the updated practices
+      let updatedPractices = {};
+      console.log('testing if ur running')
 
       // Loop through each practice ID in the current season
       for (let practiceID of season.practices) {
-        // Find the corresponding practice in the Vuex state
-        let practice = state.practices.find(practice => practice.id === practiceID);
-
-        // If a matching practice is found, add it to the updatedPractices array
-        if (practice) {
-          updatedPractices.push(practice);
+        console.log('showing season practices')
+        console.log(practiceID)
+        // Check if the practice exists in the Vuex state
+        if (rootPractices.hasOwnProperty(practiceID)) {
+          console.log('ran twice')
+          // If a matching practice is found, add it to the updatedPractices object
+          updatedPractices[practiceID] = rootPractices[practiceID];
         }
       }
 
-      // Update the current season's practices array with the updatedPractices array
+      // Update the current season's practices object with the updatedPractices object
       season.practices = updatedPractices;
     }
   },
@@ -78,16 +83,17 @@ export const actions = {
     const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
     await bindFirestoreRef('userPractices', ref, { wait: true });
   }),
-  bindSeasonPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+  bindSeasonPractices: firestoreAction(async function ({ bindFirestoreRef, commit, rootState }) {
     try {
-      commit('SET_LOADING', true)
+      commit('SET_LOADING', true);
+      console.log('inside bind seasons')
       const ref = this.$fire.firestore.collection('seasons');
       await bindFirestoreRef('seasons', ref, { wait: true });
-      commit('UPDATE_SEASON_PRACTICES');
+      commit('UPDATE_SEASON_PRACTICES', rootState.practices.practices);
     } catch (error) {
-    console.log(error);
+      console.log(error);
     } finally {
-      commit('SET_LOADING', false)
+      commit('SET_LOADING', false);
     }
   }),
   unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {

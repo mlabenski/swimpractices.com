@@ -170,9 +170,9 @@ export default {
   async mounted() {
     try {
       // await this.$store.dispatch('bindPractices');
-      //  await this.$store.dispatch('bindSeasonPractices');
       await this.$store.dispatch('practices/fetchPractices');
       await this.$store.dispatch('practices/fetchUserPractices');
+      await this.$store.dispatch('bindSeasonPractices');
     } catch (e) {
       console.error(e)
     }
