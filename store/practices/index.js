@@ -83,6 +83,9 @@ const getters = {
   },
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
+  getPracticeByID: (state) => (id) => {
+    return state.practices[id];
+  },
 }
 
 export default {

@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     isLoading() {
-      return this.$store.getters['practices/getLoading'];
+      return this.$store.getters['practices/isLoading'];
     },
     practices() {
       return this.$store.getters['practices/practices'];

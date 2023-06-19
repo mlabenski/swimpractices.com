@@ -105,10 +105,6 @@ export const getters = {
   seasons(state) {
     return state.seasons;
   },
-  getPracticeByID: (state) => (id) => {
-      console.log(state.practices[id]);
-      return state.practices[id];
-  },
   getLoading(state) {
     return state.isLoading;
   },

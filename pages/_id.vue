@@ -78,7 +78,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      getPracticeByID: 'getPracticeByID',
+      getPracticeByID: 'practices/getPracticeByID',
       isLoading: 'getLoading',
     }),
     practice() {
