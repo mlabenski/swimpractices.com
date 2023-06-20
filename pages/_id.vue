@@ -103,7 +103,7 @@ export default {
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
     },
-      async savePractice() {
+    async savePractice() {
       const practiceID = this.$route.params.id;
       const practiceRef = this.$fire.firestore.collection('practices').doc(practiceID);
 
@@ -122,7 +122,7 @@ export default {
     } else {
       // If user ID does not match original, save as new practice
       // Replace user.id
-      practiceData.user.id = currentUserId;
+      practiceData.user.id = this.user.id;
 
       // Create a new document with a new ID
       try {
