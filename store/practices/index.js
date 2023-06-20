@@ -80,6 +80,9 @@ const getters = {
       console.log('user troubleshooting: ')
       const userPract = Object.values(state.practices).filter(practice => practice.userID === userID);
       console.log(userPract)
+      console.log(typeof userPract)
+      console.log(typeof userPract[0])
+      console.log(userPract[0])
       return Object.values(state.practices).filter(practice => practice.userID === userID);
     }
     console.log('no user found --- error really')
