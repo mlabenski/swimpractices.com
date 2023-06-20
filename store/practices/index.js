@@ -74,15 +74,16 @@ const getters = {
     }
     if(rootState.auth.user){
       const userID = rootState.auth.user.id;
-
-      return Object.entries(state.practices)
-        .filter(([practiceID, practice]) => practice.userID === userID)
-        .map(([practiceID, practice]) => {
-          return {
-            id: practiceID,
-            ...practice
-          }
-        });
+      console.log(userID)
+      console.log(state.practices)
+      console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
+      console.log('user troubleshooting: ')
+      const userPract = Object.values(state.practices).filter(practice => practice.userID === userID);
+      console.log(userPract)
+      console.log(typeof userPract)
+      console.log(typeof userPract[0])
+      console.log(userPract[0])
+      return Object.values(state.practices).filter(practice => practice.userID === userID);
     }
     console.log('no user found --- error really')
   },
