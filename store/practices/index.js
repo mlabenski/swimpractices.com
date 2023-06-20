@@ -74,19 +74,21 @@ const getters = {
     }
     if(rootState.auth.user){
       const userID = rootState.auth.user.id;
-      console.log(userID)
-      console.log(state.practices)
-      console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
-      console.log('user troubleshooting: ')
-      const userPract = Object.values(state.practices).filter(practice => practice.userID === userID);
-      console.log(userPract)
-      console.log(typeof userPract)
-      console.log(typeof userPract[0])
-      console.log(userPract[0])
-      return Object.values(state.practices).filter(practice => practice.userID === userID);
+
+      return Object.keys(state.practices)
+        .reduce((acc, practiceID) => {
+          if(state.practices[practiceID].userID === userID) {
+            acc[practiceID] = {
+              id: practiceID,
+              ...state.practices[practiceID]
+            };
+          }
+          return acc;
+        }, {});
     }
     console.log('no user found --- error really')
   },
+
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
   getPracticeByID: (state) => (id) => {
