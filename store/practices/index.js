@@ -28,7 +28,7 @@ const actions = {
   async fetchPractices({ commit }) {
     try {
       commit('SET_LOADING', true);
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
       if (!response.ok) {
         throw new Error('HTTP error ' + response.status);
       }
@@ -46,7 +46,7 @@ const actions = {
     console.log('did u run?')
     try {
       commit('SET_LOADING', true);
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup_1686931575097.json');
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
       if (!response.ok) {
         throw new Error('HTTP error ' + response.status);
       }
