@@ -77,6 +77,9 @@ const getters = {
       console.log(userID)
       console.log(state.practices)
       console.log(Object.values(state.practices).filter(practice => practice.userID === userID));
+      console.log('user troubleshooting: ')
+      const userPract = Object.values(state.practices).filter(practice => practice.userID === userID);
+      console.log(userPract)
       return Object.values(state.practices).filter(practice => practice.userID === userID);
     }
     console.log('no user found --- error really')
