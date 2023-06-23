@@ -70,10 +70,11 @@ export default {
           .where('userID', '==', this.user.id)
           .get();
 
-        const seasons = snapshot.docs.map(doc => doc.data());
+        const seasonsLocal = snapshot.docs.map(doc => doc.data());
 
         console.log('Seasons: ', seasons);
-        return seasons;
+        this.seasons = seasonsLocal
+        return seasonsLocal;
       } catch (error) {
         console.error('Error fetching seasons: ', error);
       }
