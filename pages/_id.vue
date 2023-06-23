@@ -65,7 +65,7 @@
             <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Save</button>
           </div>
           <button
-            @click="addToSeason"
+            @click="isSeasonModalOpen = true"
             class="px-2 md:px-3 py-1 md:py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             Add to Season
