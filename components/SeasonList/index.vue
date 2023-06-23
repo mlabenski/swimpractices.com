@@ -67,7 +67,7 @@ export default {
       this.seasonDescription = this.expandedSeason.description;
     },
     closeModal() {
-      this.isModalOpen = false;
+      this.$emit('close');
     },
     async createSeason() {
       // Create a new season object
