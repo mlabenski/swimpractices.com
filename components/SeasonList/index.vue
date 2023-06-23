@@ -66,6 +66,9 @@ export default {
       this.seasonTitle = this.expandedSeason.title;
       this.seasonDescription = this.expandedSeason.description;
     },
+    closeModal() {
+      this.isModalOpen = false;
+    },
     async createSeason() {
       // Create a new season object
       const newSeason = {
@@ -89,12 +92,12 @@ export default {
     async addPracticeToSeason(seasonID) {
       // Add practice to season in Firestore
     },
-      async updateSeason() {
-    // Code to update the expandedSeason with the new seasonTitle and seasonDescription...
-    this.expandedSeason = null;
-    this.seasonTitle = '';
-    this.seasonDescription = '';
-  },
+    async updateSeason() {
+      // Code to update the expandedSeason with the new seasonTitle and seasonDescription...
+      this.expandedSeason = null;
+      this.seasonTitle = '';
+      this.seasonDescription = '';
+    },
     async getSeasons() {
       try {
         if(!this.user.id){
