@@ -1,6 +1,7 @@
 <template>
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
+      <SeasonList v-if="isSeasonModalOpen" @close="isSeasonModalOpen = false" />
       <div class="fixed right-0 bottom-0 m-4">
   <div class="flex flex-col items-center bg-white p-2 rounded shadow-lg" style="padding-bottom: 45px;">
     <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomIn">Zoom In</button>
@@ -13,7 +14,6 @@
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div v-if="!practice">Loading...</div>
         <div v-else>
-          <SeasonList v-if="isSeasonModalOpen" @close="isSeasonModalOpen = false" />
           <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
             <div class="flex justify-between items-center mb-2">
