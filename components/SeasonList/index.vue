@@ -1,16 +1,23 @@
 <template>
   <div class="fixed z-10 inset-0 overflow-y-auto" v-if="seasons">
-    <div class="flex items-center justify-center min-h-screen">
+    <div class="flex items-end justify-center min-h-screen">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
       <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Practice to Season</h3>
-        <div v-for="season in seasons" :key="season.id" @click="addPracticeToSeason(season.id)">
-          <p class="font-medium text-gray-900">{{ season.title }}</p>
+        <div v-for="season in seasons" :key="season.id" @click="expandSeason(season.id)" class="mb-2">
+          <button class="w-full text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors">
+            {{ season.title }}
+          </button>
         </div>
-        <form @submit.prevent="createSeason">
-          <input v-model="newSeasonTitle" type="text" placeholder="New season title" required>
-          <input v-model="newSeasonDescription" type="text" placeholder="New season description" required>
-          <button type="submit">Create New Season</button>
+        <button class="w-full text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors mb-4" @click="newSeasonForm = true">
+          Create New Season
+        </button>
+        <form v-if="expandedSeason || newSeasonForm" @submit.prevent="expandedSeason ? updateSeason() : createSeason()">
+          <input v-model="seasonTitle" type="text" placeholder="Season title" required class="mb-2">
+          <input v-model="seasonDescription" type="text" placeholder="Season description" required class="mb-2">
+          <button type="submit" class="w-full text-black py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
+            {{ expandedSeason ? 'Update Season' : 'Create Season' }}
+          </button>
         </form>
       </div>
     </div>
@@ -31,13 +38,22 @@ export default {
     return {
       newSeasonTitle: '',
       newSeasonDescription: '',
-      seasons: [], // To be fetched from Firestore
+      seasons: [],
+      expandedSeason: null,
+      newSeasonForm: false,
+      seasonTitle: '',
+      seasonDescription: '',
     };
   },
   created() {
     this.getSeasons();
   },
   methods: {
+    expandSeason(seasonId) {
+      this.expandedSeason = this.seasons.find(season => season.id === seasonId);
+      this.seasonTitle = this.expandedSeason.title;
+      this.seasonDescription = this.expandedSeason.description;
+    },
     async createSeason() {
       // Create a new season object
       const newSeason = {
@@ -61,6 +77,12 @@ export default {
     async addPracticeToSeason(seasonID) {
       // Add practice to season in Firestore
     },
+      async updateSeason() {
+    // Code to update the expandedSeason with the new seasonTitle and seasonDescription...
+    this.expandedSeason = null;
+    this.seasonTitle = '';
+    this.seasonDescription = '';
+  },
     async getSeasons() {
       try {
         if(!this.user.id){
