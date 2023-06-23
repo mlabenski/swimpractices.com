@@ -116,6 +116,9 @@ export default {
   methods: {
     ...mapActions('practices', ['addExerciseToSet']),
     ...mapActions(["addPracticeToSeason", "createSeason"]),
+    closeModal() {
+      this.isSeasonModalOpen = false;
+    },
 
     generateRandomKey() {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
