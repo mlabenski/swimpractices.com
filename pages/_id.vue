@@ -65,13 +65,27 @@
           <div>
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
             <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Save</button>
+            <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Enable Editor</button>
           </div>
+           <button
+            @click="isSeasonModalOpen = true"
+            class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+           Bookmark
+          </button>
+          <button
+            @click="isSeasonModalOpen = true"
+            class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+            Add to Profile
+          </button>
           <button
             @click="isSeasonModalOpen = true"
             class="px-2 md:px-3 py-1 md:py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             Add to Season
           </button>
+          
         </div>
       </div>
     </div>
