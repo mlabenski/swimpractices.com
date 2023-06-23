@@ -30,37 +30,48 @@
                 <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set.heartRate }}</p>
               </div>
             </div>
-            <div class="overflow-x-auto">
-              <table v-if="!tableVisibility[setIndex]" class="table-auto w-full mt-2 text-gray-300 text-xs md:text-sm">
-                <thead>
-                <tr class="bg-gray-700">
-                  <th class="px-2 md:px-4 py-1 md:py-2">Stroke</th>
-                  <th class="px-2 md:px-4 py-1 md:py-2">Quantity</th>
-                  <th class="px-2 md:px-4 py-1 md:py-2">Distance</th>
-                  <th class="px-2 md:px-4 py-1 md:py-2">Description</th>
-                  <th class="px-2 md:px-4 py-1 md:py-2">Equipment</th>
-                  <th class="px-2 md:px-4 py-1 md:py-2">Interval</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
-                  <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
-                  <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
-                  <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
-                  <EditableField :value="exercise.description" @input="newValue => exercise.description = newValue"></EditableField>
-                  <EditableField :value="exercise.equipment" @input="newValue => exercise.equipment = newValue"></EditableField>
-                  <EditableField :value="exercise.interval" @input="newValue => exercise.interval = newValue"></EditableField>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+              <div class="overflow-x-auto">
+                <table v-if="!tableVisibility[setIndex]" class="table-auto w-full mt-2 text-gray-300 text-xs md:text-sm">
+                  <thead>
+                  <tr class="bg-gray-700">
+                    <th class="px-2 md:px-4 py-1 md:py-2">Stroke</th>
+                    <th class="px-2 md:px-4 py-1 md:py-2">Quantity</th>
+                    <th class="px-2 md:px-4 py-1 md:py-2">Distance</th>
+                    <th class="px-2 md:px-4 py-1 md:py-2">Description</th>
+                    <th class="px-2 md:px-4 py-1 md:py-2">Equipment</th>
+                    <th class="px-2 md:px-4 py-1 md:py-2">Interval</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
+                    <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
+                    <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
+                    <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
+                    <EditableField :value="exercise.description" @input="newValue => exercise.description = newValue"></EditableField>
+                    <EditableField :value="exercise.equipment" @input="newValue => exercise.equipment = newValue"></EditableField>
+                    <EditableField :value="exercise.interval" @input="newValue => exercise.interval = newValue"></EditableField>
+                  </tr>
+                  </tbody>
+                </table>
+                <button @click="addExercise(set)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                  Add Exercise
+                </button>
+              </div>
           </div>
         </div>
-          <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700">
+        <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center">
+          <div>
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
             <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Save</button>
-            <button @click="deleteDraft" v-if="isEditing" class="px-2 md:px-3 py-1 md:py-2 bg-red-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Delete Draft</button>
           </div>
+          <button
+            @click="addToSeason"
+            class="px-2 md:px-3 py-1 md:py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+            Add to Season
+          </button>
+        </div>
+        <SeasonModal v-if="isSeasonModalOpen" @close="isSeasonModalOpen = false" />
       </div>
     </div>
   </div>
@@ -68,11 +79,12 @@
 
 <script>
 import EditableField from '@/components/EditableField/EditableField.vue';
-import { mapGetters } from "vuex";
-
+import { mapGetters, mapActions } from "vuex";
+import SeasonList from '@/components/SeasonList/index.vue';
 export default {
   components: {
     EditableField,
+    SeasonList
   },
 
   computed: {
@@ -92,6 +104,7 @@ export default {
       localValue: this.value,
       zoom: 1, // Add this
       isOptionsExpanded: false,
+      isSeasonModalOpen: false
     }
   },
   watch: {
@@ -100,6 +113,38 @@ export default {
     },
   },
   methods: {
+    ...mapActions('practices', ['addExerciseToSet']),
+    ...mapActions(["addPracticeToSeason", "createSeason"]),
+
+    generateRandomKey() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    },
+    async addToSeason(seasonID) {
+      const practiceID = this.$route.params.id;
+      await this.addPracticeToSeason({ seasonID, practiceID });
+    },
+    async createNewSeason(seasonData) {
+      const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
+      await this.createSeason({ seasonID, seasonData });
+    },
+    addExercise(set) {
+      const exercise = {
+        id: this.generateRandomKey(),
+        stroke: 'Enter stroke',
+        quantity: 'Enter quantity',
+        distance: 'Enter distance',
+        description: 'Enter description',
+        equipment: 'Enter equipment',
+        interval: 'Enter interval'
+      };
+
+      // Dispatch Vuex action
+      this.$store.dispatch('practices/addExerciseToSet', {
+        practiceId: this.practice.id,
+        setId: set.id,
+        exercise
+      });
+    },
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
     },

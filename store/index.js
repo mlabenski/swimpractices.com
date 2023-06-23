@@ -40,10 +40,22 @@ export const mutations = {
   },
   SET_LOADING: (state, isLoading) => {
     state.isLoading = isLoading;
+  },
+  ADD_PRACTICE_TO_SEASON(state, { seasonID, practiceID }) {
+    state.seasons[seasonID].practices.push(practiceID);
+  },
+  CREATE_SEASON(state, { seasonID, seasonData }) {
+    state.seasons[seasonID] = seasonData;
   }
 };
 
 export const actions = {
+  addPracticeToSeason({ commit }, payload) {
+    commit('ADD_PRACTICE_TO_SEASON', payload);
+  },
+  createSeason({ commit }, payload) {
+    commit('CREATE_SEASON', payload);
+  },
   bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
       commit('SET_LOADING', true)

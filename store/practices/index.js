@@ -21,7 +21,19 @@ const mutations = {
   },
   SET_FILTERS(state, filters) { // new mutation to set filters
     state.filters = filters;
-  }
+  },
+  UPDATE_PRACTICE(state, payload) {
+    // Ensure the practice exists
+    if (!state.practices.hasOwnProperty(payload.id)) {
+      console.error(`Cannot update practice: no practice with ID ${payload.id} found.`);
+      return;
+    }
+    // Update the practice
+    state.practices[payload.id] = Object.assign({}, state.practices[payload.id], payload.updates);
+  },
+  ADD_EXERCISE_TO_SET(state, { practiceID, setIndex, exercise }) {
+    state.practices[practiceID].sets[setIndex].exercises.push(exercise);
+  },
 }
 
 const actions = {
@@ -59,9 +71,16 @@ const actions = {
       commit('SET_LOADING', false);
     }
   },
+  addExerciseToSet({ commit }, payload) {
+    commit('ADD_EXERCISE_TO_SET', payload);
+  },
   updateFilters({ commit }, filters) { // new action to trigger filter updates
     commit('SET_FILTERS', filters);
-  }
+  },
+  updatePractice({ commit }, payload) {
+    commit('UPDATE_PRACTICE', payload);
+  },
+
 }
 
 const getters = {
