@@ -9,14 +9,17 @@
             {{ season.title }}
           </button>
         </div>
+        <div class="flex justify-center my-4">
+          <span class="text-gray-600">or</span>
+        </div>
         <div class="flex justify-center mb-4">
           <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" @click="newSeasonForm = true">
             Create New Season
           </button>
         </div>
         <form v-if="expandedSeason || newSeasonForm" @submit.prevent="expandedSeason ? updateSeason() : createSeason()">
-          <input v-model="seasonTitle" type="text" placeholder="Season title" required class="mb-2">
-          <input v-model="seasonDescription" type="text" placeholder="Season description" required class="mb-2">
+          <input v-model="seasonTitle" type="text" placeholder="Season title" required class="mb-2 px-4 py-2 border border-gray-300 rounded">
+          <input v-model="seasonDescription" type="text" placeholder="Season description" required class="mb-2 px-4 py-2 border border-gray-300 rounded">
           <div class="flex justify-center">
             <button type="submit" class="w-3/5 text-black py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
               {{ expandedSeason ? 'Update Season' : 'Create Season' }}
@@ -27,6 +30,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script>
