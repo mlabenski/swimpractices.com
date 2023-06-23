@@ -5,7 +5,7 @@
       <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Practice to Season</h3>
         <div v-for="season in seasons" :key="season.id" @click="addPracticeToSeason(season.id)">
-          <p>{{ season.title }}</p>
+          <p>{{ season }}</p>
         </div>
         <form @submit.prevent="createSeason">
           <input v-model="newSeasonTitle" type="text" placeholder="New season title" required>
