@@ -72,7 +72,7 @@ export default {
 
         const seasonsLocal = snapshot.docs.map(doc => doc.data());
 
-        console.log('Seasons: ', seasons);
+        console.log('Seasons: ', seasonsLocal);
         this.seasons = seasonsLocal
         return seasonsLocal;
       } catch (error) {
