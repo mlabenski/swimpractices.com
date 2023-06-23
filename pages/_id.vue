@@ -71,7 +71,7 @@
             Add to Season
           </button>
         </div>
-        <SeasonModal v-if="isSeasonModalOpen" @close="isSeasonModalOpen = false" />
+        <SeasonList v-if="isSeasonModalOpen" @close="isSeasonModalOpen = false" />
       </div>
     </div>
   </div>
