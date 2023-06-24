@@ -32,15 +32,22 @@ const mutations = {
     state.practices[payload.id] = Object.assign({}, state.practices[payload.id], payload.updates);
   },
 
-  ADD_EXERCISE_TO_SET(state, { practiceID, setIndex, exercise }) {
+  ADD_OR_UPDATE_EXERCISE_TO_SET(state, { practiceID, setIndex, exercise, exerciseIndex, property, newValue }) {
     const practice = state.practices[practiceID];
-      if (practice) {
-        console.log('set index is ' +setIndex);
-        console.log('appending exercise'+ exercise);
+    if (practice) {
+      if (typeof exerciseIndex !== 'undefined' && property && newValue) {
+        // Update existing exercise property
+        const exerciseToUpdate = practice.sets[setIndex].exercises[exerciseIndex];
+        if (exerciseToUpdate) {
+          exerciseToUpdate[property] = newValue;
+        }
+      } else {
+        // Add new exercise to set
+        console.log('add new exercise here')
         practice.sets[setIndex].exercises.push(exercise);
-        console.log('completed')
       }
     }
+  },
 }
 
 const actions = {
@@ -79,7 +86,10 @@ const actions = {
     }
   },
   addExerciseToSet({ commit }, payload) {
-    commit('ADD_EXERCISE_TO_SET', payload);
+    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
+  },
+  addOrUpdateExerciseToSet({ commit }, payload) {
+    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
   },
   updateFilters({ commit }, filters) { // new action to trigger filter updates
     commit('SET_FILTERS', filters);

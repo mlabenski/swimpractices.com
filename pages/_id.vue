@@ -46,12 +46,12 @@
                   </thead>
                   <tbody>
                   <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
-                    <EditableField :value="exercise.stroke" @input="newValue => exercise.stroke = newValue"></EditableField>
-                    <EditableField :value="exercise.quantity" @input="newValue => exercise.quantity = newValue"></EditableField>
-                    <EditableField :value="exercise.distance" @input="newValue => exercise.distance = newValue"></EditableField>
-                    <EditableField :value="exercise.description" @input="newValue => exercise.description = newValue"></EditableField>
-                    <EditableField :value="exercise.equipment" @input="newValue => exercise.equipment = newValue"></EditableField>
-                    <EditableField :value="exercise.interval" @input="newValue => exercise.interval = newValue"></EditableField>
+                    <EditableField :value="exercise.stroke" @input="newValue => updateExercise('stroke', newValue, setIndex, exerciseIndex)"></EditableField>
+                    <EditableField :value="exercise.quantity" @input="newValue => updateExercise('quantity', newValue, setIndex, exerciseIndex)"></EditableField>
+                    <EditableField :value="exercise.distance" @input="newValue => updateExercise('distance', newValue, setIndex, exerciseIndex)"></EditableField>
+                    <EditableField :value="exercise.description" @input="newValue => updateExercise('description', newValue, setIndex, exerciseIndex)"></EditableField>
+                    <EditableField :value="exercise.equipment" @input="newValue => updateExercise('equipment', newValue, setIndex, exerciseIndex)"></EditableField>
+                    <EditableField :value="exercise.interval" @input="newValue => updateExercise('interval', newValue, setIndex, exerciseIndex)"></EditableField>
                   </tr>
                   </tbody>
                 </table>
@@ -159,10 +159,19 @@ export default {
       console.log('set Index hell')
 
       // Dispatch Vuex action
-      this.$store.dispatch('practices/addExerciseToSet', {
+      this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
         practiceID: this.$route.params.id,
         setIndex,
         exercise: newExercise,
+      });
+    },
+    updateExercise(property, newValue, setIndex, exerciseIndex) {
+      this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
+        practiceID: this.practice.id,
+        setIndex: setIndex,
+        exerciseIndex: exerciseIndex,
+        property: property,
+        newValue: newValue
       });
     },
     toggleTableVisibility(setIndex) {
