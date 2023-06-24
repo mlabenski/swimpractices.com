@@ -55,7 +55,7 @@
                   </tr>
                   </tbody>
                 </table>
-                <button @click="addExercise(set)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                <button @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                   Add Exercise
                 </button>
               </div>
@@ -85,7 +85,7 @@
           >
             Add to Season
           </button>
-          
+
         </div>
       </div>
     </div>
@@ -145,26 +145,31 @@ export default {
       const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
       await this.createSeason({ seasonID, seasonData });
     },
-    addExercise(set) {
-      const exercise = {
-        id: this.generateRandomKey(),
+    addExercise(setIndex) {
+      const newExercise = {
+        id: 'akf914141',
         stroke: 'Enter stroke',
-        quantity: 'Enter quantity',
-        distance: 'Enter distance',
+        quantity: 1,
+        distance: 1,
         description: 'Enter description',
-        equipment: 'Enter equipment',
-        interval: 'Enter interval'
+        equipment: 1,
+        interval: 1
       };
+      console.log(this.practice);
+      console.log('set Index hell')
 
       // Dispatch Vuex action
       this.$store.dispatch('practices/addExerciseToSet', {
-        practiceId: this.practice.id,
-        setId: set.id,
-        exercise
+        practiceID: this.$route.params.id,
+        setIndex,
+        exercise: newExercise,
       });
     },
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
+    },
+    updateExerciseStroke({ exercise, newValue }) {
+      this.$store.dispatch('practices/updateExerciseStroke', { exerciseId: exercise.id, newValue });
     },
     async savePractice() {
       const practiceID = this.$route.params.id;

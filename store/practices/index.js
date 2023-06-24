@@ -31,9 +31,16 @@ const mutations = {
     // Update the practice
     state.practices[payload.id] = Object.assign({}, state.practices[payload.id], payload.updates);
   },
+
   ADD_EXERCISE_TO_SET(state, { practiceID, setIndex, exercise }) {
-    state.practices[practiceID].sets[setIndex].exercises.push(exercise);
-  },
+    const practice = state.practices[practiceID];
+      if (practice) {
+        console.log('set index is ' +setIndex);
+        console.log('appending exercise'+ exercise);
+        practice.sets[setIndex].exercises.push(exercise);
+        console.log('completed')
+      }
+    }
 }
 
 const actions = {
