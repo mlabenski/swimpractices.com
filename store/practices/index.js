@@ -37,9 +37,14 @@ const mutations = {
     if (practice) {
       if (typeof exerciseIndex !== 'undefined' && property && newValue) {
         // Update existing exercise property
+        console.log('property is '+ property)
+        console.log('update an existing exercise here')
         const exerciseToUpdate = practice.sets[setIndex].exercises[exerciseIndex];
+        console.log('exercise found is:')
+        console.log(exerciseToUpdate)
         if (exerciseToUpdate) {
           exerciseToUpdate[property] = newValue;
+          console.log('done')
         }
       } else {
         // Add new exercise to set
