@@ -193,6 +193,7 @@ export default {
       try {
         await this.$fire.firestore.collection('practices').doc(practiceID).update(practiceData);
         console.log('Practice updated');
+        console.log(this.practice)
       } catch (error) {
         console.error('Error updating practice: ', error);
       }
