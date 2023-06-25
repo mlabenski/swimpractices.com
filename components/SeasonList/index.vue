@@ -24,7 +24,7 @@
           <span class="text-gray-600">or</span>
         </div>
         <div class="flex justify-center mb-4">
-          <button class="w-3/5 text-white py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors" @click="saveAsPractice">
+          <button class="w-3/5 text-white py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
             Save as Practice
           </button>
         </div>
