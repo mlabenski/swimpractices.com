@@ -16,8 +16,16 @@
           <span class="text-gray-600">or</span>
         </div>
         <div class="flex justify-center mb-4">
-          <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" @click="newSeasonForm = true">
+          <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" @click="newSeasonForm = true" v-if="!newSeasonForm">
             Create New Season
+          </button>
+        </div>
+        <div class="flex justify-center my-4">
+          <span class="text-gray-600">or</span>
+        </div>
+        <div class="flex justify-center mb-4">
+          <button class="w-3/5 text-white py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors" @click="saveAsPractice">
+            Save as Practice
           </button>
         </div>
         <form v-if="expandedSeason || newSeasonForm" @submit.prevent="expandedSeason ? updateSeason() : createSeason()">
