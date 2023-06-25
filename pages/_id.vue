@@ -15,7 +15,23 @@
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div v-if="!practice">Loading...</div>
         <div v-else>
-          <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
+          <div class="flex justify-between items-center mb-4">
+            <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
+            <div class="flex space-x-2">
+              <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+          <span class="material-icons text-white">
+            {{ editorEnabled ? 'cancel' : 'edit' }}
+          </span>
+              </button>
+              <button @click="savePractice" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+          <span class="material-icons text-white">
+            save
+          </span>
+              </button>
+            </div>
+          </div>
+          <div>
+          </div>
             <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
             <div class="flex justify-between items-center mb-2">
               <div>
@@ -55,7 +71,7 @@
                   </tr>
                   </tbody>
                 </table>
-                <button @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                <button v-if="editorEnabled" @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                   Add Exercise
                 </button>
               </div>
@@ -64,8 +80,6 @@
         <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center">
           <div>
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
-            <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Save</button>
-            <button @click="savePractice" class="px-2 md:px-3 py-1 md:py-2 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Enable Editor</button>
           </div>
            <button
             @click="isSeasonModalOpen = true"
@@ -119,7 +133,8 @@ export default {
       localValue: this.value,
       zoom: 1, // Add this
       isOptionsExpanded: false,
-      isSeasonModalOpen: false
+      isSeasonModalOpen: false,
+      editorEnabled: false,
     }
   },
   watch: {
@@ -133,7 +148,9 @@ export default {
     closeModal() {
       this.isSeasonModalOpen = false;
     },
-
+    toggleEditor() {
+      this.editorEnabled = !this.editorEnabled;
+    },
     generateRandomKey() {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     },
