@@ -1,6 +1,44 @@
 <template>
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
-    <SeasonList v-if="isSeasonModalOpen" @close="closeModal" />
+    <!-- START: Top Nav Bar -->
+    <div class="fixed top-0 left-0 right-0 bg-gray-400 p-2 flex justify-between items-center shadow-md z-50 mb-25 sm:mb-0 sm:hidden">
+      <button @click="isSeasonModalOpen = false" class="text-gray-800">
+        <span class="material-icons">
+          close
+        </span>
+      </button>
+
+      <div class="font-medium text-gray-800">{{ practice.name }}</div>
+
+      <button @click="isDropdownOpen = !isDropdownOpen" class="text-gray-800">
+        <span class="material-icons">
+          expand_more
+        </span>
+      </button>
+    </div>
+
+    <!-- START: Dropdown Menu -->
+    <div v-if="isDropdownOpen" class="fixed top-12 left-0 right-0 bg-gray-400 p-2 flex flex-col space-y-2 shadow-md z-50 sm:hidden">
+      <button
+        @click="isSeasonModalOpen = true"
+        class="px-3 py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Add to Profile
+      </button>
+      <button
+        @click="isSeasonModalOpen = true"
+        class="px-3 py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Add to Season
+      </button>
+      <button
+        @click="isDropdownOpen = false"
+        class="px-3 py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Close
+      </button>
+    </div>
+    <SeasonList v-if="isSeasonModalOpen" @close="closeModal"/>
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
 
       <div class="fixed right-0 bottom-0 m-4">
@@ -15,7 +53,7 @@
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div v-if="!practice">Loading...</div>
         <div v-else>
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
             <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div class="flex space-x-2">
               <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
@@ -77,7 +115,7 @@
               </div>
           </div>
         </div>
-        <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center">
+        <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center sm:block hidden">
           <div>
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
           </div>
@@ -135,12 +173,17 @@ export default {
       isOptionsExpanded: false,
       isSeasonModalOpen: false,
       editorEnabled: false,
+      isDropdownOpen: false,
     }
   },
   watch: {
     value(newValue) {
-
     },
+    isSeasonModalOpen(newValue) {
+      if(newValue) {
+        this.isDropdownOpen = false;
+      }
+    }
   },
   methods: {
     ...mapActions('practices', ['addExerciseToSet']),

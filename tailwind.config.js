@@ -13,7 +13,7 @@ module.exports = {
         },
         customBlue: {
           DEFAULT: '#4281A4'
-        },
+        }
       },
       fontFamily: {
         handwritten: ['Architects Daughter']
