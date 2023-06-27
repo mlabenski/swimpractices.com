@@ -2,11 +2,9 @@
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
     <!-- START: Top Nav Bar -->
     <div class="fixed top-0 left-0 right-0 bg-gray-400 p-2 flex justify-between items-center shadow-md z-50 mb-25 sm:mb-0 sm:hidden">
-      <button @click="isSeasonModalOpen = false" class="text-gray-800">
-        <span class="material-icons">
+      <router-link to="/" @click="isSeasonModalOpen = false" class="text-gray-800"><span class="material-icons">
           close
-        </span>
-      </button>
+        </span></router-link>
 
       <div class="font-medium text-gray-800">{{ practice.name }}</div>
 
