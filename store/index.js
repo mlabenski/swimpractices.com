@@ -1,5 +1,4 @@
 import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
-import {root} from "postcss";
 
 export const state = () => ({
   userPractices: [],

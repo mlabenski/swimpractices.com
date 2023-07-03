@@ -279,10 +279,9 @@ export default {
       // Update existing practice
       try {
         await this.$fire.firestore.collection('practices').doc(practiceID).update(practiceData);
-        console.log('Practice updated');
-        console.log(this.practice)
+        await this.$store.dispatch('notifications/addNotification', 'Practice saved successfully')
       } catch (error) {
-        console.error('Error updating practice: ', error);
+        await this.$store.dispatch('notifications/addNotification', 'Error updating practice: ' + error.message);
       }
     } else {
       // If user ID does not match original, save as new practice
