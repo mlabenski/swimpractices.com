@@ -254,7 +254,7 @@ export default {
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
       this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.practice.id,
+        practiceID: this.$route.params.id,
         setIndex: setIndex,
         exerciseIndex: exerciseIndex,
         property: property,
