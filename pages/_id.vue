@@ -252,6 +252,7 @@ export default {
       });
     },
     updateExercise(property, newValue, setIndex, exerciseIndex) {
+      console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
       this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
         practiceID: this.practice.id,
         setIndex: setIndex,
