@@ -71,6 +71,7 @@
             <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
             <div class="flex justify-between items-center mb-2">
               <div>
+                <LogsNotificationModel></LogsNotificationModel>
                 <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
                   <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
                   <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
@@ -108,10 +109,10 @@
                   </tbody>
                 </table>
                 <button v-if="editorEnabled" @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  Add Exercise
+                  Add Exercise below
                 </button>
                 <button v-if="editorEnabled" @click="addSet(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  Add Exercise
+                  Add Set below
                 </button>
               </div>
           </div>
@@ -147,12 +148,14 @@
 
 <script>
 import EditableField from '@/components/EditableField/EditableField.vue';
+import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
   components: {
     EditableField,
-    SeasonList
+    SeasonList,
+    LogsNotificationModel
   },
 
   computed: {
