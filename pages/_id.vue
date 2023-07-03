@@ -110,6 +110,9 @@
                 <button v-if="editorEnabled" @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                   Add Exercise
                 </button>
+                <button v-if="editorEnabled" @click="addSet(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                  Add Exercise
+                </button>
               </div>
           </div>
         </div>
@@ -203,7 +206,7 @@ export default {
       const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
       await this.createSeason({ seasonID, seasonData });
     },
-    addSet() {
+    addSet(setIndex) {
       const newSet = {
         favorites: 0,
         heartRate: '120-150',
@@ -224,6 +227,7 @@ export default {
       // Dispatch Vuex action
       this.$store.dispatch('practices/addOrUpdateSet', {
         practiceID: this.$route.params.id,
+        setIndex,
         set: newSet
       });
     },
