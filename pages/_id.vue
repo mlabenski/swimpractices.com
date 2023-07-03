@@ -54,12 +54,12 @@
           <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
             <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div class="flex space-x-2">
-              <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+              <button v-if="user.id" @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
           <span class="material-icons text-white">
             {{ editorEnabled ? 'cancel' : 'edit' }}
           </span>
               </button>
-              <button @click="savePractice" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+              <button v-if="user.id" @click="savePractice" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
           <span class="material-icons text-white">
             save
           </span>
@@ -123,18 +123,21 @@
           </div>
            <button
             @click="isSeasonModalOpen = true"
+            v-if="user.id"
             class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
            Bookmark
           </button>
           <button
             @click="isSeasonModalOpen = true"
+            v-if="user.id"
             class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             Add to Profile
           </button>
           <button
             @click="isSeasonModalOpen = true"
+            v-if="user.id"
             class="px-2 md:px-3 py-1 md:py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             Add to Season
