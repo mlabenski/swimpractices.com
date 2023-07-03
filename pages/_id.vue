@@ -203,6 +203,30 @@ export default {
       const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
       await this.createSeason({ seasonID, seasonData });
     },
+    addSet() {
+      const newSet = {
+        favorites: 0,
+        heartRate: '120-150',
+        numRounds: 1,
+        exercises: [{
+          id: '19239181jro0',
+          stroke: 'Enter stroke',
+          quantity: 1,
+          distance: 1,
+          description: 'Enter description',
+          equipment: 1,
+          interval: 1
+        }],
+        name: 'New Set',
+        description: 'New Set Description'
+      };
+
+      // Dispatch Vuex action
+      this.$store.dispatch('practices/addOrUpdateSet', {
+        practiceID: this.$route.params.id,
+        set: newSet
+      });
+    },
     addExercise(setIndex) {
       const newExercise = {
         id: 'akf914141',

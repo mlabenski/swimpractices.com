@@ -53,6 +53,27 @@ const mutations = {
       }
     }
   },
+  ADD_OR_UPDATE_SET(state, { practiceID, set, setIndex, property, newValue }) {
+    const practice = state.practices[practiceID];
+    if (practice) {
+      if (typeof setIndex !== 'undefined' && property && newValue) {
+        // Update existing set property
+        console.log('property is '+ property)
+        console.log('update an existing set here')
+        const setToUpdate = practice.sets[setIndex];
+        console.log('set found is:')
+        console.log(setToUpdate)
+        if (setToUpdate) {
+          setToUpdate[property] = newValue;
+          console.log('done')
+        }
+      } else {
+        // Add new set to practice
+        console.log('add new set here')
+        practice.sets.push(set);
+      }
+    }
+  },
 }
 
 const actions = {
@@ -95,6 +116,9 @@ const actions = {
   },
   addOrUpdateExerciseToSet({ commit }, payload) {
     commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
+  },
+  addOrUpdateSet({ commit }, payload) {
+    commit('ADD_OR_UPDATE_SET', payload);
   },
   updateFilters({ commit }, filters) { // new action to trigger filter updates
     commit('SET_FILTERS', filters);
