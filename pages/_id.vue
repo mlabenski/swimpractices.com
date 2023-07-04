@@ -36,7 +36,7 @@
         Close
       </button>
     </div>
-    <SeasonList v-if="isSeasonModalOpen" @close="closeModal"/>
+    <SeasonList v-if="isSeasonModalOpen" :owner="practice.userID" @close="closeModal"/>
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
 
       <div class="fixed right-0 bottom-0 m-4">
