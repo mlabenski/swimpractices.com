@@ -8,7 +8,7 @@
         </button>
         <div v-if="mode === 'season'">
           <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Practice to Season</h3>
-          <h3>{{owner}}</h3>
+          <h3 v-if="owner === user.id">You own this practice.</h3>
           <div v-for="season in seasons" :key="season.id" @click="expandSeason(season.id)" class="mb-2 flex justify-center">
             <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors">
               {{ season.title }}
