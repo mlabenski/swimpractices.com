@@ -276,6 +276,10 @@ export default {
 
       // Get current practice data
       const practiceData = this.practice;
+      if (!this.user.id) {
+        const error = 'guests are not allowed to save practices.'
+        await this.$store.dispatch('notifications/addNotification', 'Error updating practice: ' + error);
+      }
 
     // Check if user ID matches original
     if (practiceData.userID === this.user.id) {
