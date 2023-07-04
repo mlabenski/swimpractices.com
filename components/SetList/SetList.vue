@@ -17,11 +17,11 @@
       </tr>
       </thead>
       <tbody class="bg-customGrey">
-      <tr v-for="(practice, practiceId) in paginatedData" :key="practiceId" class="text-center bg-white shadow-md">
+      <tr v-for="practice in paginatedData" :key="practice.practiceId" class="text-center bg-white shadow-md">
         <td class="px-4 py-2 border">{{ practice.name }}</td>
         <td class="px-4 py-2 border" >{{ getTotalYardage(practice.sets) }}</td>
         <td class="px-4 py-2 border">
-          <router-link :to="{ name: 'id', params: { id: practiceId } }" class="text-blue-600 underline"><span class="material-icons">
+          <router-link :to="{ name: 'id', params: { id: practice.practiceId } }" class="text-blue-600 underline"><span class="material-icons">
 open_in_full
 </span></router-link>
         </td>
@@ -81,7 +81,9 @@ export default {
     paginatedData() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return Object.values(this.practiceSets).slice(start, end);
+      return Object.entries(this.practiceSets)
+        .slice(start, end)
+        .map(([practiceId, practice]) => ({...practice, practiceId}));
     },
     totalPages() {
       return Math.ceil(Object.keys(this.practiceSets).length / this.itemsPerPage);
