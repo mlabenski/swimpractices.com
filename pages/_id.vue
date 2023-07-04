@@ -271,24 +271,24 @@ export default {
       this.$store.dispatch('practices/updateExerciseStroke', { exerciseId: exercise.id, newValue });
     },
     async savePractice() {
+      if (!this.user) {
+        const error = 'guests are not allowed to save practices.'
+        await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
+        return;
+      }
       const practiceID = this.$route.params.id;
       const practiceRef = this.$fire.firestore.collection('practices').doc(practiceID);
-
       // Get current practice data
       const practiceData = this.practice;
-      if (!this.user.id) {
-        const error = 'guests are not allowed to save practices.'
-        await this.$store.dispatch('notifications/addNotification', 'Error updating practice: ' + error);
-      }
 
     // Check if user ID matches original
     if (practiceData.userID === this.user.id) {
       // Update existing practice
       try {
         await this.$fire.firestore.collection('practices').doc(practiceID).update(practiceData);
-        await this.$store.dispatch('notifications/addNotification', 'Practice saved successfully')
+        await this.$store.dispatch('notifications/addNotification', {message: 'Practice saved successfully',type: 2})
       } catch (error) {
-        await this.$store.dispatch('notifications/addNotification', 'Error updating practice: ' + error.message);
+        await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice', type: 1});
       }
     } else {
       // If user ID does not match original, save as new practice

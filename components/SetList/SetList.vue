@@ -1,12 +1,11 @@
-
 <template>
   <div class="z-121">
-        <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-bold mb-4 text-white" v-if="!changeTheme">{{ title }}</h2>
-          <span class="material-icons cursor-pointer" @click="toggleTable">
-            {{ isTableVisible ? 'expand_less' : 'expand_more' }}
-          </span>
-      </div>
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-bold mb-4 text-white" v-if="!changeTheme">{{ title }}</h2>
+      <span class="material-icons cursor-pointer" @click="toggleTable">
+        {{ isTableVisible ? 'expand_less' : 'expand_more' }}
+      </span>
+    </div>
     <div v-if="isLoading">Loading...</div>
     <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
       <thead class="bg-customYellow">
@@ -17,24 +16,28 @@
         <th class="px-4 py-2 pl-2"><br></th>
       </tr>
       </thead>
-    <tbody class="bg-customGrey">
-    <tr v-for="(practice, practiceId) in practiceSets" :key="practiceId" class="text-center bg-white shadow-md">
-      <td class="px-4 py-2 border">{{ practice.name }}</td>
-      <td class="px-4 py-2 border" >{{ getTotalYardage(practice.sets) }}</td>
-      <td class="px-4 py-2 border">
-        <router-link :to="{ name: 'id', params: { id: practiceId } }" class="text-blue-600 underline"><span class="material-icons">
-    open_in_full
-    </span></router-link>
-      </td>
-      <td class="px-4 py-2 border">
-        <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
-  delete_forever
-  </span></button>
-      </td>
-    </tr>
-    </tbody>
-
+      <tbody class="bg-customGrey">
+      <tr v-for="(practice, practiceId) in paginatedData" :key="practiceId" class="text-center bg-white shadow-md">
+        <td class="px-4 py-2 border">{{ practice.name }}</td>
+        <td class="px-4 py-2 border" >{{ getTotalYardage(practice.sets) }}</td>
+        <td class="px-4 py-2 border">
+          <router-link :to="{ name: 'id', params: { id: practiceId } }" class="text-blue-600 underline"><span class="material-icons">
+open_in_full
+</span></router-link>
+        </td>
+        <td class="px-4 py-2 border">
+          <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
+delete_forever
+</span></button>
+        </td>
+      </tr>
+      </tbody>
     </table>
+    <div v-if="isTableVisible" class="flex justify-center mt-4">
+      <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
+      <div>Page {{ currentPage }} of {{ totalPages }}</div>
+      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    </div>
   </div>
 </template>
 
@@ -63,7 +66,9 @@ export default {
   data() {
     return {
       templates: [],
-      isTableVisible: true
+      isTableVisible: true,
+      currentPage: 1,
+      itemsPerPage: 10
     };
   },
   computed: {
@@ -73,7 +78,14 @@ export default {
     practices() {
       return this.$store.getters['practices/practices'];
     },
-
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return Object.values(this.practiceSets).slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(Object.keys(this.practiceSets).length / this.itemsPerPage);
+    },
   },
   created() {
     // Fetch templates based on the component type (my templates or recommended templates)
@@ -119,6 +131,12 @@ export default {
         { id: 2, name: 'Recommended Template 2' },
         { id: 3, name: 'Recommended Template 3' }
       ];
+    },
+    nextPage() {
+      if(this.currentPage < this.totalPages) this.currentPage++;
+    },
+    previousPage() {
+      if(this.currentPage > 1) this.currentPage--;
     },
     getTotalYardage(sets) {
       let totalYardage = 0;
