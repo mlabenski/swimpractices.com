@@ -93,14 +93,15 @@ export default {
     },
     async createSeason() {
       if (this.seasonTitle.length >= 1 && this.seasonDescription) {
+        const randomID = Math.floor(Math.random() * 10000);
 
       // Create a new season object
       const newSeason = {
-        description: this.newSeasonDescription,
-        id: '', // replace with a way to generate unique ID
+        description: this.seasonDescription,
+        id: randomID, // replace with a way to generate unique ID
         likes: 0,
-        practices: [this.practiceID],
-        title: this.newSeasonTitle,
+        practices: [this.$route.params.id],
+        title: this.seasonTitle,
         totalYardage: 900,
         userID: this.user.id // assuming this.user.id is available and refers to the current user's ID
       };
