@@ -59,7 +59,7 @@
 import {mapGetters} from "vuex";
 
 export default {
-  props: ['owner'],
+  props: ['owner', 'practiceID'],
   computed: {
     ...mapGetters({
       user: 'auth/user',
@@ -92,14 +92,16 @@ export default {
       this.$emit('close');
     },
     async createSeason() {
+      if (this.seasonTitle.length >= 1 && this.seasonDescription) {
+
       // Create a new season object
       const newSeason = {
-        description: '',
+        description: this.newSeasonDescription,
         id: '', // replace with a way to generate unique ID
         likes: 0,
-        practices: [],
-        title: '',
-        totalYardage: 0,
+        practices: [this.practiceID],
+        title: this.newSeasonTitle,
+        totalYardage: 900,
         userID: this.user.id // assuming this.user.id is available and refers to the current user's ID
       };
 
@@ -109,6 +111,10 @@ export default {
         console.log('New season created');
       } catch (error) {
         console.error('Error creating new season: ', error);
+      }
+    }
+      else {
+        console.log('Error saving season: length of the title or description is too short.')
       }
     },
     async addPracticeToSeason(seasonID) {
