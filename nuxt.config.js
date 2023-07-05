@@ -49,7 +49,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'nuxt-material-design-icons',
-    '@nuxtjs/firebase'
+    '@nuxtjs/firebase',
+    'bootstrap-vue/nuxt'
   ],
   firebase: {
     config: {

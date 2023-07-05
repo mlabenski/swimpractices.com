@@ -50,10 +50,10 @@
 
     <!-- Container for all the components below the header -->
     <div class="container mx-auto px-4 py-2">
-
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
+        <b-button @click="showModal = true" class="fixed right-10 bottom-10">Quick Practice Creator</b-button>
+        <GenerateSetModel v-model="showModal" v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
 
@@ -151,7 +151,7 @@ import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
 import { mapGetters, mapActions } from "vuex";
 import practiceSetsNew from "../data/practiceSetsNew";
-
+import GeneratePractice from "@/components/GeneratePractice/index.vue";
 export default {
  head () {
     return {
@@ -165,7 +165,8 @@ export default {
     GenerateSetModel,
     SetList,
     SeasonCards,
-    NotificationModal
+    NotificationModal,
+    GeneratePractice
   },
   async mounted() {
     try {
@@ -185,6 +186,7 @@ export default {
       isNotificationModalOpen: false,
       selectedSetList: 'My Practices',
       practiceData: null,
+      showModal : false,
       setListOptions: [ // Available SetList's titles
         'Recommended Practices',
         'Featured Practice',
