@@ -50,10 +50,12 @@
 
     <!-- Container for all the components below the header -->
     <div class="container mx-auto px-4 py-2">
+      <b-button @click="showModal = true" class="fixed right-10 bottom-10">Generate Swim Practice</b-button>
+
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <b-button @click="showModal = true" class="fixed right-10 bottom-10">Quick Practice Creator</b-button>
-        <GenerateSetModel v-model="showModal" v-if="isModalOpen" @close="closeModal" />
+        <GeneratePractice v-if="user" :user="user.id" v-model="showModal"></GeneratePractice>
+        <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
 
@@ -186,7 +188,6 @@ export default {
       isNotificationModalOpen: false,
       selectedSetList: 'My Practices',
       practiceData: null,
-      showModal : false,
       setListOptions: [ // Available SetList's titles
         'Recommended Practices',
         'Featured Practice',
@@ -242,7 +243,8 @@ export default {
           title: "Season Set 6",
           totalYardage: 9800
         },
-      ]
+      ],
+      showModal: false
     }
   },
   computed: {
