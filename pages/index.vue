@@ -53,7 +53,7 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice v-if="user" :user="user.id" v-model="generatePracticeModal"></GeneratePractice>
+        <GeneratePractice :user="user.id" v-model="generatePracticeModal"></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
@@ -276,6 +276,7 @@ export default {
       this.isModalOpen = true;
     },
     openGeneratePractice() {
+      console.log('opening modal')
       this.generatePracticeModal = true;
     },
     closeModal() {
