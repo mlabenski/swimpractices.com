@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="showModal" title="Generate Swim Practice" centered ok-only ok-variant="primary">
+  <b-modal v-model="generatePracticeModal" title="Generate Swim Practice" centered ok-only ok-variant="primary">
     <div class="p-4 bg-white rounded shadow-xl">
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
@@ -59,6 +59,7 @@ export default {
   data() {
     return {
       showModal: false,
+      generatePracticeModal: false,
       practice: {
         distance: null,
         poolSize: null,
@@ -89,6 +90,7 @@ export default {
 
       // Close the modal
       this.showModal = false;
+      this.generatePracticeModal = false;
     },
   },
 };
