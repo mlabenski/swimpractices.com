@@ -50,11 +50,10 @@
 
     <!-- Container for all the components below the header -->
     <div class="container mx-auto px-4 py-2">
-      <b-button @click="showModal = true" class="fixed right-10 bottom-10">Generate Swim Practice</b-button>
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice v-if="user" :user="user.id" v-model="showModal"></GeneratePractice>
+        <GeneratePractice v-if="user" :user="user.id" v-model="generatePracticeModal"></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
@@ -107,7 +106,7 @@
       <div class="container mx-auto">
         <div class="flex justify-between">
           <!-- Create practice button -->
-          <a class="flex flex-col items-center" @startPractice="startPractice" @click="openModal"  >
+          <a class="flex flex-col items-center" @startPractice="startPractice" @click="openGeneratePractice" v-if="user">
             <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
             <span>Create</span>
           </a>
@@ -244,7 +243,7 @@ export default {
           totalYardage: 9800
         },
       ],
-      showModal: false
+      generatePracticeModal: false
     }
   },
   computed: {
@@ -275,6 +274,9 @@ export default {
     },
     openModal() {
       this.isModalOpen = true;
+    },
+    openGeneratePractice() {
+      this.generatePracticeModal = true;
     },
     closeModal() {
     this.isModalOpen = false;
