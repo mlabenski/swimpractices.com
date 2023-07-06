@@ -106,7 +106,7 @@
       <div class="container mx-auto">
         <div class="flex justify-between">
           <!-- Create practice button -->
-          <a class="flex flex-col items-center" @startPractice="startPractice" @click="openGeneratePractice" v-if="user">
+          <a href="#" class="flex flex-col items-center" @startPractice="startPractice" @click="openGeneratePractice" v-if="user">
             <span class="material-icons w-6 h-6 fill-current mb-2">school</span>
             <span>Create</span>
           </a>
