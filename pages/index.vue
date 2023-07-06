@@ -1,6 +1,6 @@
 <template>
   <!-- Root Div -->
-  <div>
+  <div id="app">
 
     <!-- Header -->
     <header class="bg-gray-800 text-white text-lg px-4 py-2 fixed w-full z-50 flex items-center justify-between backdrop-filter backdrop-blur-lg">
@@ -332,7 +332,7 @@ export default {
   padding-right: 1em;
 }
 
-html {
+#app {
   background-image: url(@/static/background-414-896-iphone-xr.svg) !important;
   background-color: #CFD7D7 !important;
   background-repeat: no-repeat !important;
