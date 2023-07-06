@@ -33,10 +33,10 @@ delete_forever
       </tr>
       </tbody>
     </table>
-    <div v-if="isTableVisible" class="flex justify-center mt-4">
-      <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
-      <div>Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+    <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-4">
+      <button @click="previousPage" :disabled="currentPage === 1" class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50">Previous</button>
+      <div class="self-center text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50">Next</button>
     </div>
   </div>
 </template>

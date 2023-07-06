@@ -94,7 +94,7 @@
 
 
       <!-- Manual practice entry -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4" v-if="user">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4" v-if="user == '192019fps'">
         <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
         <button @click="submitPractice">Submit Practice</button>
