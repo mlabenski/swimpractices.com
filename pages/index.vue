@@ -344,19 +344,19 @@ html {
 
 @media (min-width: 600px) {
   #app {
-    background-image: url(@/static/background-912-1368-pro.svg); !important;
+    background-image: url(@/static/background-912-1368-pro.svg) !important;
   }
 }
 
 @media (min-width: 768px) {
   #app {
-    background-image: url(@/static/background-1368-912-wide.svg); !important;
+    background-image: url(@/static/background-1368-912-wide.svg) !important;
   }
 }
 
 @media (min-width: 1024px) {
   #app {
-    background-image: url(@/static/desktop-1920-1260.svg); !important;
+    background-image: url(@/static/desktop-1920-1260.svg) !important;
   }
 }
 
