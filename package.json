@@ -25,7 +25,8 @@
     "vue-select": "^3.20.2",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
-    "vuexfire": "^3.2.5"
+    "vuexfire": "^3.2.5",
+    "@nuxtjs/google-fonts": "^3.0.1"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^5.3.3",

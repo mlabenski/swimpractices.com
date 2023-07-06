@@ -338,7 +338,7 @@ export default {
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: cover !important;
-  font-family: handwritten !important;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 

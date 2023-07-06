@@ -2,7 +2,8 @@
   background-image: url(/static/background-414-896-iphone-xr.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover; 
+  background-size: cover;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 @media (min-width: 600px) {

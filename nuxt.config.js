@@ -15,8 +15,13 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'
+      }
     ]
+
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -50,7 +55,8 @@ export default {
   modules: [
     'nuxt-material-design-icons',
     '@nuxtjs/firebase',
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/google-fonts'
   ],
   firebase: {
     config: {
