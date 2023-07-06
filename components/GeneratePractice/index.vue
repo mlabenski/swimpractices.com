@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="generatePracticeModal" title="Generate Swim Practice" centered ok-only ok-variant="primary">
+  <b-modal v-model="value" title="Generate Swim Practice" centered ok-only ok-variant="primary">
     <div class="p-4 bg-white rounded shadow-xl">
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
@@ -55,7 +55,7 @@
 import axios from 'axios';
 
 export default {
-  props: ["user"],
+  props: ["user", "value"],
   data() {
     return {
       showModal: false,
@@ -91,6 +91,7 @@ export default {
       // Close the modal
       this.showModal = false;
       this.generatePracticeModal = false;
+      this.$emit('input', false);
     },
   },
 };
