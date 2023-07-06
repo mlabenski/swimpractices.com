@@ -333,29 +333,30 @@ export default {
 }
 
 html {
-  background-image: url(@/static/background-414-896-iphone-xr.svg);
-  background-color: #CFD7D7;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  font: handwritten;
+  background-image: url(@/static/background-414-896-iphone-xr.svg) !important;
+  background-color: #CFD7D7 !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  font-family: handwritten !important;
 }
+
 
 @media (min-width: 600px) {
   #app {
-    background-image: url(@/static/background-912-1368-pro.svg);
+    background-image: url(@/static/background-912-1368-pro.svg); !important;
   }
 }
 
 @media (min-width: 768px) {
   #app {
-    background-image: url(@/static/background-1368-912-wide.svg);
+    background-image: url(@/static/background-1368-912-wide.svg); !important;
   }
 }
 
 @media (min-width: 1024px) {
   #app {
-    background-image: url(@/static/desktop-1920-1260.svg);
+    background-image: url(@/static/desktop-1920-1260.svg); !important;
   }
 }
 
