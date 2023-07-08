@@ -53,7 +53,7 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice :user="user.id" v-model="generatePracticeModal"></GeneratePractice>
+        <GeneratePractice :user="user" v-model="generatePracticeModal"></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
       </div>
