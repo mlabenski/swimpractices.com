@@ -1,7 +1,7 @@
 <template>
   <div class="z-121">
     <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-bold mb-4 text-white" v-if="!changeTheme">{{ title }}</h2>
+      <h2 class="text-2xl font-bold mb-4 text-white sm:hidden" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
         {{ isTableVisible ? 'expand_less' : 'expand_more' }}
       </span>
@@ -10,34 +10,43 @@
     <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
       <thead class="bg-customYellow">
       <tr>
-        <th class="px-4 py-2">Practice Name</th>
-        <th class="px-4 py-2">Distance</th>
-        <th class="px-4 py-2 pl-2"><br></th>
-        <th class="px-4 py-2 pl-2"><br></th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base">Practice Name</th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base">Distance</th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
       </tr>
       </thead>
       <tbody class="bg-customGrey">
       <tr v-for="practice in paginatedData" :key="practice.practiceId" class="text-center bg-white shadow-md">
-        <td class="px-4 py-2 border">{{ practice.name }}</td>
-        <td class="px-4 py-2 border" >{{ getTotalYardage(practice.sets) }}</td>
-        <td class="px-4 py-2 border">
+        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ practice.name }}</td>
+        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ getTotalYardage(practice.sets) }}</td>
+        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
           <router-link :to="{ name: 'id', params: { id: practice.practiceId } }" class="text-blue-600 underline"><span class="material-icons">
-open_in_full
-</span></router-link>
+    open_in_full
+    </span></router-link>
         </td>
-        <td class="px-4 py-2 border">
+        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
           <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
-delete_forever
-</span></button>
+    delete_forever
+    </span></button>
         </td>
       </tr>
       </tbody>
     </table>
-    <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-4">
-      <button @click="previousPage" :disabled="currentPage === 1" class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50">Previous</button>
-      <div class="self-center text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50">Next</button>
+    <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-1 sm:space-x-4">
+      <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-blue-500 text-xs sm:text-base text-white rounded disabled:opacity-50">
+        <span class="sm:hidden material-icons">chevron_left</span>
+        <span class="hidden sm:inline">Previous</span>
+      </button>
+      <div class="self-center text-sm sm:text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-blue-500 text-xs sm:text-base text-white rounded disabled:opacity-50">
+        <span class="sm:hidden material-icons">chevron_right</span>
+        <span class="hidden sm:inline">Next</span>
+      </button>
     </div>
+
+
+
   </div>
 </template>
 
