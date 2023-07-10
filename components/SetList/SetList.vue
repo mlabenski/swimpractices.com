@@ -37,16 +37,15 @@
       </tbody>
     </table>
     <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-1 sm:space-x-4">
-      <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-blue-500 text-xs sm:text-base text-white rounded disabled:opacity-50">
+      <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
         <span class="sm:hidden material-icons">chevron_left</span>
-        <span class="hidden sm:inline">Previous</span>
       </button>
       <div class="self-center text-sm sm:text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-blue-500 text-xs sm:text-base text-white rounded disabled:opacity-50">
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
         <span class="sm:hidden material-icons">chevron_right</span>
-        <span class="hidden sm:inline">Next</span>
       </button>
     </div>
+
 
 
 
