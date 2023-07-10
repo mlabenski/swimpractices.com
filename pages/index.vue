@@ -76,8 +76,7 @@
 
 
     <!-- Grouped Practices section -->
-
-    <div class="grid grid-cols-1 gap-4 mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
+    <div class="grid grid-cols-1 gap-4 mt-2 md:mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
       <div class="flex flex-wrap w-full">
         <div class="flex items-center justify-between sm:block">
         </div>
@@ -85,6 +84,7 @@
         <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
       </div>
     </div>
+
   </div>
 </template>
 

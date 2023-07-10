@@ -1,11 +1,14 @@
 <template>
   <div class="z-121">
-    <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-bold mb-4 text-white sm:hidden" v-if="!changeTheme">{{ title }}</h2>
+    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
+      <h2 class="text-2xl font-bold sm:hidden mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
-        {{ isTableVisible ? 'expand_less' : 'expand_more' }}
-      </span>
+    {{ isTableVisible ? 'expand_less' : 'expand_more' }}
+  </span>
     </div>
+
+
+
     <div v-if="isLoading">Loading...</div>
     <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
       <thead class="bg-customYellow">
