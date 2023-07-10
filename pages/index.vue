@@ -221,10 +221,6 @@ export default {
     openModal() {
       this.isModalOpen = true;
     },
-    openGeneratePractice() {
-      console.log('opening modal')
-      this.generatePracticeModal = true;
-    },
     closeModal() {
     this.isModalOpen = false;
     },
@@ -235,6 +231,7 @@ export default {
       console.log('emitted back to the main index');
       console.log(practiceData);
       this.practiceData = practiceData;
+      this.generatePracticeModal = true;
     },
     checkNotifications() {
       this.hasNotification = notificationsData.notifications.length > 0;
