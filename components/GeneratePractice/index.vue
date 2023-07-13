@@ -77,8 +77,8 @@ export default {
         });
 
         // Handle the API response here, e.g., display a success message
-        responseString = response.data;
-        console.log(response.data);
+        await responseString = response.data;
+        await console.log(response.data);
 
       } catch (error) {
         // Handle the error, e.g., display an error message
@@ -89,7 +89,7 @@ export default {
       this.showModal = false;
       this.generatePracticeModal = false;
       await this.$store.dispatch('notifications/addNotification', {message: `New practice created ${responseString}`, type: 2});
-      this.$emit('input', false);
+      await this.$emit('input', false);
     },
   },
 };
