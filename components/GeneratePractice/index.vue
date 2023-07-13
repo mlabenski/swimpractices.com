@@ -77,7 +77,7 @@ export default {
         });
 
         // Handle the API response here, e.g., display a success message
-        await responseString = response.data;
+        responseString = response.data;
         console.log('the response data is ' + response.data);
 
       } catch (error) {

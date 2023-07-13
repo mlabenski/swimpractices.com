@@ -14,7 +14,7 @@ export const mutations = {
 };
 
 export const actions = {
-  addNotification({ commit }, {message, type}) {
+  async addNotification({ commit }, {message, type}) {
     commit('ADD_NOTIFICATION', {
       id: new Date().getTime(),
       message,
