@@ -35,5 +35,8 @@ module.exports = {
       animation: ['hover']
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/ui'),
+    require('@tailwindcss/opacity'),
+  ],
 }

@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg">
+  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-500 opacity-75">
     <div class="px-5 py-3 bg-white">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <b-form-group label="Distance:" label-for="distance">
@@ -48,6 +48,8 @@
   </b-modal>
 </template>
 
+
+
 <script>
 import axios from 'axios';
 
@@ -55,6 +57,8 @@ export default {
   props: ["user", "value"],
   data() {
     return {
+      showModal: false,
+      generatePracticeModal: false,
       submitting: false,
       practice: {
         distance: null,
@@ -68,36 +72,29 @@ export default {
   methods: {
     async submitPractice() {
       this.submitting = true;
-
       // Generate the practice request sentence
-      let sentence = `Generate a swim practice for the pool type ${this.practice.poolSize}, the practice should be ${this.practice.distance} distance long, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. The title should have a creative name, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
-
+      let sentence = `Generate a swim practice for the pool type ${this.practice.poolSize}, the practice should be ${this.practice.distance} long, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. The title should have a creative name, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
+      let responseString = null;
       try {
+        // Send a POST request to the API
         let response = await axios.post('https://genhppurl.mlabenski.repl.co/generate/practice', {
           input_text: sentence,
         });
 
-        await this.$store.dispatch('notifications/addNotification', {message: `New practice created`, type: 2});
-        this.$emit('input', false);
-        this.resetPractice();
-
-        // Navigate to the newly created practice
-        await this.$router.push({name: 'id', params: {id: response.data}});
+        // Handle the API response here, e.g., display a success message
+        responseString = response.data;
+        console.log('the response data is ' + response.data);
 
       } catch (error) {
+        // Handle the error, e.g., display an error message
         console.error('Error generating swim practice:', error);
-      } finally {
+      }
+      finally {
+        await this.$emit('input', false);
+        this.showModal = false;
+        this.generatePracticeModal = false;
         this.submitting = false;
       }
-    },
-    resetPractice() {
-      this.practice = {
-        distance: null,
-        poolSize: null,
-        duration: '',
-        strokes: [],
-        equipment: [],
-      };
     },
   },
 };
