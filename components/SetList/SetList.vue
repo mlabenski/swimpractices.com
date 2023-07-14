@@ -1,7 +1,7 @@
 <template>
   <div class="z-121">
-    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2" style="background-color: #1F487E">
-      <h2 class="text-2xl font-bold sm:hidden mb-1" v-if="!changeTheme">{{ title }}</h2>
+    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
+      <h2 class="text-2xl font-bold mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
     {{ isTableVisible ? 'expand_less' : 'expand_more' }}
   </span>
@@ -11,10 +11,10 @@
 
     <div v-if="isLoading">Loading...</div>
     <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
-      <thead class="bg-customYellow">
+      <thead style="background-color: #1F487E">
       <tr>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base">Practice Name</th>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base">Distance</th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Practice Name</th>
+        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Distance</th>
         <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
         <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
       </tr>
