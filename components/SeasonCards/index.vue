@@ -17,7 +17,7 @@
       </div>
       <div class="absolute bottom-0 right-0 mb-4 mr-4 cursor-pointer" @click="likeSeason(season.id)">
       {{ season.likes}}
-        <span class="material-icons text-opacity-50">favorite</span>
+        <span class="material-icons">favorite</span>
       </div>
       <div v-if="showPracticeTable" class="px-6 pt-4 pb-2 bg-red-50">
         <SetList title="Season Table" :userID="user ? user: null" :practiceSets="season.practices"></SetList>
@@ -70,12 +70,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.absolute {
-  z-index: 1;
-}
-.bg-red-50 {
-  z-index: 2;
-}
+<style>
 </style>
 
