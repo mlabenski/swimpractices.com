@@ -10,6 +10,7 @@
     <div class="md:block hidden">
       <div class="relative">
         <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
+        <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
@@ -51,7 +52,7 @@
           </div>
 
           <!-- Log in reminder for unauthenticated users -->
-          <div v-if="!user" class="absolute inset-0 bg-gray-800 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
+          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
         </div>
@@ -98,7 +99,7 @@ import practiceSetsNew from "../data/practiceSetsNew";
 import GeneratePractice from "@/components/GeneratePractice/index.vue";
 import TopNavBar from "@/components/TopNavBar/index.vue";
 export default {
- head () {
+  head () {
     return {
       link: [
         // Add this
@@ -200,7 +201,7 @@ export default {
     }),
   },
   created() {
-   this.checkNotifications();
+    this.checkNotifications();
   },
   methods: {
     practiceSetsNew() {
@@ -215,13 +216,13 @@ export default {
       this.isNotificationModalOpen = !this.isNotificationModalOpen;
     },
     startEmptyPractice() {
-    // Logic to start an empty practice
+      // Logic to start an empty practice
     },
     openModal() {
       this.isModalOpen = true;
     },
     closeModal() {
-    this.isModalOpen = false;
+      this.isModalOpen = false;
     },
     closeNotificationModal() {
       this.isNotificationModalOpen = false;
@@ -261,7 +262,7 @@ export default {
     onSetListChange(e) {
       this.selectedSetList = e.target.value;
       if (this.selectedSetList === 'Featured Practice') {
-          this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
+        this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
       }
     },
   }
