@@ -1,7 +1,7 @@
 <template>
   <div class="fixed z-10 inset-0 overflow-y-auto" v-if="seasons || mode === 'practice'">
     <div class="flex items-center justify-center min-h-screen">
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div class="fixed inset-0 bg-gray-500"></div>
       <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6 relative">
         <button @click="closeModal" class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center z-15">
           X
