@@ -1,6 +1,6 @@
 <template>
   <div class="z-121">
-    <div class="flex items-center justify-between border sm:text-white bg-gray-200 text-black px-2">
+    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
       <h2 class="text-2xl font-bold sm:hidden mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
     {{ isTableVisible ? 'expand_less' : 'expand_more' }}
@@ -131,7 +131,7 @@ export default {
     },
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
-     },
+    },
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend
       // Example using import statement:
@@ -162,15 +162,15 @@ export default {
       }
       return totalYardage;
     },
-      async deletePractice(practiceId) {
-        try {
-          await this.$fire.firestore.collection('practices').doc(practiceId).delete();
-          console.log('Practice deleted');
-        } catch (error) {
-          console.error('Error deleting practice: ', error);
-        }
-      },
+    async deletePractice(practiceId) {
+      try {
+        await this.$fire.firestore.collection('practices').doc(practiceId).delete();
+        console.log('Practice deleted');
+      } catch (error) {
+        console.error('Error deleting practice: ', error);
+      }
     },
+  },
 };
 </script>
 

@@ -1,75 +1,151 @@
 <template>
-    <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2 justify-center items-center mb-2 sm-mb-2">
-    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
-      <div class="flex justify-center items-center bg-customBlue text-white text-2xl font-bold py-2 z-52" style="background-color: dodgerblue">
-        <span class="mr-2">#{{ rank }}</span>
-        <span class="material-icons text-customYellow">emoji_events</span>
-      </div>
-      <div class="px-6 py-4" @click="showPracticeTable = !showPracticeTable">
-        <div class="font-bold text-xl mb-2">{{ season.title }}</div>
-        <p class="text-gray-700 text-base">
-          {{ season.description }}
-        </p>
-      </div>
-      <div class="px-6 pt-4 pb-2">
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ season.totalYardage }} Yards</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ season.practices.length }} Days</span>
-      </div>
-      <div class="absolute bottom-0 right-0 mb-4 mr-4 cursor-pointer" @click="likeSeason(season.id)">
-      {{ season.likes}}
-        <span class="material-icons">favorite</span>
-      </div>
-      <div v-if="showPracticeTable" class="px-6 pt-4 pb-2 bg-red-50">
-        <SetList title="Season Table" :userID="user ? user: null" :practiceSets="season.practices"></SetList>
+  <div class="fixed z-10 inset-0 overflow-y-auto" v-if="seasons || mode === 'practice'">
+    <div class="flex items-center justify-center min-h-screen">
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+      <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6 relative">
+        <button @click="closeModal" class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center z-15">
+          X
+        </button>
+        <div v-if="mode === 'season'">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Practice to Season</h3>
+          <h3 v-if="owner === user.id">You own this practice.</h3>
+          <div v-for="season in seasons" :key="season.id" @click="expandSeason(season.id)" class="mb-2 flex justify-center">
+            <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors">
+              {{ season.title }}
+            </button>
+          </div>
+          <div class="flex justify-center my-4" v-if="seasons == null">
+            No Existing Seasons Found :(
+          </div>
+          <div class="flex justify-center my-4" v-if="seasons">
+            <span class="text-gray-600">or</span>
+          </div>
+          <div class="flex justify-center mb-4">
+            <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors" @click="newSeasonForm = true" v-if="!newSeasonForm">
+              Create New Season
+            </button>
+          </div>
+          <form v-if="expandedSeason || newSeasonForm" @submit.prevent="expandedSeason ? updateSeason() : createSeason()">
+            <input v-model="seasonTitle" type="text" placeholder="Season title" required class="mb-2 px-4 py-2 border border-gray-300 rounded">
+            <input v-model="seasonDescription" type="text" placeholder="Season description" required class="mb-2 px-4 py-2 border border-gray-300 rounded">
+            <div class="flex justify-center">
+              <button type="submit" class="w-3/5 text-black py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
+                {{ expandedSeason ? 'Update Season' : 'Create Season' }}
+              </button>
+            </div>
+          </form>
+        </div>
+        <div v-else>
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Save Practice</h3>
+          <EditableField :value="practiceTitle" @input="newValue => practiceTitle = newValue" />
+          <div class="flex justify-center my-4">
+            <button @click="saveAsPractice" class="w-3/5 text-white py-2 rounded-full bg-green-500 hover:bg-green-600 transition-colors">
+              Save as Practice
+            </button>
+          </div>
+        </div>
+        <div class="flex justify-between my-4">
+          <button @click="mode = 'season'" :class="mode === 'season' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'">Seasons</button>
+          <button @click="mode = 'practice'" :class="mode === 'practice' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'">Practices</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
+
+
 <script>
-import SetList from '@/components/SetList/SetList.vue';
+import {mapGetters} from "vuex";
 
 export default {
-  components: {
-    SetList
-  },
-  props: {
-    season: {
-      type: Object,
-      required: true
-    },
-    id: {
-      type: String,
-      required: true
-    },
-    user: {
-      type: String,
-      required: false
-    },
-    rank: {
-    type: Number,
-    required: false
-    }
+  props: ['owner', 'practiceID'],
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+      isLoading: 'getLoading',
+    }),
   },
   data() {
     return {
-      showPracticeTable: false,
-    }
+      newSeasonTitle: '',
+      newSeasonDescription: '',
+      seasons: [],
+      expandedSeason: null,
+      newSeasonForm: false,
+      seasonTitle: '',
+      seasonDescription: '',
+      mode: 'season',
+      practiceTitle: 'Your Practice Title Here',
+    };
+  },
+  created() {
+    this.getSeasons();
   },
   methods: {
-    likeSeason(seasonId) {
-      if (this.user) {
-      console.log('season like event emitted');
-      this.$emit('like', seasonId);
+    expandSeason(seasonId) {
+      this.expandedSeason = this.seasons.find(season => season.id === seasonId);
+      this.seasonTitle = this.expandedSeason.title;
+      this.seasonDescription = this.expandedSeason.description;
+    },
+    closeModal() {
+      this.$emit('close');
+    },
+    async createSeason() {
+      if (this.seasonTitle.length >= 1 && this.seasonDescription) {
+        const randomID = Math.floor(Math.random() * 10000);
+
+        // Create a new season object
+        const newSeason = {
+          description: this.seasonDescription,
+          id: randomID, // replace with a way to generate unique ID
+          likes: 0,
+          practices: [this.$route.params.id],
+          title: this.seasonTitle,
+          totalYardage: 900,
+          userID: this.user.id // assuming this.user.id is available and refers to the current user's ID
+        };
+
+        // Add new season to Firestore
+        try {
+          await this.$fire.firestore.collection('seasons').add(newSeason);
+          console.log('New season created');
+        } catch (error) {
+          console.error('Error creating new season: ', error);
+        }
       }
       else {
-      console.log('you must be logged in to like a season');
+        console.log('Error saving season: length of the title or description is too short.')
       }
-     }
     },
-}
-</script>
+    async addPracticeToSeason(seasonID) {
+      // Add practice to season in Firestore
+    },
+    async updateSeason() {
+      // Code to update the expandedSeason with the new seasonTitle and seasonDescription...
+      this.expandedSeason = null;
+      this.seasonTitle = '';
+      this.seasonDescription = '';
+    },
+    async getSeasons() {
+      try {
+        if(!this.user.id){
+          return "no seasons";
+        }
+        const snapshot = await this.$fire.firestore.collection('seasons')
+          .where('userID', '==', this.user.id)
+          .get();
 
-<style>
-</style>
+        const seasonsLocal = snapshot.docs.map(doc => doc.data());
+
+        console.log('Seasons: ', seasonsLocal);
+        this.seasons = seasonsLocal
+        return seasonsLocal;
+      } catch (error) {
+        console.error('Error fetching seasons: ', error);
+      }
+    }
+  },
+};
+</script>
 
