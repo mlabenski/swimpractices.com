@@ -26,9 +26,10 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice :user="user" v-model="generatePracticeModal"></GeneratePractice>
+        <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice"></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
+        <LogsNotificationModel></LogsNotificationModel>
       </div>
 
       <!-- Set lists -->
@@ -98,6 +99,7 @@ import { mapGetters, mapActions } from "vuex";
 import practiceSetsNew from "../data/practiceSetsNew";
 import GeneratePractice from "@/components/GeneratePractice/index.vue";
 import TopNavBar from "@/components/TopNavBar/index.vue";
+import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
 export default {
   head () {
     return {
@@ -114,6 +116,7 @@ export default {
     NotificationModal,
     GeneratePractice,
     TopNavBar,
+    LogsNotificationModel
   },
   async mounted() {
     try {
@@ -189,7 +192,8 @@ export default {
           totalYardage: 9800
         },
       ],
-      generatePracticeModal: false
+      generatePracticeModal: false,
+      newPracticeId: null,
     }
   },
   computed: {
@@ -217,6 +221,11 @@ export default {
     },
     startEmptyPractice() {
       // Logic to start an empty practice
+    },
+    async handleNewPractice(newPracticeId) {
+      // Do something with newPracticeId, e.g., assign it to a local data property
+      this.newPracticeId = newPracticeId;
+      await this.$store.dispatch('notifications/addNotification', {message: 'New practice created with the ID '+ newPracticeId, type: 2})
     },
     openModal() {
       this.isModalOpen = true;

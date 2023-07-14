@@ -91,9 +91,11 @@ export default {
       }
       finally {
         await this.$emit('input', false);
+        // assuming responseString is your new practice ID
         this.showModal = false;
         this.generatePracticeModal = false;
         this.submitting = false;
+        this.$emit('practice-generated', responseString);
       }
     },
   },
