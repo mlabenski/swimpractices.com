@@ -1,7 +1,7 @@
 <template>
   <div class="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2 justify-center items-center mb-2 sm-mb-2">
-    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake" style="background-color: lightsteelblue">
-      <div class="flex justify-center items-center text-white text-2xl font-bold py-2">
+    <div class="max-w-sm mx-auto bg-gray-100 rounded overflow-hidden shadow-2xl border border-gray-300 relative hover:animate-shake">
+      <div class="flex justify-center items-center text-white text-2xl font-bold py-2" style="background-color: lightsteelblue">
         <span class="mr-2">#{{ rank }}</span>
         <span class="material-icons text-customYellow" style="color: yellow">emoji_events</span>
       </div>
