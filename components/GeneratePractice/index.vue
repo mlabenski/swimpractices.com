@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-500 opacity-75">
+  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-500">
     <div class="px-5 py-3 bg-white">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <b-form-group label="Distance:" label-for="distance">

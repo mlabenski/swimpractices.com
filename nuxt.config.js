@@ -39,7 +39,7 @@ export default {
 
   googleFonts: {
     families: {
-      'Architects Daughter': true,
+      'Architects Daughter': true
     }
   },
 
@@ -48,7 +48,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxtjs/tailwindcss'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -66,7 +66,7 @@ export default {
       storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
       messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
       appId: process.env.VUE_APP_FIREBASE_appId,
-      measurementId: process.env.VUE_APP_FIREBASE_measurementd,
+      measurementId: process.env.VUE_APP_FIREBASE_measurementd
     },
     tailwindcss: {
       configPath: '~/tailwind.config.js'

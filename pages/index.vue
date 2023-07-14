@@ -10,7 +10,6 @@
     <div class="md:block hidden">
       <div class="relative">
         <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
-        <div class="absolute inset-0 bg-black"></div>
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
