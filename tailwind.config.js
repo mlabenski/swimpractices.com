@@ -36,5 +36,9 @@ module.exports = {
     }
   },
   plugins: [
+
+  ],
+  css: [
+    '@/static/main.css',
   ],
 }
