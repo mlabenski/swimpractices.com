@@ -226,8 +226,8 @@ export default {
       // Do something with newPracticeId, e.g., assign it to a local data property
       if(newPracticeId){
         this.newPracticeId = newPracticeId;
+        await this.$store.dispatch('practices/fetchUserPractices');
         this.$router.push({ name: 'id', params: { id: newPracticeId } });
-        await this.$store.dispatch('notifications/addNotification', {message: 'New practice created with the ID '+ newPracticeId, type: 2})
       }
       else {
         await this.$store.dispatch('notifications/addNotification', {message: 'Something broke while creating the new practice '+ newPracticeId, type: 2})
