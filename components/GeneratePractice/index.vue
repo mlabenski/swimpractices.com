@@ -1,6 +1,11 @@
 <template>
   <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-500">
-    <div class="px-5 py-3 bg-white">
+    <div class="px-5 py-3 bg-white" v-if="!user">
+      <div class="mb-4 grid grid-cols-2 gap-4">
+        <h2>Sorry! Create an account to generate a practice.</h2>
+      </div>
+    </div>
+    <div class="px-5 py-3 bg-white" v-if="user">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <b-form-group label="Distance:" label-for="distance">
           <b-form-input v-model.number="practice.distance" id="distance" type="number" size="sm"></b-form-input>
