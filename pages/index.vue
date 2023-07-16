@@ -224,8 +224,14 @@ export default {
     },
     async handleNewPractice(newPracticeId) {
       // Do something with newPracticeId, e.g., assign it to a local data property
-      this.newPracticeId = newPracticeId;
-      await this.$store.dispatch('notifications/addNotification', {message: 'New practice created with the ID '+ newPracticeId, type: 2})
+      if(newPracticeId){
+        this.newPracticeId = newPracticeId;
+        this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
+        await this.$store.dispatch('notifications/addNotification', {message: 'New practice created with the ID '+ newPracticeId, type: 2})
+      }
+      else {
+        await this.$store.dispatch('notifications/addNotification', {message: 'Something broke while creating the new practice '+ newPracticeId, type: 2})
+      }
     },
     openModal() {
       this.isModalOpen = true;
