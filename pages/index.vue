@@ -226,7 +226,7 @@ export default {
       // Do something with newPracticeId, e.g., assign it to a local data property
       if(newPracticeId){
         this.newPracticeId = newPracticeId;
-        this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
+        this.$router.push({ name: 'id', params: { id: newPracticeId } });
         await this.$store.dispatch('notifications/addNotification', {message: 'New practice created with the ID '+ newPracticeId, type: 2})
       }
       else {
