@@ -6,7 +6,7 @@
           close
         </span></router-link>
 
-      <div class="font-medium text-gray-800">{{ practice.name }}</div>
+      <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
 
       <button @click="isDropdownOpen = !isDropdownOpen" class="text-gray-800">
         <span class="material-icons">
