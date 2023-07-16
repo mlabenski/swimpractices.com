@@ -1,6 +1,15 @@
 <template>
   <!-- Root Div -->
   <div id="app">
+    <a
+      href="#"
+      class="flex flex-col items-center space-y-1 pt-1 pb-2 fixed bottom-4 right-4 md:block hidden"
+      @click.prevent="startPractice"
+      v-if="user"
+    >
+      <span class="material-icons w-6 h-6 fill-current">school</span>
+      <span>Create</span>
+    </a>
 
     <!-- Header -->
     <div class="sm:hidden">
