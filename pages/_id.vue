@@ -165,6 +165,9 @@ export default {
       isLoading: 'getLoading',
     }),
     practice() {
+      console.log('the route is:' + this.$route.params.id);
+      console.log('the practice is:')
+      console.log(this.getPracticeByID(this.$route.params.id));
       return this.getPracticeByID(this.$route.params.id);
     },
   },

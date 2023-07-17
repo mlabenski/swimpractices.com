@@ -157,7 +157,13 @@ const getters = {
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
   getPracticeByID: (state) => (id) => {
-    return state.practices[id];
+    if(state.practices[id]) {
+      console.log('found a practice with the id');
+      return state.practices[id];
+    }
+    else {
+      console.log('unable to find ID')
+    }
   },
 }
 
