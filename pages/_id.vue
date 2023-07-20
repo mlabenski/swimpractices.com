@@ -38,21 +38,21 @@
     </div>
     <SeasonList v-if="isSeasonModalOpen" :owner="practice.userID" :practiceID="practice.id" @close="closeModal"/>
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
-
-      <div class="fixed right-0 bottom-0 m-4">
-  <div class="flex flex-col items-center bg-white p-2 rounded shadow-lg" style="padding-bottom: 45px;">
-    <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomIn">Zoom In</button>
-    <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomOut">Zoom Out</button>
-    <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="closeZoom">Close Zoom</button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="toggleOptions">{{ isOptionsExpanded ? 'Hide' : 'Options' }}</button>
-  </div>
-</div>
 </div>
       <div class="px-2 md:px-6 py-2 md:py-4">
-        <div v-if="!practice">Loading...</div>
+        <div v-if="!practice">
+          <div class="container mx-auto px-4 md:px-8 py-6 md:py-12">
+            <div class="text-center">
+              <h2 class="text-2xl md:text-4xl font-bold mb-4">Sorry, we don't know how to code.</h2>
+              <h2 class="text-xl md:text-2xl font-bold mb-4">Help us out:</h2>
+              <p class="text-lg md:text-xl mb-4">Fork the code below:</p>
+              <h2 class="text-2xl md:text-4xl font-bold mb-4 pt-4">Look at the highlighted row for the newest practice</h2>
+            </div>
+          </div>
+        </div>
         <div v-else>
           <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
-            <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
+            <EditableField v-if="practice" :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div class="flex space-x-2">
               <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
           <span class="material-icons text-white">
@@ -157,8 +157,12 @@ export default {
     SeasonList,
     LogsNotificationModel
   },
-
+  async asyncData({ store }) {
+    // Fetch practices during server-side rendering
+    await store.dispatch('practices/fetchPractices')
+  },
   computed: {
+
     ...mapGetters({
       user: 'auth/user',
       getPracticeByID: 'practices/getPracticeByID',

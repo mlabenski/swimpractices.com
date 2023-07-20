@@ -123,6 +123,10 @@ export default {
     TopNavBar,
     LogsNotificationModel
   },
+  async asyncData({ store }) {
+    // Fetch practices during server-side rendering
+    await store.dispatch('practices/fetchPractices')
+  },
   async mounted() {
     try {
       // await this.$store.dispatch('bindPractices');
