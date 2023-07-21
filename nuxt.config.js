@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -33,6 +34,17 @@ export default {
   plugins: [
     { src: '~/plugins/netlify-identity-widget.js', mode: 'client' }
   ],
+
+  generate: {
+    routes: function () {
+      return axios.get('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json')
+        .then((res) => {
+          return res.data.map((practice) => {
+            return '/' + practice.id
+          })
+        })
+    }
+  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
