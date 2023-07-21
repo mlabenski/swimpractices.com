@@ -1,4 +1,5 @@
 // /store/practices/index.js
+import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 const state = () => ({
   practices: {},
@@ -77,40 +78,34 @@ const mutations = {
 }
 
 const actions = {
-  async fetchPractices({ commit }) {
+  fetchPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
     try {
-      commit('SET_LOADING', true);
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
-      if (!response.ok) {
-        throw new Error('HTTP error ' + response.status);
-      }
-      const practices = await response.json();
-      console.log(practices);
-      commit('SET_PRACTICES_NEW', practices);
+      commit('SET_LOADING', true)
+      const ref = this.$fire.firestore.collection('practices');
+      await bindFirestoreRef('practices', ref, { wait: true });
+
+      let totalYards = 0;
+      state.practices.forEach(practice => {
+        practice.sets.forEach(set => {
+          set.exercises.forEach(exercise => {
+            totalYards += exercise.distance * exercise.quantity;
+          });
+        });
+      });
+      commit('SET_TOTAL_YARDS', totalYards);
 
     } catch (error) {
-      console.log('Fetch Error: ', error);
+      // handle error
     } finally {
-      commit('SET_LOADING', false);
+      commit('SET_LOADING', false)
     }
-  },
-  async fetchUserPractices({ commit }) {
-    console.log('did u run?')
-    try {
-      commit('SET_LOADING', true);
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
-      if (!response.ok) {
-        throw new Error('HTTP error ' + response.status);
-      }
-      const practices = await response.json();
-      commit('SET_USER_PRACTICES', practices);
-
-    } catch (error) {
-      console.log('Fetch Error: ', error);
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
+  }),
+  fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
+    console.log('test')
+    const userID = rootState.auth.user.id;
+    const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
+    await bindFirestoreRef('userPractices', ref, { wait: true });
+  }),
   addExerciseToSet({ commit }, payload) {
     commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
   },
