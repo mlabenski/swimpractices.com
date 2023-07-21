@@ -48,7 +48,7 @@
 
         <!-- My Templates set list -->
         <div class="relative">
-          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices ? userPractices : null" v-if="user"></SetList>
+          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
           <!-- More SetList components here as needed -->
 
           <!-- Generated practice data display -->

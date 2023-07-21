@@ -103,13 +103,27 @@ const actions = {
       commit('SET_LOADING', false)
     }
   }),
-  fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
-    console.log('test')
-    if(rootState.auth.user) {
+  fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState, commit}) {
+    try {
+      commit('SET_LOADING', true)
       const userID = rootState.auth.user.id;
       const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
       await bindFirestoreRef('userPractices', ref, { wait: true });
+      let totalYards = 0;
+      state.userPractices.forEach(practice => {
+        practice.sets.forEach(set => {
+          set.exercises.forEach(exercise => {
+            totalYards += exercise.distance * exercise.quantity;
+          });
+        });
+      });
+      commit('SET_TOTAL_YARDS', totalYards);
+    } catch (error) {
+
+    } finally {
+      commit('SET_LOADING', false)
     }
+    console.log('test')
   }),
   fetchPracticeByID: firestoreAction(async function({ bindFirestoreRef, commit }, id) {
     // Get a reference to the Firestore document
