@@ -158,7 +158,9 @@ export default {
     LogsNotificationModel
   },
   async asyncData({ store, params }) {
-    await store.dispatch('practices/bindPractice', params.id);
+    const practice = await store.dispatch('practices/bindPractice', params.id);
+    console.log(practice);
+    return { practice };
   },
   async mounted() {
     try {
@@ -168,7 +170,6 @@ export default {
     }
   },
   computed: {
-
     ...mapGetters({
       user: 'auth/user',
       getPracticeByID: 'practices/getPracticeByID',
