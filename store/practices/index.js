@@ -196,6 +196,7 @@ const getters = {
         console.log('unable to find ID')
       }
     },
+  practice: (state) => state.practice
 }
 
 export default {
