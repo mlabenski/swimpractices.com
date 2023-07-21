@@ -105,9 +105,11 @@ const actions = {
   }),
   fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
     console.log('test')
-    const userID = rootState.auth.user.id;
-    const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
-    await bindFirestoreRef('userPractices', ref, { wait: true });
+    if(rootState.auth.user) {
+      const userID = rootState.auth.user.id;
+      const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
+      await bindFirestoreRef('userPractices', ref, { wait: true });
+    }
   }),
   fetchPracticeByID: firestoreAction(async function({ bindFirestoreRef, commit }, id) {
     // Get a reference to the Firestore document

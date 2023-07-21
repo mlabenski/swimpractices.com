@@ -62,7 +62,7 @@ export default {
       required: true
     },
     practiceSets: {
-      type: Object,
+      type: Array,
       required: true
     },
     userID: {
