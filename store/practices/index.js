@@ -151,25 +151,8 @@ const getters = {
   practices(state) {
     return state.practices;
   },
-  userPractices: (state, getters, rootState) => {
-    if(!rootState.auth.user){
-      return console.log('not signed in, retrieving no user practices')
-    }
-    if(rootState.auth.user){
-      const userID = rootState.auth.user.id;
-
-      return Object.keys(state.practices)
-        .reduce((acc, practiceID) => {
-          if(state.practices[practiceID].userID === userID) {
-            acc[practiceID] = {
-              id: practiceID,
-              ...state.practices[practiceID]
-            };
-          }
-          return acc;
-        }, {});
-    }
-    console.log('no user found --- error really')
+  userPractices(state) {
+    return state.userPractices;
   },
 
   isLoading: state => state.loading,
