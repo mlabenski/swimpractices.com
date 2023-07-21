@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -39,8 +39,11 @@ export default {
     routes: function () {
       return axios.get('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json')
         .then((res) => {
-          return res.data.map((practice) => {
-            return '/' + practice.id
+          // get the keys of the res.data object
+          const ids = Object.keys(res.data);
+          // map over the ids to generate the routes
+          return ids.map((id) => {
+            return '/' + id
           })
         })
     }
