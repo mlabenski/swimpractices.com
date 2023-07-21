@@ -158,9 +158,8 @@ export default {
     LogsNotificationModel
   },
   async asyncData({ store, params }) {
-    const practice = await store.dispatch('practices/bindPractice', params.id);
-    console.log(practice);
-    return { practice };
+    await store.dispatch('practices/bindPractice', params.id);
+    console.log(params.id);
   },
   async mounted() {
     try {
