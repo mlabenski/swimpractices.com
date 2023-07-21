@@ -40,7 +40,7 @@ const mutations = {
     const practice = state.practices.find(practice => practice.id === practiceID);
     console.log(`will make an edit to ${practice}`)
     if (practice) {
-      if (exerciseIndex && property && newValue) {
+      if (exerciseIndex>=0 && property>=0 && newValue>=0) {
         // Update existing exercise property
         console.log('property is '+ property)
         console.log('update an existing exercise here')
