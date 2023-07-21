@@ -173,7 +173,7 @@ export default {
       user: 'auth/user',
       getPracticeByID: 'practices/getPracticeByID',
       isLoading: 'getLoading',
-      practice: 'singlePractice',
+      practice: 'practices/singlePractice',
     }),
   },
   data() {
