@@ -73,6 +73,7 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/google-fonts'
   ],
+
   firebase: {
     config: {
       apiKey: process.env.VUE_APP_FIREBASE_apiKey,
