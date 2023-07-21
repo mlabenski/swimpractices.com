@@ -5,6 +5,7 @@ import {firestoreAction} from "vuexfire";
 const state = () => ({
   practices: {},
   practice: {},
+  singlePractice: {},
   loading: false,
   userPractices: {},
   filters: {} // add new property for filters
@@ -14,6 +15,9 @@ const mutations = {
   SET_PRACTICES_NEW(state, practices) {
     console.log('setting practices to: '+ practices);
     state.practices = practices;
+  },
+  SET_SINGLE_PRACTICE(state, practice) {
+    state.singlePractice = practice;
   },
   SET_USER_PRACTICES(state, userPractices) {
     console.log('setting user practices to: '+ userPractices);
@@ -105,18 +109,7 @@ const actions = {
       const ref = this.$fire.firestore.collection('practices').doc(id);
       await bindFirestoreRef('practice', ref, { wait: true });
 
-      let totalYards = 0;
-
-      // Calculate the total yards for the specific practice
-      if (state.practice) {
-        state.practice.sets.forEach(set => {
-          set.exercises.forEach(exercise => {
-            totalYards += exercise.distance * exercise.quantity;
-          });
-        });
-      }
-
-      commit('SET_TOTAL_YARDS', totalYards);
+      commit('SET_SINGLE_PRACTICE', state.practice);
     } catch (error) {
       // handle error
     } finally {
@@ -161,6 +154,7 @@ const actions = {
 }
 
 const getters = {
+  singlePractice: state => state.singlePractice,
   practices(state) {
     return state.practices;
   },

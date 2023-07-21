@@ -173,11 +173,8 @@ export default {
       user: 'auth/user',
       getPracticeByID: 'practices/getPracticeByID',
       isLoading: 'getLoading',
+      practice: 'singlePractice',
     }),
-    practice() {
-      console.log('trying to show practice');
-      return this.$store.getters.practice;
-    }
   },
   data() {
     return {
