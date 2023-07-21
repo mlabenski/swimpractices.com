@@ -275,6 +275,7 @@ export default {
       this.$store.dispatch('practices/updateExerciseStroke', { exerciseId: exercise.id, newValue });
     },
     async savePractice() {
+      console.log('attempting to save');
       if (!this.user) {
         const error = 'guests are not allowed to save practices.'
         await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
