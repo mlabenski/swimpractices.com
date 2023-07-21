@@ -36,7 +36,7 @@ const mutations = {
     state.practices[payload.id] = Object.assign({}, state.practices[payload.id], payload.updates);
   },
 
-  ADD_OR_UPDATE_EXERCISE_TO_SET(state, { practiceID, setIndex, exerciseIndex, property, newValue }) {
+  ADD_OR_UPDATE_EXERCISE_TO_SET(state, { practiceID, setIndex, exerciseIndex, property, newValue, exercise }) {
     const practice = state.practices.find(practice => practice.id === practiceID);
     console.log(`will make an edit to ${practice}`)
     if (practice) {
