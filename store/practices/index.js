@@ -1,5 +1,7 @@
 // /store/practices/index.js
 
+import {firestoreAction} from "vuexfire";
+
 const state = () => ({
   practices: {},
   loading: false,
@@ -94,6 +96,34 @@ const actions = {
       commit('SET_LOADING', false);
     }
   },
+  //fetch single practice??
+  bindPractice: firestoreAction(async function ({ bindFirestoreRef, commit }, id) {
+    try {
+      commit('SET_LOADING', true)
+
+      // Get reference to the specific practice by id
+      const ref = this.$fire.firestore.collection('practices').doc(id);
+      await bindFirestoreRef('practice', ref, { wait: true });
+
+      let totalYards = 0;
+
+      // Calculate the total yards for the specific practice
+      if (state.practice) {
+        state.practice.sets.forEach(set => {
+          set.exercises.forEach(exercise => {
+            totalYards += exercise.distance * exercise.quantity;
+          });
+        });
+      }
+
+      commit('SET_TOTAL_YARDS', totalYards);
+    } catch (error) {
+      // handle error
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  }),
+
   async fetchUserPractices({ commit }) {
     console.log('did u run?')
     try {
@@ -156,15 +186,15 @@ const getters = {
 
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
-  getPracticeByID: (state) => (id) => {
-    if(state.practices[id]) {
-      console.log('found a practice with the id');
-      return state.practices[id];
-    }
-    else {
-      console.log('unable to find ID')
-    }
-  },
+    getPracticeByID: (state) => (id) => {
+      if(state.practices[id]) {
+        console.log('found a practice with the id');
+        return state.practices[id];
+      }
+      else {
+        console.log('unable to find ID')
+      }
+    },
 }
 
 export default {

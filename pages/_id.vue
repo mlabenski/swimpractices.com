@@ -157,9 +157,8 @@ export default {
     SeasonList,
     LogsNotificationModel
   },
-  async asyncData({ store }) {
-    // Fetch practices during server-side rendering
-    await store.dispatch('practices/fetchPractices')
+  async asyncData({ store, params }) {
+    await store.dispatch('bindPractice', params.id);
   },
   computed: {
 
