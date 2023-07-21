@@ -238,7 +238,7 @@ export default {
         set: newSet
       });
     },
-    addExercise(setIndex) {
+    async addExercise(setIndex) {
       const newExercise = {
         id: 'akf914141',
         stroke: 'Enter stroke',
@@ -252,12 +252,11 @@ export default {
       console.log('set Index hell')
 
       // Dispatch Vuex action
-      this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
+      await this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
         practiceID: this.$route.params.id,
         setIndex,
         exercise: newExercise,
-      });
-      this.fetchPractice();
+      }).then(r => this.fetchPractice());
     },
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
