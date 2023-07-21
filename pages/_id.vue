@@ -161,15 +161,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      getPracticeByID: 'practices/getPracticeByID',
       isLoading: 'getLoading',
     }),
-    practice() {
-      console.log('the route is:' + this.$route.params.id);
-      console.log('the practice is:')
-      console.log(this.getPracticeByID(this.$route.params.id));
-      return this.getPracticeByID(this.$route.params.id);
-    },
   },
   data() {
     return {
@@ -181,6 +174,7 @@ export default {
       isSeasonModalOpen: false,
       editorEnabled: false,
       isDropdownOpen: false,
+      practice: null
     }
   },
   watch: {
@@ -197,6 +191,13 @@ export default {
     ...mapActions(["addPracticeToSeason", "createSeason"]),
     closeModal() {
       this.isSeasonModalOpen = false;
+    },
+    async fetchPractice() {
+      console.log('the route is:' + this.$route.params.id);
+      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.id);
+      this.practice = this.$store.state.practices.practice;
+      console.log('the practice is:')
+      console.log(this.practice);
     },
     toggleEditor() {
       this.editorEnabled = !this.editorEnabled;
@@ -325,8 +326,12 @@ export default {
       this.isOptionsExpanded = !this.isOptionsExpanded;
     },
   },
+  mounted() {
+    this.fetchPractice();
+  },
   beforeDestroy() {
     this.closeZoom();
   },
 };
+
 </script>

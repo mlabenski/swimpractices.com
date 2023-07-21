@@ -2,9 +2,9 @@
 import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 const state = () => ({
-  practices: {},
+  practices: null,
   loading: false,
-  userPractices: {},
+  userPractices: null,
   filters: {} // add new property for filters
 });
 
@@ -22,6 +22,9 @@ const mutations = {
   },
   SET_FILTERS(state, filters) { // new mutation to set filters
     state.filters = filters;
+  },
+  SET_PRACTICE(state, practice) {
+    state.practice = practice;
   },
   UPDATE_PRACTICE(state, payload) {
     // Ensure the practice exists
@@ -106,6 +109,20 @@ const actions = {
     const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
     await bindFirestoreRef('userPractices', ref, { wait: true });
   }),
+  fetchPracticeByID: firestoreAction(async function({ bindFirestoreRef, commit }, id) {
+    // Get a reference to the Firestore document
+    const ref = this.$fire.firestore.collection('practices').doc(id);
+
+    // Fetch the document data
+    const doc = await ref.get();
+
+    if (doc.exists) {
+      // Commit the practice to the Vuex store
+      commit('SET_PRACTICE', { id, ...doc.data() });
+    } else {
+      console.log('Practice not found');
+    }
+  }),
   addExerciseToSet({ commit }, payload) {
     commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
   },
@@ -121,6 +138,12 @@ const actions = {
   updatePractice({ commit }, payload) {
     commit('UPDATE_PRACTICE', payload);
   },
+  unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
+    unbindFirestoreRef('practices', false);
+  }),
+  unbindUserPractices: firestoreAction(function ({ unbindFirestoreRef }) {
+    unbindFirestoreRef('userPractices', false);
+  }),
 
 }
 
@@ -152,14 +175,37 @@ const getters = {
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
   getPracticeByID: (state) => (id) => {
-    if(state.practices[id]) {
-      console.log('found a practice with the id');
-      return state.practices[id];
-    }
-    else {
-      console.log('unable to find ID')
+    return async () => {
+      let practice;
+
+      if (Array.isArray(state.practices)) {
+        // If state.practices is an array, use the find method
+        console.log('If statement 1: Array')
+        practice = state.practices.find(practice => practice.id === id);
+      } else if (state.practices && typeof state.practices === 'object') {
+        console.log('If statement 2: Object')
+        // If state.practices is an object, use the id as a key
+        practice = state.practices[id];
+      } else if (state.practices === null) {
+        console.log('If statement 3: Array')
+        // If state.practices is null, fetch the practice from Firestore
+
+        const doc = await this.$fire.firestore.collection('practices').doc(id).get();
+        if (doc.exists) {
+          practice = doc.data();
+          practice.id = doc.id; // add the document id to the practice object
+        }
+      }
+
+      if (practice) {
+        console.log('found a practice with the id');
+        return practice;
+      } else {
+        console.log('unable to find ID');
+      }
     }
   },
+
 }
 
 export default {
