@@ -35,20 +35,6 @@ export default {
     { src: '~/plugins/netlify-identity-widget.js', mode: 'client' }
   ],
 
-  generate: {
-    routes: function () {
-      return axios.get('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json')
-        .then((res) => {
-          // get the keys of the res.data object
-          const ids = Object.keys(res.data);
-          // map over the ids to generate the routes
-          return ids.map((id) => {
-            return '/' + id
-          })
-        })
-    }
-  },
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
