@@ -282,7 +282,7 @@ export default {
         return;
       }
       const practiceID = this.$route.params.id;
-      const practice = this.$store.state.practices.find(practice => practice.id === practiceID);
+      const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID);
       console.log('We will only work with this new practice:')
       console.log(practice);
 
