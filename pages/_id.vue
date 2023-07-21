@@ -267,6 +267,8 @@ export default {
         property: property,
         newValue: newValue
       });
+      //Now lets fetch the practice again to reload it??
+      this.fetchPractice();
     },
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
