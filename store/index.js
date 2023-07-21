@@ -125,4 +125,5 @@ export const getters = {
   getLoading(state) {
     return state.isLoading;
   },
+  practice: (state) => state.practice,
 };

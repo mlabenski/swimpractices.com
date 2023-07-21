@@ -4,6 +4,7 @@ import {firestoreAction} from "vuexfire";
 
 const state = () => ({
   practices: {},
+  practice: {},
   loading: false,
   userPractices: {},
   filters: {} // add new property for filters
@@ -96,8 +97,7 @@ const actions = {
       commit('SET_LOADING', false);
     }
   },
-  //fetch single practice??
-  bindPractice: firestoreAction(async function ({ bindFirestoreRef, commit }, id) {
+  bindPractice: firestoreAction(async function ({ bindFirestoreRef, commit, state }, id) {
     try {
       commit('SET_LOADING', true)
 
@@ -123,6 +123,7 @@ const actions = {
       commit('SET_LOADING', false)
     }
   }),
+
 
   async fetchUserPractices({ commit }) {
     console.log('did u run?')
