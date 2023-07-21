@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-        <div v-else>
+        <div v-if="practice">
           <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
             <EditableField v-if="practice" :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div class="flex space-x-2">
