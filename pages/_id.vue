@@ -282,15 +282,15 @@ export default {
         return;
       }
       const practiceID = this.$route.params.id;
-      const practiceRef = this.$fire.firestore.collection('practices').doc(practiceID);
-      // Get current practice data
-      const practiceData = this.practice;
+      const practice = this.$store.state.practices.find(practice => practice.id === practiceID);
+      console.log('We will only work with this new practice:')
+      console.log(practice);
 
       // Check if user ID matches original
-      if (practiceData.userID === this.user.id) {
+      if (practice.userID === this.user.id) {
         // Update existing practice
         try {
-          await this.$fire.firestore.collection('practices').doc(practiceID).update(practiceData);
+          await this.$fire.firestore.collection('practices').doc(practiceID).update(practice);
           await this.$store.dispatch('notifications/addNotification', {message: 'Practice saved successfully',type: 2})
         } catch (error) {
           await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice', type: 1});
