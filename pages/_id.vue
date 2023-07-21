@@ -257,6 +257,7 @@ export default {
         setIndex,
         exercise: newExercise,
       });
+      this.fetchPractice();
     },
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
@@ -268,7 +269,6 @@ export default {
         newValue: newValue
       });
       //Now lets fetch the practice again to reload it??
-      this.fetchPractice();
     },
     toggleTableVisibility(setIndex) {
       this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
