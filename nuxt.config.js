@@ -1,7 +1,6 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: true,
-  target: 'server',
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -57,10 +56,8 @@ export default {
     'nuxt-material-design-icons',
     '@nuxtjs/firebase',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/google-fonts',
-    '@nuxtjs/axios'
+    '@nuxtjs/google-fonts'
   ],
-
   firebase: {
     config: {
       apiKey: process.env.VUE_APP_FIREBASE_apiKey,

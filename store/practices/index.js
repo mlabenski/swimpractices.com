@@ -1,11 +1,7 @@
 // /store/practices/index.js
 
-import {firestoreAction} from "vuexfire";
-
 const state = () => ({
   practices: {},
-  practice: {},
-  singlePractice: {},
   loading: false,
   userPractices: {},
   filters: {} // add new property for filters
@@ -15,12 +11,6 @@ const mutations = {
   SET_PRACTICES_NEW(state, practices) {
     console.log('setting practices to: '+ practices);
     state.practices = practices;
-  },
-  SET_SINGLE_PRACTICE(state, practice) {
-    state.singlePractice = practice;
-  },
-  SET_PRACTICE(state, practice) {
-    state.practice = practice
   },
   SET_USER_PRACTICES(state, userPractices) {
     console.log('setting user practices to: '+ userPractices);
@@ -104,29 +94,6 @@ const actions = {
       commit('SET_LOADING', false);
     }
   },
-  async setPractice({ commit }, practiceId) {
-    const practicesJson = await this.$axios.$get('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json')
-    const practices = JSON.parse(practicesJson)
-    const practice = practices[practiceId]
-    commit('SET_PRACTICE', practice)
-  },
-  bindPractice: firestoreAction(async function ({ bindFirestoreRef, commit, state }, id) {
-    try {
-      commit('SET_LOADING', true)
-
-      // Get reference to the specific practice by id
-      const ref = this.$fire.firestore.collection('practices').doc(id);
-      await bindFirestoreRef('practice', ref, { wait: true });
-
-      commit('SET_SINGLE_PRACTICE', state.practice);
-    } catch (error) {
-      // handle error
-    } finally {
-      commit('SET_LOADING', false)
-    }
-  }),
-
-
   async fetchUserPractices({ commit }) {
     console.log('did u run?')
     try {
@@ -163,7 +130,6 @@ const actions = {
 }
 
 const getters = {
-  singlePractice: state => state.singlePractice,
   practices(state) {
     return state.practices;
   },
@@ -190,16 +156,15 @@ const getters = {
 
   isLoading: state => state.loading,
   filters: state => state.filters, // new getter for filters,
-    getPracticeByID: (state) => (id) => {
-      if(state.practices[id]) {
-        console.log('found a practice with the id');
-        return state.practices[id];
-      }
-      else {
-        console.log('unable to find ID')
-      }
-    },
-  practice: (state) => state.practice
+  getPracticeByID: (state) => (id) => {
+    if(state.practices[id]) {
+      console.log('found a practice with the id');
+      return state.practices[id];
+    }
+    else {
+      console.log('unable to find ID')
+    }
+  },
 }
 
 export default {
