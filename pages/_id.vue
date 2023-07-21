@@ -158,7 +158,14 @@ export default {
     LogsNotificationModel
   },
   async asyncData({ store, params }) {
-    await store.dispatch('bindPractice', params.id);
+    await store.dispatch('practices/bindPractice', params.id);
+  },
+  async mounted() {
+    try {
+      await this.$store.dispatch('practices/bindPractice', this.$route.params.id);
+    } catch (e) {
+      console.error(e)
+    }
   },
   computed: {
 
@@ -168,6 +175,7 @@ export default {
       isLoading: 'getLoading',
     }),
     practice() {
+      console.log('trying to show practice');
       return this.$store.getters.practice;
     }
   },
