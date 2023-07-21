@@ -157,9 +157,8 @@ export default {
     SeasonList,
     LogsNotificationModel
   },
-  async asyncData({ store, params }) {
-    await store.dispatch('practices/bindPractice', params.id);
-    console.log(params.id);
+  async asyncData ({ app, store, params }) {
+    await store.dispatch('practices/setPractice', params.id)
   },
   async mounted() {
     try {

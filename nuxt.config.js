@@ -1,4 +1,3 @@
-import axios from 'axios';
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
@@ -72,7 +71,8 @@ export default {
     'nuxt-material-design-icons',
     '@nuxtjs/firebase',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxtjs/axios'
   ],
 
   firebase: {

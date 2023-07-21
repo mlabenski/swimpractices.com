@@ -19,6 +19,9 @@ const mutations = {
   SET_SINGLE_PRACTICE(state, practice) {
     state.singlePractice = practice;
   },
+  SET_PRACTICE(state, practice) {
+    state.practice = practice
+  },
   SET_USER_PRACTICES(state, userPractices) {
     console.log('setting user practices to: '+ userPractices);
     state.userPractices = userPractices;
@@ -100,6 +103,12 @@ const actions = {
     } finally {
       commit('SET_LOADING', false);
     }
+  },
+  async setPractice({ commit }, practiceId) {
+    const practicesJson = await this.$axios.$get('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json')
+    const practices = JSON.parse(practicesJson)
+    const practice = practices[practiceId]
+    commit('SET_PRACTICE', practice)
   },
   bindPractice: firestoreAction(async function ({ bindFirestoreRef, commit, state }, id) {
     try {

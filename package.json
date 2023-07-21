@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/bootstrap-vue": "^2.0.4",
     "@nuxtjs/firebase": "^7.3.0",
     "@nuxtjs/google-fonts": "^3.0.1",
