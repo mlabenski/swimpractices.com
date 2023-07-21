@@ -38,8 +38,9 @@ const mutations = {
 
   ADD_OR_UPDATE_EXERCISE_TO_SET(state, { practiceID, setIndex, exercise, exerciseIndex, property, newValue }) {
     const practice = state.practices[practiceID];
+    console.log(`will make an edit to ${practice}`)
     if (practice) {
-      if (typeof exerciseIndex !== 'undefined' && property && newValue) {
+      if (exerciseIndex && property && newValue) {
         // Update existing exercise property
         console.log('property is '+ property)
         console.log('update an existing exercise here')
