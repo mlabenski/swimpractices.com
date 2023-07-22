@@ -59,12 +59,11 @@ const mutations = {
     }
   },
   ADD_OR_UPDATE_SET(state, { practiceID, set, setIndex, property, newValue }) {
-    const practice = state.practices[practiceID];
+    const practice = state.practices.find(practice => practice.id === practiceID);
     if (practice) {
       if (typeof setIndex !== 'undefined' && property && newValue) {
         // Update existing set property
         console.log('property is '+ property)
-        console.log('update an existing set here')
         const setToUpdate = practice.sets[setIndex];
         console.log('set found is:')
         console.log(setToUpdate)
