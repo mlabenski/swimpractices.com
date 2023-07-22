@@ -126,11 +126,19 @@ const actions = {
     }
     console.log('test')
   }),
-  fetchPracticeByID: firestoreAction(async function({ bindFirestoreRef, commit }, id) {
-    // Get a reference to the Firestore document
-    const ref = this.$fire.firestore.collection('practices').doc(id);
+  fetchPracticeByID: firestoreAction(async function({ state, bindFirestoreRef, commit }, id) {
+    // First, check if state.practices exists and try to find the practice in it
+    if (state.practices) {
+      const practice = state.practices.find(practice => practice.id === id);
+      if (practice) {
+        commit('SET_PRACTICE', practice);
+        return;
+      }
+    }
 
-    // Fetch the document data
+    // If we didn't return above, we either don't have state.practices or didn't find the practice in it.
+    // In this case, fetch the practice from Firestore.
+    const ref = this.$fire.firestore.collection('practices').doc(id);
     const doc = await ref.get();
 
     if (doc.exists) {
@@ -140,6 +148,7 @@ const actions = {
       console.log('Practice not found');
     }
   }),
+
   addExerciseToSet({ commit }, payload) {
     commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
   },
