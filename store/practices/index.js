@@ -4,6 +4,7 @@ import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 const state = () => ({
   practices: null,
   loading: false,
+  totalYards: 0,
   userPractices: null,
   filters: {} // add new property for filters
 });
@@ -19,6 +20,9 @@ const mutations = {
   },
   SET_LOADING(state, value) {
     state.loading = value;
+  },
+  SET_TOTAL_YARDS(state, value) {
+    state.totalYards = value;
   },
   SET_FILTERS(state, filters) { // new mutation to set filters
     state.filters = filters;
@@ -81,24 +85,43 @@ const mutations = {
 }
 
 const actions = {
-  fetchPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
+  fetchPractices: firestoreAction(async function ({ bindFirestoreRef, commit, state }) {
     try {
-      commit('SET_LOADING', true)
-      const ref = this.$fire.firestore.collection('practices');
-      await bindFirestoreRef('practices', ref, { wait: true });
+      commit('SET_LOADING', true);
+
+      // Fetch Firestore data
+      const firestoreRef = this.$fire.firestore.collection('practices');
+      await bindFirestoreRef('practices', firestoreRef, { wait: true });
+
+      // Fetch S3 bucket data
+      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      const s3Data = await response.json();
+
+      // Transform the S3 bucket data to an array of objects
+      const s3DataArray = Object.keys(s3Data).map(id => {
+        return { id, ...s3Data[id] };
+      });
+
+      // Merge Firestore and S3 data
+      const mergedData = [...state.practices, ...s3DataArray];
+      commit('SET_PRACTICES', mergedData);
 
       let totalYards = 0;
-      state.practices.forEach(practice => {
+      mergedData.forEach(practice => {
         practice.sets.forEach(set => {
           set.exercises.forEach(exercise => {
             totalYards += exercise.distance * exercise.quantity;
           });
         });
       });
+
       commit('SET_TOTAL_YARDS', totalYards);
 
     } catch (error) {
-      // handle error
+      console.error(error);
     } finally {
       commit('SET_LOADING', false)
     }
