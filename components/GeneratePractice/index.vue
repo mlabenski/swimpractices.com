@@ -1,18 +1,18 @@
 <template>
-  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-500">
-    <div class="px-5 py-3 bg-white" v-if="!user">
+  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg">
+    <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm">
       <div class="mb-4 grid grid-cols-2 gap-4">
-        <h2>Sorry! Create an account to generate a practice.</h2>
+        <h2 class="font-semibold text-lg text-gray-700">Sorry! Create an account to generate a practice.</h2>
       </div>
     </div>
-    <div class="px-5 py-3 bg-white" v-if="user">
+    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm">
       <div class="mb-4 grid grid-cols-2 gap-4">
-        <b-form-group label="Distance:" label-for="distance">
-          <b-form-input v-model.number="practice.distance" id="distance" type="number" size="sm"></b-form-input>
+        <b-form-group label="Distance:" label-for="distance" class="font-semibold text-gray-700">
+          <b-form-input v-model.number="practice.distance" id="distance" type="number" class="form-input block w-full sm:text-sm md:text-base border-gray-300"></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Pool Size:" label-for="poolSize">
-          <b-form-select v-model="practice.poolSize" id="poolSize" size="sm">
+        <b-form-group label="Pool Size:" label-for="poolSize" class="font-semibold text-gray-700">
+          <b-form-select v-model="practice.poolSize" id="poolSize" class="form-input block w-full sm:text-sm md:text-base border-gray-300">
             <b-form-select-option value="25 meters">25 meters</b-form-select-option>
             <b-form-select-option value="50 meters">50 meters</b-form-select-option>
             <b-form-select-option value="25 yards">25 yards</b-form-select-option>
@@ -20,31 +20,34 @@
         </b-form-group>
       </div>
 
-      <b-form-group label="Duration:" label-for="duration">
-        <b-form-input v-model="practice.duration" id="duration" type="time" size="sm"></b-form-input>
+      <b-form-group label="Duration:" label-for="duration" class="font-semibold text-gray-700">
+        <b-form-input v-model="practice.duration" id="duration" type="time" class="form-input block w-full sm:text-sm md:text-base border-gray-300"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="Acceptable Strokes:" label-for="strokes">
-        <b-form-checkbox-group v-model="practice.strokes" id="strokes">
-          <b-form-checkbox value="fly">Fly</b-form-checkbox>
-          <b-form-checkbox value="back">Back</b-form-checkbox>
-          <b-form-checkbox value="breast">Breast</b-form-checkbox>
-          <b-form-checkbox value="freestyle">Freestyle</b-form-checkbox>
+      <b-form-group label="Acceptable Strokes:" label-for="strokes" class="font-semibold text-gray-700">
+        <b-form-checkbox-group v-model="practice.strokes" id="strokes" class="flex flex-wrap gap-2">
+          <div v-for="stroke in allStrokes" :key="stroke">
+            <b-form-checkbox :value="stroke" class="text-sm text-gray-600">{{ stroke }}</b-form-checkbox>
+            <b-form-input v-model.number="strokePercentages[stroke]" type="number" min="0" max="100"
+                          @change="updateStrokePercentages(stroke)" class="ml-2 w-20 form-input text-sm text-gray-600">
+            </b-form-input>
+            <span class="text-sm ml-1">%</span>
+          </div>
         </b-form-checkbox-group>
       </b-form-group>
 
-      <b-form-group label="Acceptable Equipment:" label-for="equipment">
-        <b-form-checkbox-group v-model="practice.equipment" id="equipment">
-          <b-form-checkbox value="fins">Fins</b-form-checkbox>
-          <b-form-checkbox value="snorkel">Snorkel</b-form-checkbox>
-          <b-form-checkbox value="paddles">Paddles</b-form-checkbox>
-          <b-form-checkbox value="pull boy">Pull Boy</b-form-checkbox>
-          <b-form-checkbox value="parachute">Parachute</b-form-checkbox>
+      <b-form-group label="Acceptable Equipment:" label-for="equipment" class="font-semibold text-gray-700">
+        <b-form-checkbox-group v-model="practice.equipment" id="equipment" class="flex flex-wrap gap-2">
+          <b-form-checkbox value="fins" class="text-sm text-gray-600">Fins</b-form-checkbox>
+          <b-form-checkbox value="snorkel" class="text-sm text-gray-600">Snorkel</b-form-checkbox>
+          <b-form-checkbox value="paddles" class="text-sm text-gray-600">Paddles</b-form-checkbox>
+          <b-form-checkbox value="pull boy" class="text-sm text-gray-600">Pull Boy</b-form-checkbox>
+          <b-form-checkbox value="parachute" class="text-sm text-gray-600">Parachute</b-form-checkbox>
         </b-form-checkbox-group>
       </b-form-group>
 
       <div class="text-right mt-4">
-        <b-button variant="primary" :disabled="submitting" @click="submitPractice">
+        <b-button variant="primary" :disabled="submitting" @click="submitPractice" class="px-5 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg">
           <b-spinner small v-if="submitting"></b-spinner>
           {{ submitting ? 'Loading...' : 'Submit' }}
         </b-button>
@@ -72,7 +75,27 @@ export default {
         strokes: [],
         equipment: [],
       },
+      allStrokes: ['fly', 'back', 'breast', 'freestyle'],
+      strokePercentages: {
+        'fly': 0,
+        'back': 0,
+        'breast': 0,
+        'freestyle': 0
+      }
     };
+  },
+  watch: {
+    'practice.strokes': {
+      handler: function(newStrokes) {
+        let activeStrokes = newStrokes.filter(stroke => this.allStrokes.includes(stroke));
+        let perStroke = 100 / activeStrokes.length;
+        for (let stroke of this.allStrokes) {
+          this.strokePercentages[stroke] = activeStrokes.includes(stroke) ? perStroke : 0;
+        }
+      },
+      immediate: true,
+      deep: true
+    }
   },
   methods: {
     async submitPractice() {
@@ -103,6 +126,14 @@ export default {
         this.$emit('practice-generated', responseString);
       }
     },
+    updateStrokePercentages(stroke) {
+      let activeStrokes = this.practice.strokes.filter(s => s !== stroke && this.allStrokes.includes(s));
+      let remaining = 100 - this.strokePercentages[stroke];
+      let perStroke = activeStrokes.length ? remaining / activeStrokes.length : 0;
+      for (let s of activeStrokes) {
+        this.strokePercentages[s] = perStroke;
+      }
+    }
   },
 };
 </script>
