@@ -14,26 +14,21 @@ export const mutations = {
   },
   UPDATE_SEASON_PRACTICES: (state, rootPractices) => {
     // Loop through each season
-    console.log('do u even have the seasons here');
-    console.log(rootPractices)
     for (let season of state.seasons) {
-      // Create a new object for the updated practices
-      let updatedPractices = {};
-      console.log('testing if ur running')
+      // Create a new array for the updated practices
+      let updatedPractices = [];
 
       // Loop through each practice ID in the current season
       for (let practiceID of season.practices) {
-        console.log('showing season practices')
-        console.log(practiceID)
         // Check if the practice exists in the Vuex state
-        if (rootPractices.hasOwnProperty(practiceID)) {
-          console.log('ran twice')
-          // If a matching practice is found, add it to the updatedPractices object
-          updatedPractices[practiceID] = rootPractices[practiceID];
+        let matchingPractice = rootPractices.find(practice => practice.id === practiceID);
+        if (matchingPractice) {
+          // If a matching practice is found, add it to the updatedPractices array
+          updatedPractices.push(matchingPractice);
         }
       }
 
-      // Update the current season's practices object with the updatedPractices object
+      // Update the current season's practices array with the updatedPractices array
       season.practices = updatedPractices;
     }
   },
