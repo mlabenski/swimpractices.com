@@ -19,7 +19,7 @@
         {{ season.likes}}
         <span class="material-icons text-opacity-50">favorite</span>
       </div>
-      <div v-if="showPracticeTable" class="px-6 pt-4 pb-2 bg-red-50">
+      <div v-if="showPracticeTable && season.practices" class="px-6 pt-4 pb-2 bg-red-50">
         <SetList title="Season Table" :userID="user ? user: null" :practiceSets="season.practices"></SetList>
       </div>
     </div>
