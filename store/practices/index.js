@@ -14,6 +14,9 @@ const mutations = {
     console.log('setting practices to: '+ practices);
     state.practices = practices;
   },
+  SET_PRACTICES(state, practices) {
+    state.practices = practices;
+  },
   SET_USER_PRACTICES(state, userPractices) {
     console.log('setting user practices to: '+ userPractices);
     state.userPractices = userPractices;
@@ -100,10 +103,13 @@ const actions = {
       }
       const s3Data = await response.json();
 
-      // Transform the S3 bucket data to an array of objects
-      const s3DataArray = Object.keys(s3Data).map(id => {
-        return { id, ...s3Data[id] };
-      });
+      let s3DataArray = [];
+      if (s3Data) {
+        // Transform the S3 bucket data to an array of objects
+        s3DataArray = Object.keys(s3Data).map(id => {
+          return { id, ...s3Data[id] };
+        });
+      }
 
       // Merge Firestore and S3 data
       const mergedData = [...state.practices, ...s3DataArray];
@@ -111,11 +117,17 @@ const actions = {
 
       let totalYards = 0;
       mergedData.forEach(practice => {
-        practice.sets.forEach(set => {
-          set.exercises.forEach(exercise => {
-            totalYards += exercise.distance * exercise.quantity;
+        if (practice.sets) {
+          practice.sets.forEach(set => {
+            if (set.exercises) {
+              set.exercises.forEach(exercise => {
+                if (exercise) {
+                  totalYards += exercise.distance * exercise.quantity;
+                }
+              });
+            }
           });
-        });
+        }
       });
 
       commit('SET_TOTAL_YARDS', totalYards);
