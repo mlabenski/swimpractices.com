@@ -87,7 +87,7 @@
         <div class="flex items-center justify-between sm:block">
         </div>
         <!-- Grouped Practices cards -->
-        <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
+        <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike(season.id)" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
       </div>
     </div>
 
@@ -273,9 +273,15 @@ export default {
     },
     handleLike(seasonId) {
       if (!this.user) return;
+      const jwt = this.user.token;
+      console.log(jwt);
+      console.log(seasonId);
       const seasonRef = this.$fire.firestore.collection('seasons').doc(seasonId);
+
       seasonRef.update({
         likes: this.$fire.firestore.FieldValue.increment(1),
+      }, {
+        authorization: `Bearer ${jwt}`
       }).catch((error) => {
         console.error('Error updating likes: ', error);
       });
