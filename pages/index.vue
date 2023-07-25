@@ -280,8 +280,6 @@ export default {
 
       seasonRef.update({
         likes: this.$fire.firestore.FieldValue.increment(1),
-      }, {
-        authorization: `Bearer ${jwt}`
       }).catch((error) => {
         console.error('Error updating likes: ', error);
       });
