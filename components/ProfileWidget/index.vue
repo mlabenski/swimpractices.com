@@ -39,10 +39,10 @@ export default {
 
     };
   },
-  created() {
+  mounted() {
     this.user = this.$store.state.auth.user;
-    const numPractices = this.$store.state.practices.userPractices.length;
-  },
+    this.numPractices = this.$store.state.practices.userPractices.length;
+  }
 };
 </script>
 

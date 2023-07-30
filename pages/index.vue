@@ -29,7 +29,7 @@
           <span class="material-icons">add</span>
           New Practice
         </b-button>
-        <b-button pill variant="secondary" class="floating-button" @click.prevent="openProfile">
+        <b-button pill variant="secondary" class="floating-button-two" @click.prevent="openProfile">
           <span class="material-icons">account_circle</span>
           Profile
         </b-button>
@@ -347,6 +347,14 @@ export default {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 9999;
+  padding-bottom: 9px;
+}
+
+.floating-button-two {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
   z-index: 9999;
   padding-bottom: 9px;
 }
