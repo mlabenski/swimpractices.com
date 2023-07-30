@@ -55,7 +55,7 @@
         <div class="relative flex flex-col items-center">
           <ProfileWidget v-if="user" />
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
-          <div v-if="user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
+          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
           <!-- More SetList components here as needed -->
