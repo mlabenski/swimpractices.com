@@ -84,6 +84,8 @@ export default {
   },
   methods: {
     async addPracticeToSeason(seasonId, practiceId) {
+      console.log(seasonId);
+      console.log(practiceId);
       // Verify that seasonId and practiceId are provided
       if (!seasonId || !practiceId) {
         console.error('Season ID and/or Practice ID not provided');
