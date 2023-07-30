@@ -29,6 +29,10 @@
           <span class="material-icons">add</span>
           New Practice
         </b-button>
+        <b-button pill variant="secondary" class="floating-button" @click.prevent="openProfile">
+          <span class="material-icons">account_circle</span>
+          Profile
+        </b-button>
       </div>
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
@@ -49,7 +53,8 @@
 
         <!-- My Templates set list -->
         <div class="relative">
-          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
+          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user && !openProfile"></SetList>
+          <ProfileWidget v-if="openProfile"></ProfileWidget>
           <!-- More SetList components here as needed -->
 
           <!-- Generated practice data display -->
@@ -101,6 +106,7 @@ import SetList from '@/components/SetList/SetList.vue';
 import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
+import ProfileWidget from '@/components/ProfileWidget';
 import { mapGetters, mapActions } from "vuex";
 import practiceSetsNew from "../data/practiceSetsNew";
 import GeneratePractice from "@/components/GeneratePractice/index.vue";
@@ -122,7 +128,8 @@ export default {
     NotificationModal,
     GeneratePractice,
     TopNavBar,
-    LogsNotificationModel
+    LogsNotificationModel,
+    ProfileWidget
   },
   async mounted() {
     try {
@@ -200,6 +207,7 @@ export default {
       ],
       generatePracticeModal: false,
       newPracticeId: null,
+      profileView: false
     }
   },
   computed: {
@@ -254,6 +262,9 @@ export default {
       console.log(practiceData);
       this.practiceData = practiceData;
       this.generatePracticeModal = true;
+    },
+    openProfile() {
+      this.profileView = true;
     },
     checkNotifications() {
       this.hasNotification = notificationsData.notifications.length > 0;
