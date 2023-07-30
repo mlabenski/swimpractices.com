@@ -59,7 +59,6 @@
           <div v-if="user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
-        </div>
 
         <!-- Free sets list -->
         <div v-if="practices">
@@ -88,7 +87,6 @@
         <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike(season.id)" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
       </div>
     </div>
-
   </div>
 </template>
 
