@@ -15,7 +15,8 @@
           <div class="text-center text-white">
             <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
             <!-- Login button -->
-            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup">Log in to create your own</p>
+            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup" v-if="!user">Log in to create your own</p>
+            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup" v-if="user">Welcome back {{user.username}}</p>
           </div>
         </div>
       </div>
