@@ -150,7 +150,14 @@ export default {
           .where('userID', '==', this.user.id)
           .get();
 
-        const seasonsLocal = snapshot.docs.map(doc => doc.data());
+        const seasonsLocal = snapshot.docs.map(doc => {
+          // Spread the data of the document into a new object
+          // and include the document id
+          return {
+            id: doc.id,
+            ...doc.data()
+          };
+        });
 
         console.log('Seasons: ', seasonsLocal);
         this.seasons = seasonsLocal
