@@ -29,6 +29,10 @@
           <span class="material-icons">add</span>
           New Practice
         </b-button>
+        <b-button pill variant="secondary" class="floating-button" @click.prevent="openProfile">
+          <span class="material-icons">account_circle</span>
+          Profile
+        </b-button>
       </div>
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
@@ -39,7 +43,7 @@
       </div>
 
       <!-- Set lists -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-20 flex">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
         <!-- Dropdown for selecting set list -->
         <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block" v-if="user">
           <option v-for="option in setListOptions" :value="option">
@@ -49,16 +53,14 @@
 
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
-          <ProfileModule v-if="user" />
+          <ProfileWidget v-if="user" />
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
-          <!-- More SetList components here as needed -->
-          <!-- ...rest of your component... -->
-        </div>
-
-          <!-- Log in reminder for unauthenticated users -->
           <div v-if="user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
+          <!-- More SetList components here as needed -->
+          <!-- ...rest of your component... -->
+        </div>
 
         <!-- Free sets list -->
         <div v-if="practices">
@@ -87,6 +89,7 @@
         <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike(season.id)" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
       </div>
     </div>
+
   </div>
 </template>
 
