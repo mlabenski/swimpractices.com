@@ -9,7 +9,7 @@
         <div v-if="mode === 'season'">
           <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Practice to Season</h3>
           <h3 v-if="owner === user.id">You own this practice.</h3>
-          <div v-for="season in seasons" :key="season.id" @click="expandSeason(season.id)" class="mb-2 flex justify-center">
+          <div v-for="season in seasons" :key="season.id" @click="addPracticeToSeason(season.id, $route.params.id)" class="mb-2 flex justify-center">
             <button class="w-3/5 text-black py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors">
               {{ season.title }}
             </button>
@@ -83,10 +83,25 @@ export default {
     this.getSeasons();
   },
   methods: {
-    expandSeason(seasonId) {
-      this.expandedSeason = this.seasons.find(season => season.id === seasonId);
-      this.seasonTitle = this.expandedSeason.title;
-      this.seasonDescription = this.expandedSeason.description;
+    async addPracticeToSeason(seasonId, practiceId) {
+      // Verify that seasonId and practiceId are provided
+      if (!seasonId || !practiceId) {
+        console.error('Season ID and/or Practice ID not provided');
+        return;
+      }
+
+      // Get a reference to the season document in Firestore
+      const seasonRef = this.$fire.firestore.collection('seasons').doc(seasonId);
+
+      // Add the new practice ID to the practices array of the season
+      try {
+        await seasonRef.update({
+          practices: this.$fireModule.firestore.FieldValue.arrayUnion(practiceId)
+        });
+        console.log('Practice added to season');
+      } catch (error) {
+        console.error('Error adding practice to season: ', error);
+      }
     },
     closeModal() {
       this.$emit('close');
@@ -117,9 +132,6 @@ export default {
       else {
         console.log('Error saving season: length of the title or description is too short.')
       }
-    },
-    async addPracticeToSeason(seasonID) {
-      // Add practice to season in Firestore
     },
     async updateSeason() {
       // Code to update the expandedSeason with the new seasonTitle and seasonDescription...
