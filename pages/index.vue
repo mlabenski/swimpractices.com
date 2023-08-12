@@ -23,8 +23,8 @@
     </div>
 
     <!-- Container for all the components below the header -->
-    <div class="container mx-auto sm:px-4 py-2">
-      <div>
+    <div class="container mx-auto py-2">
+      <div class="sm:px-4">
         <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice">
           <span class="material-icons">add</span>
           New Practice
@@ -43,8 +43,8 @@
       </div>
 
       <!-- Set lists -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4  mt-20">
-        <!-- Dropdown for selecting set list -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mt-20">
+      <!-- Dropdown for selecting set list -->
         <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block" v-if="user">
           <option v-for="option in setListOptions" :value="option">
             {{ option }}
@@ -73,7 +73,7 @@
 
 
       <!-- Manual practice entry -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4" v-if="user == '192019fps'">
+      <div class="grid grid-cols-1 sm:grid-cols-2 mt-4" v-if="user == '192019fps'">
         <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
         <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
         <button @click="submitPractice">Submit Practice</button>
@@ -82,7 +82,7 @@
 
 
     <!-- Grouped Practices section -->
-    <div class="grid grid-cols-1 gap-4 mt-2 md:mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
+    <div class="grid grid-cols-1 mt-2 md:mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
       <div class="flex flex-wrap w-full">
         <div class="flex items-center justify-between sm:block">
         </div>
