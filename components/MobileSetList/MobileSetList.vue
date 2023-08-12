@@ -11,7 +11,7 @@
 
     <div v-if="isLoading">Loading...</div>
     <!-- Mobile view (Card Format) -->
-    <div v-else-if="isTableVisible" class="sm:hidden space-y-4">
+    <div v-else-if="isTableVisible" class="sm:hidden">
       <div
         v-for="practice in paginatedData"
         :key="practice.practiceId"

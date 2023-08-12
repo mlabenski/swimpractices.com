@@ -307,6 +307,12 @@ export default {
   padding-right: 1em;
 }
 
+
+@media (min-width: 984px) {
+  padding-left: 0em;
+  padding-right: 0em;
+}
+
 #app {
   background-image: url(@/static/background-414-896-iphone-xr.svg) !important;
   background-color: #CFD7D7 !important;
