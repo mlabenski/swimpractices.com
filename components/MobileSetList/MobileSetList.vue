@@ -11,12 +11,16 @@
 
     <div v-if="isLoading">Loading...</div>
     <!-- Mobile view (Card Format) -->
-    <div v-if="isTableVisible" class="sm:hidden space-y-4">
-      <div v-for="practice in paginatedData" :key="practice.practiceId" class="bg-white shadow-md p-4 rounded">
-        <div class="font-bold text-lg">{{ practice.name }}</div>
-        <div class="text-gray-700">{{ getTotalYardage(practice.sets) }} Distance</div>
-        <div class="flex justify-between mt-2">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600">
+    <div v-else-if="isTableVisible" class="sm:hidden space-y-4">
+      <div
+        v-for="practice in paginatedData"
+        :key="practice.practiceId"
+        class="bg-white shadow-md rounded border-b-3 border-gray-300 transform transition-transform duration-150 hover:-translate-y-1"
+      >
+        <div class="font-bold text-xl mb-2">{{ practice.name }}</div>
+        <div class="text-gray-600 font-medium mb-4">{{ getTotalYardage(practice.sets) }} Distance</div>
+        <div class="flex justify-between">
+          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-500 font-semibold">
             <span class="material-icons">open_in_full</span> View
           </router-link>
           <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600">
