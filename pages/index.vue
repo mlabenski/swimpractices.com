@@ -97,7 +97,7 @@
 <script>
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
-import MobileSetList from '@/components/MobileetList/MobileSetList.vue';
+import MobileSetList from '@/components/MobileSetList/MobileSetList.vue';
 import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
