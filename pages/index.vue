@@ -1,11 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-
-    <!-- Header -->
-    <div class="sm:hidden">
-      <TopNavBar :user="user" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
-    </div>
+    <MobileNavBarTop class="sm:hidden block z-690" />
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div class="relative">
@@ -27,13 +23,9 @@
       <div class="sm:px-4">
         <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice">
           <span class="material-icons">add</span>
-          New Practice
-        </b-button>
-        <b-button pill variant="secondary" class="floating-button-two" @click.prevent="openProfile">
-          <span class="material-icons">account_circle</span>
-          Profile
         </b-button>
       </div>
+
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
         <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice"></GeneratePractice>
@@ -43,7 +35,7 @@
       </div>
 
       <!-- Set lists -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mt-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20">
       <!-- Dropdown for selecting set list -->
         <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block" v-if="user">
           <option v-for="option in setListOptions" :value="option">
@@ -64,7 +56,7 @@
 
         <!-- Free sets list -->
         <div v-if="practices">
-          <MobileSetList class="sm:hidden" title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
+          <MobileSetList class="sm:hidden" title="Free Sets" style="margin-left: 0px; margin-right: 0px" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
           <!-- <SetList title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></SetList> -->
           <!-- More SetList components here as needed -->
         </div>
@@ -90,7 +82,10 @@
         <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike(season.id)" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
       </div>
     </div>
-
+    <!-- Header -->
+    <div class="sm:hidden">
+      <TopNavBar :user="user" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+    </div>
   </div>
 </template>
 
@@ -98,6 +93,7 @@
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import MobileSetList from '@/components/MobileSetList/MobileSetList.vue';
+import MobileNavBarTop from '@/components/MobileNavBarTop';
 import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
@@ -124,7 +120,8 @@ export default {
     GeneratePractice,
     TopNavBar,
     LogsNotificationModel,
-    ProfileWidget
+    ProfileWidget,
+    MobileNavBarTop
   },
   async mounted() {
     try {
@@ -327,17 +324,29 @@ export default {
   #app {
     background-image: url(@/static/background-912-1368-pro.svg) !important;
   }
+  .container {
+    padding-left: 0em;
+    padding-right: 0em;
+  }
 }
 
 @media (min-width: 768px) {
   #app {
     background-image: url(@/static/background-1368-912-wide.svg) !important;
   }
+  .container {
+    padding-left: 0em;
+    padding-right: 0em;
+  }
 }
 
 @media (min-width: 1024px) {
   #app {
     background-image: url(@/static/desktop-1920-1260.svg) !important;
+  }
+  .container {
+    padding-left: 0em;
+    padding-right: 0em;
   }
 }
 
@@ -349,19 +358,28 @@ export default {
   .setlist-dropdown {
     display: block;
   }
+  .container {
+    padding-left: 0em;
+    padding-right: 0em;
+  }
 }
-
 .floating-button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 75px;
+  right: 8px;
   z-index: 9999;
-  padding-bottom: 9px;
+  border-radius: 50%; /* Ensures it's circular */
+  width: 60px; /* Set a fixed width for the circular shape */
+  height: 60px; /* Same height as width to ensure a perfect circle */
+  display: flex; /* Flexbox to center the icon */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
 }
+
 
 .floating-button-two {
   position: fixed;
-  bottom: 20px;
+  bottom: 60px;
   right: 40px;
   z-index: 9999;
   padding-bottom: 9px;

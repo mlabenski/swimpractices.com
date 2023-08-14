@@ -1,8 +1,8 @@
 <template>
   <!-- Top navigation bar -->
-  <nav class="fixed top-0 w-full bg-gray-900 text-white px-2 py-1 z-200">
+  <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-2 py-1 z-200">
     <div class="container mx-auto">
-      <div class="flex justify-between text-xs">
+      <div class="flex justify-between items-center text-xs">
         <!-- Create practice button -->
         <a href="#" class="flex flex-col items-center space-y-1 pt-1 pb-2" @click.prevent="startPractice" v-if="user">
           <span class="material-icons w-6 h-6 fill-current">school</span>

@@ -12,31 +12,41 @@
     <div v-if="isLoading">Loading...</div>
     <!-- Mobile view (Card Format) -->
     <div v-else-if="isTableVisible" class="sm:hidden">
-      <div
+      <router-link
         v-for="practice in paginatedData"
         :key="practice.practiceId"
-        class="bg-white shadow-md rounded border-b-3 border-gray-300 transform transition-transform duration-150 hover:-translate-y-1"
+        :to="{ name: 'id', params: { id: practice.id } }"
+        class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
       >
-        <div class="font-bold text-xl mb-2">{{ practice.name }}</div>
-        <div class="text-gray-600 font-medium mb-4">{{ getTotalYardage(practice.sets) }} Distance</div>
-        <div class="flex justify-between">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-500 font-semibold">
-            <span class="material-icons">open_in_full</span> View
-          </router-link>
-          <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600">
-            <span class="material-icons">delete_forever</span>
-          </button>
+        <!-- Title -->
+        <div class="font-bold text-lg mb-2">{{ practice.name }}</div>
+
+        <!-- Pills -->
+        <div class="flex">
+          <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ getTotalYardage(practice.sets) }} Distance</span>
+          <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">Freestyle</span>
+          <span class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm">Meters</span>
+          <span class="bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-sm">Advanced</span>
         </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between mt-2">
+          <div class="flex space-x-2">
+            <button class="text-green-500">
+              <span class="material-icons">thumb_up</span>
+            </button>
+            <button class="text-red-500">
+              <span class="material-icons">thumb_down</span>
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="material-icons text-gray-700">share</span>
+            <span class="text-blue-600">Share</span>
+          </div>
+        </div>
+      </router-link>
       </div>
-    </div>
-    <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-1 sm:space-x-4">
-      <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
-        <span class="sm:hidden material-icons">chevron_left</span>
-      </button>
-      <div class="self-center text-sm sm:text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
-        <span class="sm:hidden material-icons">chevron_right</span>
-      </button>
     </div>
 
 
