@@ -57,7 +57,7 @@
         <!-- Free sets list -->
         <div v-if="practices">
           <MobileSetList class="sm:hidden" title="Free Sets" style="margin-left: 0px; margin-right: 0px" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
-          <!-- <SetList title="Free Sets" :practiceSets="practices" :userID="user ? user.id : null" ></SetList> -->
+          <SetList title="Free Sets" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
       </div>
