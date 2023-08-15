@@ -25,17 +25,39 @@
         <div class="flex">
           <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ getTotalYardage(practice.sets) }} Distance</span>
           <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">Freestyle</span>
-          <span class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm">Meters</span>
+
+          <!-- Conditional rendering for the measurement pill -->
+          <span
+            v-if="practice.measurement === 1"
+            class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
+                  >
+            25 Yards
+          </span>
+
+          <span
+            v-if="practice.measurement === 2"
+            class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
+                  >
+            25 Meters
+          </span>
+
+          <span
+            v-if="practice.measurement === 3"
+            class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
+                  >
+            50 Meters
+          </span>
           <span class="bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-sm">Advanced</span>
         </div>
+
 
         <!-- Footer -->
         <div class="flex justify-between mt-2">
           <div class="flex space-x-2">
-            <button class="text-green-500">
+            <button class="text-gray-500">
               <span class="material-icons">thumb_up</span>
             </button>
-            <button class="text-red-500">
+            <button class="text-gray-500">
               <span class="material-icons">thumb_down</span>
             </button>
           </div>
