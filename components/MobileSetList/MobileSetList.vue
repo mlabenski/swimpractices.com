@@ -3,8 +3,8 @@
     <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black">
       <h2 class="text-2xl font-bold mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
-    {{ isTableVisible ? 'expand_less' : 'expand_more' }}
-  </span>
+          {{ isTableVisible ? 'expand_less' : 'expand_more' }}
+      </span>
     </div>
 
 
@@ -30,23 +30,24 @@
           <span
             v-if="practice.measurement === 1"
             class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
-                  >
+          >
             25 Yards
           </span>
 
           <span
             v-if="practice.measurement === 2"
             class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
-                  >
+          >
             25 Meters
           </span>
 
           <span
             v-if="practice.measurement === 3"
             class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm"
-                  >
+          >
             50 Meters
           </span>
+
           <span class="bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-sm">Advanced</span>
         </div>
 
@@ -70,11 +71,6 @@
       </router-link>
       </div>
     </div>
-
-
-
-
-  </div>
 </template>
 
 
