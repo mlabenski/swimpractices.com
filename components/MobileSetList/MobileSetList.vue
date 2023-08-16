@@ -16,6 +16,8 @@
         v-for="practice in paginatedData"
         :key="practice.practiceId"
         :to="{ name: 'id', params: { id: practice.id } }"
+        @swipe.left="hidePractice(practice)"
+        @swipe.right="openPractice(practice.id)"
         class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
       >
         <!-- Title -->
@@ -107,6 +109,7 @@ export default {
     isLoading() {
       return this.$store.getters['practices/isLoading'];
     },
+
     practices() {
       return this.$store.getters['practices/practices'];
     },
@@ -152,6 +155,15 @@ export default {
     },
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
+    },
+    hidePractice(practice) {
+      const index = this.practiceSets.findIndex(p => p.practiceId === practice.practiceId);
+      if (index !== -1) {
+        this.practiceSets.splice(index, 1);
+      }
+    },
+    openPractice(practiceId) {
+      this.$router.push({ name: 'id', params: { id: practiceId } });
     },
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend

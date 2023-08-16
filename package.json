@@ -28,6 +28,7 @@
     "vue-select": "^3.20.2",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
+    "vue2-touch-events": "^3.2.2",
     "vuexfire": "^3.2.5"
   },
   "devDependencies": {
