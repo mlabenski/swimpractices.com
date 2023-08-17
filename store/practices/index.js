@@ -85,6 +85,12 @@ const mutations = {
       }
     }
   },
+  removePractice(state, practiceId) {
+    const index = state.practices.findIndex(p => p.practiceId === practiceId);
+    if (index !== -1) {
+      state.practices.splice(index, 1);
+    }
+  },
 }
 
 const actions = {

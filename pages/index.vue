@@ -56,7 +56,7 @@
 
         <!-- Free sets list -->
         <div v-if="practices">
-          <MobileSetList class="sm:hidden" title="Free Sets" style="margin-left: 0px; margin-right: 0px" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
+          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
           <SetList title="Free Sets" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
@@ -294,6 +294,11 @@ export default {
         this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
       }
     },
+    handleHidePractice(practiceId) {
+      // Commit a mutation to the Vuex store
+      console.log('commit');
+      this.$store.commit('practices/removePractice', practiceId);
+    }
   }
 }
 </script>

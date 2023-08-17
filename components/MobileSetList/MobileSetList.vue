@@ -19,7 +19,7 @@
         class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
       >
         <!-- Title -->
-        <div class="font-bold text-lg mb-2">{{ practice.name }}</div>
+        <div class="font-bold text-lg mb-2" v-if="!hiddenPractices.includes(practice)">{{ practice.name }}</div>
 
         <!-- Pills -->
         <div class="flex">
@@ -76,6 +76,16 @@
 
 
 <script>
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
+
+
 export default {
   props: {
     title: {
@@ -102,7 +112,14 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       startX: null,
-      startY: null
+      startY: null,
+      initialX: null,
+      currentX: null,
+      hiddenPractices: [],
+      debounceTimer: null,
+      touchMoveEvent: null,
+      debouncedHidePractice: null,
+      debouncedOpenPractice: null,
     };
   },
   mounted() {
@@ -132,6 +149,8 @@ export default {
     },
   },
   created() {
+    this.debouncedHidePractice = this.debounce(this.hidePractice, 200);
+    this.debouncedOpenPractice = this.debounce(this.openPractice, 200);
     // Fetch templates based on the component type (my templates or recommended templates)
     if (this.title === 'My Templates') {
       this.fetchMyTemplates();
@@ -140,6 +159,14 @@ export default {
     }
   },
   methods: {
+    debounce(func, delay) {
+      let debounceTimer;
+      return function(...args) {
+        const context = this;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+      };
+    },
     highlightCards() {
       console.log('hello');
       this.$refs.swipeCards.forEach(card => {
@@ -171,11 +198,43 @@ export default {
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
     },
-    handleTouchStart(event) {
-      this.startX = event.touches[0].clientX;
-      this.startY = event.touches[0].clientY;
+    handleTouchMove3(e) {
+      this.currentX = e.touches[0].clientX;
+      const diffX = this.currentX - this.initialX;
+
+      // Check if it's a left swipe (negative difference)
+      if (diffX < -50) { // You can adjust this threshold (50) accordingly
+        //
+        // this.hidePractice(e.currentTarget.dataset.id);
+        //
+        const practice = this.practiceSets.find(p => p.id === e.currentTarget.getAttribute("data-id"));
+        console.log('activation hide practice call')
+        console.log(practice);
+        this.hidePractice(e.currentTarget.getAttribute("data-id"));
+
+      } else if (diffX > 50) { // Right swipe (positive difference)
+
+        //
+        // this.openPractice(e.currentTarget.dataset.id);
+        //
+        const practiceId = e.currentTarget.getAttribute("data-id");
+        this.openPractice(practiceId);
+      }
     },
-    handleTouchMove(event) {
+    handleTouchMove(e) {
+      this.currentX = e.touches[0].clientX;
+      const diffX = this.currentX - this.initialX;
+
+      // Check if it's a left swipe (negative difference)
+      if (diffX < -50) {
+        const practiceId = e.currentTarget.getAttribute("data-id");
+        this.debouncedHidePractice(practiceId);
+      } else if (diffX > 50) { // Right swipe (positive difference)
+        const practiceId = e.currentTarget.getAttribute("data-id");
+        this.debouncedOpenPractice(practiceId);
+      }
+    },
+    handleTouchMove2(event) {
       if (!this.startX || !this.startY) return;
 
       const xDiff = this.startX - event.touches[0].clientX;
@@ -190,20 +249,18 @@ export default {
         } else {
           // Right swipe: Hide practice
           const practice = this.practiceSets.find(p => p.practiceId === event.currentTarget.getAttribute("data-id"));
-          this.hidePractice(practice);
+          const debouncedHandler = debounce(() => this.hidePractice(practice), 500);
+          debounceHandler();
         }
       }
-
-      // Reset start positions
-      this.startX = null;
-      this.startY = null;
+    },
+    handleTouchStart(e) {
+      this.initialX = e.touches[0].clientX;
     },
     hidePractice(practice) {
-      const index = this.practiceSets.findIndex(p => p.practiceId === practice.practiceId);
-      if (index !== -1) {
-        this.practiceSets.splice(index, 1);
-      }
+      this.$emit('hide-practice', practice.id)
     },
+
     openPractice(practiceId) {
       this.$router.push({ name: 'id', params: { id: practiceId } });
     },
