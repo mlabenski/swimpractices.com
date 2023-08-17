@@ -15,7 +15,7 @@
         v-for="practice in paginatedData"
         :key="practice.practiceId"
         ref="swipeCards"
-        @click="openPractice(practice.id)"
+        :data-id="practice.id"
         class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
       >
         <!-- Title -->
