@@ -9,15 +9,13 @@
 
 
 
-    <div v-if="isLoading">Loading...</div>
     <!-- Mobile view (Card Format) -->
-    <div v-else-if="isTableVisible" class="sm:hidden">
-      <router-link
+    <div class="sm:hidden">
+      <div
         v-for="practice in paginatedData"
         :key="practice.practiceId"
-        :to="{ name: 'id', params: { id: practice.id } }"
-        @swipe.left="hidePractice(practice)"
-        @swipe.right="openPractice(practice.id)"
+        ref="swipeCards"
+        @click="openPractice(practice.id)"
         class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
       >
         <!-- Title -->
@@ -70,7 +68,7 @@
             <span class="text-blue-600">Share</span>
           </div>
         </div>
-      </router-link>
+      </div>
       </div>
     </div>
 </template>
@@ -102,8 +100,17 @@ export default {
       templates: [],
       isTableVisible: true,
       currentPage: 1,
-      itemsPerPage: 10
+      itemsPerPage: 10,
+      startX: null,
+      startY: null
     };
+  },
+  mounted() {
+    this.highlightCards();
+    this.$refs.swipeCards.forEach(card => {
+      card.addEventListener("touchstart", this.handleTouchStart);
+      card.addEventListener("touchmove", this.handleTouchMove);
+    });
   },
   computed: {
     isLoading() {
@@ -133,6 +140,14 @@ export default {
     }
   },
   methods: {
+    highlightCards() {
+      console.log('hello');
+      this.$refs.swipeCards.forEach(card => {
+        console.log('hello');
+        console.log(card);
+        card.style.backgroundColor = 'lightyellow';  // Changes background color of each card
+      });
+    },
     fetchMyTemplates() {
       // Make an API call to fetch user-specific templates
       // Example API call using axios:
@@ -155,6 +170,33 @@ export default {
     },
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
+    },
+    handleTouchStart(event) {
+      this.startX = event.touches[0].clientX;
+      this.startY = event.touches[0].clientY;
+    },
+    handleTouchMove(event) {
+      if (!this.startX || !this.startY) return;
+
+      const xDiff = this.startX - event.touches[0].clientX;
+      const yDiff = this.startY - event.touches[0].clientY;
+
+      // Detect horizontal swipe (ignore vertical)
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+          // Left swipe: Open practice
+          const practiceId = event.currentTarget.getAttribute("data-id");
+          this.openPractice(practiceId);
+        } else {
+          // Right swipe: Hide practice
+          const practice = this.practiceSets.find(p => p.practiceId === event.currentTarget.getAttribute("data-id"));
+          this.hidePractice(practice);
+        }
+      }
+
+      // Reset start positions
+      this.startX = null;
+      this.startY = null;
     },
     hidePractice(practice) {
       const index = this.practiceSets.findIndex(p => p.practiceId === practice.practiceId);
@@ -204,6 +246,14 @@ export default {
       }
     },
   },
+  beforeDestroy() {
+    this.$refs.swipeCards.forEach(card => {
+      card.removeEventListener("touchstart", this.handleTouchStart);
+      card.removeEventListener("touchmove", this.handleTouchMove);
+    });
+  }
+
+
 };
 </script>
 
