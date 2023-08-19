@@ -3,10 +3,15 @@ import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 const state = () => ({
   practices: null,
+  filteredPractices: null,
   loading: false,
   totalYards: 0,
   userPractices: null,
-  filters: {} // add new property for filters
+  filter: {            // filter criteria
+    minYardage: 0,
+    maxYardage: 1000,
+    applied: false,
+  }
 });
 
 const mutations = {
@@ -27,8 +32,11 @@ const mutations = {
   SET_TOTAL_YARDS(state, value) {
     state.totalYards = value;
   },
-  SET_FILTERS(state, filters) { // new mutation to set filters
-    state.filters = filters;
+  SET_FILTER(state, payload) {
+    state.filter = { ...payload, applied: true };
+  },
+  CLEAR_FILTER(state) {
+    state.filter.applied = false;
   },
   SET_PRACTICE(state, practice) {
     state.practice = practice;
@@ -91,6 +99,9 @@ const mutations = {
       state.practices.splice(index, 1);
     }
   },
+  SET_FILTERED_PRACTICES(state, practices) {
+    state.filteredPractices = practices;
+  },
 }
 
 const actions = {
@@ -119,28 +130,29 @@ const actions = {
 
       // Merge Firestore and S3 data
       const mergedData = [...state.practices, ...s3DataArray];
-      commit('SET_PRACTICES', mergedData);
 
-      let totalYards = 0;
+      // Compute totalYardage for each practice
       mergedData.forEach(practice => {
+        let practiceTotalYards = 0;
         if (practice.sets) {
           practice.sets.forEach(set => {
             if (set.exercises) {
               set.exercises.forEach(exercise => {
                 if (exercise) {
-                  totalYards += exercise.distance * exercise.quantity;
+                  practiceTotalYards += exercise.distance * exercise.quantity;
                 }
               });
             }
           });
         }
+        practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
       });
 
-      commit('SET_TOTAL_YARDS', totalYards);
+      commit('SET_PRACTICES', mergedData);
 
     } catch (error) {
-      console.error(error);
-    } finally {
+      console.error("Error fetching practices:", error);
+    }finally {
       commit('SET_LOADING', false)
     }
   }),
@@ -188,7 +200,16 @@ const actions = {
       console.log('Practice not found');
     }
   }),
+  applyFilter({ commit, state }) {
+    const filteredPractices = state.practices.filter(practice => {
+      return practice.totalYardage >= state.minYardage && practice.totalYardage <= state.maxYardage;
+    });
 
+    commit('SET_FILTERED_PRACTICES', filteredPractices);
+  },
+  clearFilter({ commit }) {
+    commit('CLEAR_FILTER');
+  },
   addExerciseToSet({ commit }, payload) {
     commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
   },
@@ -219,6 +240,13 @@ const getters = {
   },
   userPractices(state) {
     return state.userPractices;
+  },
+  filteredPractices: state => {
+    if (!state.filter.applied) return state.practices;
+
+    return state.practices.filter(practice => {
+      return practice.totalYardage >= state.filter.minYardage && practice.totalYardage <= state.filter.maxYardage;
+    });
   },
 
   isLoading: state => state.loading,
@@ -254,8 +282,8 @@ const getters = {
       }
     }
   },
-
 }
+
 
 export default {
   namedspaced: true,

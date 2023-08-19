@@ -17,6 +17,7 @@
 
       <!-- Right Section: Magnifying Glass and Profile Picture -->
       <div class="flex items-center space-x-2">
+        <span @click="toggleFilter" class="material-icons cursor-pointer">filter_list</span>
         <span class="material-icons cursor-pointer">search</span>
         <div class="w-8 h-8 bg-gray-600 rounded-full"></div>
       </div>
@@ -31,6 +32,22 @@
         <div @click="selectOption('My Profile')" class="cursor-pointer px-4 py-2 hover:bg-gray-700">My Profile</div>
       </div>
     </div>
+    <!-- Filter Options Dropdown -->
+    <div v-if="isFilterOpen" class="absolute top-full right-0 w-64 mt-2 bg-gray-800 rounded shadow-md z-10 p-4">
+      <div>
+        <div class="mb-4">
+          <label for="minYardage" class="block text-sm font-medium text-white">Min Yardage</label>
+          <input type="number" id="minYardage" v-model="minYardage" class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
+        </div>
+        <div class="mb-4">
+          <label for="maxYardage" class="block text-sm font-medium text-white">Max Yardage</label>
+          <input type="number" id="maxYardage" v-model="maxYardage" class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
+        </div>
+        <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
+          Apply
+        </button>
+      </div>
+    </div>
   </nav>
 </template>
 <script>
@@ -38,7 +55,10 @@ export default {
   data() {
     return {
       isDropdownOpen: false,
-      currentSelection: 'Practices'
+      currentSelection: 'Practices',
+      isFilterOpen: false,
+      minYardage: 0,
+      maxYardage: 10000
     };
   },
   methods: {
@@ -48,6 +68,14 @@ export default {
     selectOption(option) {
       this.currentSelection = option;
       this.toggleDropdown();
+    },
+    toggleFilter() {
+      this.isFilterOpen = !this.isFilterOpen;
+    },
+    applyYardageFilter() {
+      // Here, you'll dispatch the action to update your Vuex store with the filtered data
+      this.$store.dispatch('applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage });
+      this.toggleFilter();
     }
   }
 };

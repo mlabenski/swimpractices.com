@@ -21,7 +21,7 @@
     <!-- Container for all the components below the header -->
     <div class="container mx-auto py-2">
       <div class="sm:px-4">
-        <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice">
+        <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice" title="Create practice">
           <span class="material-icons">add</span>
         </b-button>
       </div>
@@ -55,8 +55,8 @@
         </div>
 
         <!-- Free sets list -->
-        <div v-if="practices">
-          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="practices" :userID="user ? user.id : null" ></MobileSetList>
+        <div v-if="filteredPractices">
+          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" ></MobileSetList>
           <SetList title="Free Sets" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
@@ -207,7 +207,8 @@ export default {
       user: 'auth/user',
       practices: 'practices/practices',
       seasonPractices: 'seasons',
-      userPractices: 'practices/userPractices'
+      userPractices: 'practices/userPractices',
+      filteredPractices: 'practices/filteredPractices'
     }),
   },
   created() {
