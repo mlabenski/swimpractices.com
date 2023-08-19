@@ -37,11 +37,11 @@
       <div>
         <div class="mb-4">
           <label for="minYardage" class="block text-sm font-medium text-white">Min Yardage</label>
-          <input type="number" id="minYardage" v-model="minYardage" class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
+          <input type="number" id="minYardage" v-model="minYardage" @input.stop class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
         </div>
         <div class="mb-4">
           <label for="maxYardage" class="block text-sm font-medium text-white">Max Yardage</label>
-          <input type="number" id="maxYardage" v-model="maxYardage" class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
+          <input type="number" id="maxYardage" v-model="maxYardage" @input.stop class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 text-white">
         </div>
         <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
           Apply
