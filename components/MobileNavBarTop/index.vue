@@ -74,7 +74,7 @@ export default {
     },
     applyYardageFilter() {
       // Here, you'll dispatch the action to update your Vuex store with the filtered data
-      this.$store.dispatch('applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage });
+      this.$store.dispatch('practices/applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage });
       this.toggleFilter();
     }
   }
