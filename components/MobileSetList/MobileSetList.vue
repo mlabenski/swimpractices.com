@@ -16,8 +16,16 @@
         :key="practice.practiceId"
         ref="swipeCards"
         :data-id="practice.id"
-        class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block"
+        @touchend="showPracticeOverlay(practice)"
+        class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block z-122"
       >
+        <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
+          <div class="bg-white p-4 rounded shadow-md">
+            <span class="material-icons cursor-pointer absolute top-2 right-2" @click="closeOverlay">close</span>
+            <p class="mb-4">Open practice?</p>
+            <button @click="confirmNavigate" class="bg-blue-500 text-white px-4 py-2 rounded">Confirm</button>
+          </div>
+        </div>
         <!-- Title -->
         <div class="font-bold text-lg mb-2" v-if="!hiddenPractices.includes(practice)">{{ practice.name }}</div>
 
@@ -55,17 +63,17 @@
         <!-- Footer -->
         <div class="flex justify-between mt-2">
           <div class="flex space-x-2">
-            <button class="text-gray-500">
+            <button class="text-gray-500 z-130">
               <span class="material-icons">thumb_up</span>
             </button>
-            <button class="text-gray-500">
+            <button class="text-gray-500 z-130">
               <span class="material-icons">thumb_down</span>
             </button>
           </div>
 
           <div class="flex items-center space-x-2">
-            <span class="material-icons text-gray-700">share</span>
-            <span class="text-blue-600">Share</span>
+            <span class="material-icons text-gray-700 z-130">share</span>
+            <span class="text-blue-600 z-130">Share</span>
           </div>
         </div>
       </div>
@@ -120,6 +128,8 @@ export default {
       touchMoveEvent: null,
       debouncedHidePractice: null,
       debouncedOpenPractice: null,
+      showOverlay: false,
+      selectedPractice: null
     };
   },
   mounted() {
@@ -302,6 +312,19 @@ export default {
         console.error('Error deleting practice: ', error);
       }
     },
+    showPracticeOverlay(practice) {
+      this.selectedPractice = practice;
+      this.showOverlay = true;
+    },
+    confirmNavigate() {
+      // Navigate to the selected practice page
+      this.$router.push({ name: 'id', params: { id: this.selectedPractice.id } });
+      this.showOverlay = false;
+    },
+    closeOverlay() {
+      this.showOverlay = false;
+      this.selectedPractice = null;
+    }
   },
   beforeDestroy() {
     this.$refs.swipeCards.forEach(card => {

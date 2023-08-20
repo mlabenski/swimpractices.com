@@ -200,10 +200,14 @@ const actions = {
       console.log('Practice not found');
     }
   }),
-  applyFilter({ commit, state }) {
+  applyFilter({ commit, state }, { minYardage, maxYardage }) {
+    console.log('apply yardage filter')
+
     const filteredPractices = state.practices.filter(practice => {
-      return practice.totalYardage >= state.minYardage && practice.totalYardage <= state.maxYardage;
+      return practice.totalYardage >= minYardage && practice.totalYardage <= maxYardage;
     });
+    console.log('filteredPractices')
+    console.log(filteredPractices)
 
     commit('SET_FILTERED_PRACTICES', filteredPractices);
   },
@@ -242,11 +246,8 @@ const getters = {
     return state.userPractices;
   },
   filteredPractices: state => {
-    if (!state.filter.applied) return state.practices;
-
-    return state.practices.filter(practice => {
-      return practice.totalYardage >= state.filter.minYardage && practice.totalYardage <= state.filter.maxYardage;
-    });
+    if(state.filteredPractices) return state.filteredPractices;
+    else if (!state.filter.applied) return state.practices;
   },
 
   isLoading: state => state.loading,
