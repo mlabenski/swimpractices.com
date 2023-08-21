@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 md:p-4 bg-gray-900 min-h-screen relative" v-if="practice">
+  <div class="bg-gray-900 min-h-screen relative" v-if="practice">
 
     <!-- START: Top Nav Bar (Header Rows) -->
     <div class="sticky top-0 z-50">
@@ -24,7 +24,7 @@
         {{ currentSet ? currentSet.name : 'Set Name' }}
       </div>
       <!-- Row 3 -->
-      <div class="bg-gray-700 p-2 flex justify-around items-center shadow-md">
+      <div class="bg-gray-600 p-2 flex justify-around items-center shadow-md">
         <!-- Dynamically set the active class based on the activeSet value -->
         <span
           v-for="n in practice.sets.length"
@@ -34,11 +34,6 @@
           class="cursor-pointer">
           {{ n }}
         </span>
-      </div>
-      <!-- Row 4 -->
-      <div class="bg-black p-2 flex justify-center items-center shadow-md">
-        <!-- Percentage Complete Placeholder -->
-        70%
       </div>
     </div>
 
