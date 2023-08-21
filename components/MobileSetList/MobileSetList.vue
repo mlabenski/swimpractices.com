@@ -272,7 +272,7 @@ export default {
     },
 
     openPractice(practiceId) {
-      this.$router.push({ name: 'id', params: { id: practiceId } });
+      this.$router.push({ name: 'idtwo', params: { idtwo: practiceId } });
     },
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend
@@ -318,7 +318,7 @@ export default {
     },
     confirmNavigate() {
       // Navigate to the selected practice page
-      this.$router.push({ name: 'id', params: { id: this.selectedPractice.id } });
+      this.$router.push({ name: 'idtwo', params: { idtwo: this.selectedPractice.id } });
       this.showOverlay = false;
     },
     closeOverlay() {
