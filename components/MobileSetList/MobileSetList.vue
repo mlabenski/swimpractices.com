@@ -22,7 +22,7 @@
         <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
           <div class="bg-white p-4 rounded shadow-md">
             <span class="material-icons cursor-pointer absolute top-2 right-2" @click="closeOverlay">close</span>
-            <p class="mb-4">Open practice?</p>
+            <p class="mb-4 mt-3">Open practice?</p>
             <button @click="confirmNavigate" class="bg-blue-500 text-white px-4 py-2 rounded">Confirm</button>
           </div>
         </div>
