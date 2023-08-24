@@ -84,7 +84,7 @@
     </div>
     <!-- Header -->
     <div class="sm:hidden">
-      <TopNavBar :user="user" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+      <TopNavBar :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
     </div>
   </div>
 </template>

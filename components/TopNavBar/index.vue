@@ -1,6 +1,6 @@
 <template>
   <!-- Top navigation bar -->
-  <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-2 py-1 z-200">
+  <nav class="fixed bottom-0 w-full bg-gray-900 text-white px-2 py-1 z-300">
     <div class="container mx-auto">
       <div class="flex justify-between items-center text-xs">
         <!-- Create practice button -->

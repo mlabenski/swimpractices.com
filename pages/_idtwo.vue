@@ -79,7 +79,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
-                  <td class="px-4 py-2 border-t">{{ exercise.distance }}x{{ exercise.quantity }}</td>
+                  <td class="px-4 py-2 border-t">{{ exercise.quantity }}x{{ exercise.distance }}</td>
                   <td class="px-4 py-2 border-t text-blue-500">{{ exercise.description }}</td>
                   <td class="px-4 py-2 border-t">{{ exercise.interval }}</td>
                 </tr>
