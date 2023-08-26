@@ -1,5 +1,5 @@
 <template>
-  <nav class="relative bg-gray-900 text-white px-2 py-1 z-200 sticky top-0">
+  <nav class="relative bg-gray-900 text-white px-2 py-1 z-99 sticky top-0">
     <!-- Container for navbar items -->
     <div class="container mx-auto flex justify-between items-center">
 
@@ -88,6 +88,6 @@ export default {
 .sticky {
   position: sticky;
   top: 0;
-  z-index: 1000; /* Adjust if needed to ensure it's above other elements */
+  z-index: 99; /* Adjust if needed to ensure it's above other elements */
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-690" @openProfile="openProfile"/>
+    <MobileNavBarTop class="sm:hidden block z-99" @openProfile="openProfile"/>
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div class="relative">
@@ -370,6 +370,9 @@ export default {
     padding-left: 0em;
     padding-right: 0em;
   }
+}
+.modalContent {
+  padding-top: 50px;
 }
 .floating-button {
   position: fixed;
