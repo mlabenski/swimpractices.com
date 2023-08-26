@@ -62,14 +62,14 @@
 
         <!-- Footer -->
         <div class="flex justify-between mt-2">
-          <div class="flex space-x-2">
-            <button class="text-gray-500 z-130">
-              <span class="material-icons">thumb_up</span>
-            </button>
-            <button class="text-gray-500 z-130">
-              <span class="material-icons">thumb_down</span>
-            </button>
-          </div>
+        <div class="flex space-x-2">
+          <button @click.prevent="likePractice(practice)" :class="{'text-blue-500': practice.liked, 'text-gray-500': !practice.liked}" class="z-130">
+            <span class="material-icons">thumb_up</span>
+          </button>
+          <button @click.prevent="dislikePractice(practice)" :class="{'text-red-500': practice.disliked, 'text-gray-500': !practice.disliked}" class="z-130">
+            <span class="material-icons">thumb_down</span>
+          </button>
+        </div>
 
           <div class="flex items-center space-x-2">
             <span class="material-icons text-gray-700 z-130">share</span>
@@ -204,6 +204,16 @@ export default {
         { id: 2, name: 'Template 2' },
         { id: 3, name: 'Template 3' }
       ];
+    },
+    likePractice(practice) {
+      practice.liked = !practice.liked;  // toggle like
+      practice.disliked = false;         // reset dislike if it was set
+      // If you have backend, you can send an API request here to save the user's preference.
+    },
+    dislikePractice(practice) {
+      practice.disliked = !practice.disliked;  // toggle dislike
+      practice.liked = false;                 // reset like if it was set
+      // If you have backend, you can send an API request here to save the user's preference.
     },
     toggleTable() {
       this.isTableVisible = !this.isTableVisible;
