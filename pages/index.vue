@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-690" @openProfile="profileClicked"/>
+    <MobileNavBarTop class="sm:hidden block z-690" @openProfile="openProfile"/>
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div class="relative">
