@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-690" />
+    <MobileNavBarTop class="sm:hidden block z-690" @openProfile="profileClicked"/>
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div class="relative">
@@ -45,7 +45,7 @@
 
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
-          <ProfileWidget v-if="user" />
+          <ProfileWidget v-if="user && profileOpened" />
           <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
           <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
@@ -199,7 +199,7 @@ export default {
       ],
       generatePracticeModal: false,
       newPracticeId: null,
-      profileView: false
+      profileOpened: false
     }
   },
   computed: {
@@ -257,7 +257,7 @@ export default {
       this.generatePracticeModal = true;
     },
     openProfile() {
-      this.profileView = true;
+      this.profileOpened = true;
     },
     checkNotifications() {
       this.hasNotification = notificationsData.notifications.length > 0;
@@ -312,8 +312,10 @@ export default {
 
 
 @media (min-width: 984px) {
+  .container {
   padding-left: 0em;
   padding-right: 0em;
+  }
 }
 
 #app {

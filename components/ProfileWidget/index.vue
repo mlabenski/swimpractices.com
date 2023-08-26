@@ -12,15 +12,15 @@
     <div class="flex justify-center mt-3 space-x-4">
       <div>
         <span class="material-icons">create</span>
-        <span>Created: {{ numPractices }}</span>
+        <span>Practices: {{ numPractices }}</span>
       </div>
       <div>
         <span class="material-icons">group</span>
-        <span>Followers: {{ 2 }}</span>
+        <span>Seasons: {{ 2 }}</span>
       </div>
       <div>
         <span class="material-icons">thumb_up</span>
-        <span>Likes: {{ 3 }}</span>
+        <span>Liked Practices: {{ 3 }}</span>
       </div>
     </div>
   </b-card>
