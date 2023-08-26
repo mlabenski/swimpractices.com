@@ -257,7 +257,7 @@ export default {
       this.generatePracticeModal = true;
     },
     openProfile() {
-      this.profileOpened = true;
+      this.profileOpened = !this.profileOpened;
     },
     checkNotifications() {
       this.hasNotification = notificationsData.notifications.length > 0;
