@@ -19,7 +19,9 @@
       <div class="flex items-center space-x-2">
         <span @click="toggleFilter" class="material-icons cursor-pointer">filter_list</span>
         <span class="material-icons cursor-pointer">search</span>
-        <div class="w-8 h-8 bg-gray-600 rounded-full"></div>
+        <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center" @click="$emit('openProfile')">
+          <span class="material-icons text-white cursor-pointer">person</span>
+      </div>
       </div>
     </div>
 
