@@ -27,12 +27,15 @@
           </div>
         </div>
         <!-- Title -->
-        <div class="font-bold text-lg mb-2" v-if="!hiddenPractices.includes(practice)">{{ practice.name }}</div>
+        <div class="flex justify-between items-center mb-2" v-if="!hiddenPractices.includes(practice)">
+          <div class="font-bold text-lg">{{ practice.name }}</div>
+          <div class="text-lg text-gray-600">{{ practice.totalTime }}</div>
+        </div>
 
         <!-- Pills -->
         <div class="flex">
           <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ getTotalYardage(practice.sets) }} Distance</span>
-          <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">Freestyle</span>
+          <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">{{practice.primaryStroke}}</span>
 
           <!-- Conditional rendering for the measurement pill -->
           <span
@@ -62,7 +65,7 @@
 
         <!-- Footer -->
         <div class="flex justify-between mt-2">
-        <div class="flex space-x-2">
+        <div class="flex space-x-2 z-205">
           <button @click.prevent="likePractice(practice)" :class="{'text-blue-500': practice.liked, 'text-gray-500': !practice.liked}" class="z-130">
             <span class="material-icons">thumb_up</span>
           </button>
@@ -77,6 +80,15 @@
           </div>
         </div>
       </div>
+      </div>
+      <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-1 sm:space-x-4">
+        <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
+          <span class="sm:hidden material-icons">chevron_left</span>
+        </button>
+        <div class="self-center text-sm sm:text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
+        <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
+          <span class="sm:hidden material-icons">chevron_right</span>
+        </button>
       </div>
     </div>
 </template>
