@@ -37,6 +37,7 @@
     <!-- Filter Options Dropdown -->
     <div v-if="isFilterOpen" class="absolute top-full right-0 w-64 mt-2 bg-gray-800 rounded shadow-md z-10 p-4">
       <div>
+        <!-- Yardage Filters -->
         <div class="mb-4">
           <label for="minYardage" class="block text-sm font-medium text-white">Min Yardage</label>
           <input type="number" id="minYardage" v-model="minYardage" @input.stop class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:ring-0 text-white">
@@ -45,7 +46,18 @@
           <label for="maxYardage" class="block text-sm font-medium text-white">Max Yardage</label>
           <input type="number" id="maxYardage" v-model="maxYardage" @input.stop class="mt-1 block w-full rounded-md bg-gray-900 border-transparent focus:border-green-500 focus:ring-0 text-white">
         </div>
-        <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
+
+        <!-- Stroke Filters -->
+        <div class="bg-gray-900 p-2 rounded mb-4" v-if="uniqueStrokes">
+          <div class="font-medium text-white mb-2">Strokes:</div>
+          <div v-for="stroke in uniqueStrokes" :key="stroke" class="flex items-center mb-2">
+            <input type="checkbox" :id="stroke" v-model="selectedStrokes" :value="stroke" class="cursor-pointer">
+            <label :for="stroke" class="ml-2 text-white cursor-pointer">{{ stroke }}</label>
+          </div>
+        </div>
+
+        <!-- Apply Button -->
+        <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
           Apply
         </button>
       </div>
@@ -53,6 +65,7 @@
   </nav>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -60,8 +73,12 @@ export default {
       currentSelection: 'Practices',
       isFilterOpen: false,
       minYardage: 0,
-      maxYardage: 10000
+      maxYardage: 10000,
+      selectedStrokes: []
     };
+  },
+  computed: {
+    ...mapGetters('practices', ['uniqueStrokes'])
   },
   methods: {
     toggleDropdown() {
@@ -77,7 +94,7 @@ export default {
     applyYardageFilter() {
       console.log('apply yardage filter')
       // Here, you'll dispatch the action to update your Vuex store with the filtered data
-      this.$store.dispatch('practices/applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage });
+      this.$store.dispatch('practices/applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage, strokes: this.selectedStrokes });
       this.toggleFilter();
     }
   }

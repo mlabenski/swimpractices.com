@@ -83,8 +83,10 @@
       </div>
     </div>
     <!-- Header -->
-    <div class="sm:hidden">
-      <TopNavBar :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+    <div class="sm:hidden" v-if="practices">
+      <keep-alive>
+        <TopNavBar class="top-nav-bar-class" :key="componentKey" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -199,7 +201,8 @@ export default {
       ],
       generatePracticeModal: false,
       newPracticeId: null,
-      profileOpened: false
+      profileOpened: false,
+      componentKey: 0,
     }
   },
   computed: {
@@ -213,6 +216,7 @@ export default {
   },
   created() {
     this.checkNotifications();
+    this.forceRerender();
   },
   methods: {
     practiceSetsNew() {
@@ -261,6 +265,9 @@ export default {
     },
     checkNotifications() {
       this.hasNotification = notificationsData.notifications.length > 0;
+    },
+    forceRerender() {
+      this.componentKey += 1;
     },
     async submitPractice() {
       try {
@@ -325,6 +332,7 @@ export default {
   background-position: center !important;
   background-size: cover !important;
   font-family: 'Noto Sans', sans-serif;
+  height: 100%;
 }
 
 
@@ -394,6 +402,14 @@ export default {
   right: 40px;
   z-index: 9999;
   padding-bottom: 9px;
+}
+.top-nav-bar-class {
+    position: fixed;
+    bottom: 0;
+    height: 65px;
+    left: 0;
+    right: 0;
+    z-index: 9999;  /* Ensuring it's on top of other elements */
 }
 
 </style>

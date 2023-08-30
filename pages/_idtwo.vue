@@ -6,7 +6,7 @@
       <!-- Row 1 -->
       <div class="bg-gray-400 p-2 flex justify-between items-center shadow-md">
         <router-link to="/" class="text-gray-800">
-          <span class="material-icons">
+          <span class="material-icons" @click="closeAndNavigate">
             close
           </span>
         </router-link>
@@ -39,7 +39,7 @@
 
     <!-- REST OF THE TEMPLATE (Adjusted for the new header) -->
     <div class="pt-2">
-      <div class="max-w-screen-lg mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4 p-4 md:p-6">
+      <div class="max-w-screen-lg mx-auto bg-gray-800 rounded-lg shadow-md mb-4 p-4 md:p-6">
 
         <div v-if="!practice" class="text-center text-gray-400 text-lg">
           Loading...
@@ -68,7 +68,7 @@
             <p class="mb-4 text-gray-500 text-md">Set Topic: {{ set.description }}</p>
 
             <!-- Exercise Table -->
-            <div class="overflow-x-auto bg-gray-700 rounded-lg">
+            <div class="bg-gray-700 rounded-lg">
               <table v-if="!tableVisibility[setIndex]" class="table-auto w-full text-gray-300 text-sm md:text-base">
                 <thead>
                 <tr>
@@ -92,7 +92,9 @@
 
       </div>
     </div>
-
+    <div class="sm:hidden">
+      <TopNavBar class="top-nav-bar-class" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+    </div>
   </div>
 </template>
 
@@ -101,13 +103,15 @@
 <script>
 import EditableField from '@/components/EditableField/EditableField.vue';
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
+import TopNavBar from '@/components/TopNavBar'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
   components: {
     EditableField,
     SeasonList,
-    LogsNotificationModel
+    LogsNotificationModel,
+    TopNavBar,
   },
 
   computed: {
@@ -292,6 +296,9 @@ export default {
         console.warn(`Ref for set ${setNumber} not found.`);
       }
     },
+    closeAndNavigate() {
+      //this.$router.push("/");
+   },
     checkActiveSet() {
       // Logic to determine which set is currently in view
       for (let i = 0; i < this.practice.sets.length; i++) {

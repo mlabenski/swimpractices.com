@@ -200,11 +200,13 @@ const actions = {
       console.log('Practice not found');
     }
   }),
-  applyFilter({ commit, state }, { minYardage, maxYardage }) {
+  applyFilter({ commit, state }, { minYardage, maxYardage, strokes }) {
     console.log('apply yardage filter')
 
     const filteredPractices = state.practices.filter(practice => {
-      return practice.totalYardage >= minYardage && practice.totalYardage <= maxYardage;
+      return practice.totalYardage >= minYardage && 
+             practice.totalYardage <= maxYardage &&
+             (strokes.length === 0 || strokes.includes(practice.primaryStroke));
     });
     console.log('filteredPractices')
     console.log(filteredPractices)
@@ -248,6 +250,16 @@ const getters = {
   filteredPractices: state => {
     if(state.filteredPractices) return state.filteredPractices;
     else if (!state.filter.applied) return state.practices;
+  },
+  uniqueStrokes(state) {
+    console.log('calling unique strokes')
+    const strokesSet = new Set();
+    state.practices.forEach(practice => {
+      strokesSet.add(practice.primaryStroke);
+    });
+    console.log('loggigng unique strokes');
+    console.log(strokesSet)
+    return [...strokesSet];
   },
 
   isLoading: state => state.loading,
