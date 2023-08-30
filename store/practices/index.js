@@ -15,6 +15,11 @@ const state = () => ({
 });
 
 const mutations = {
+  SET_SEARCH_TERM(state, searchTerm) {
+    state.filteredPractices = state.practices.filter(practice => {
+        return practice.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  },
   SET_PRACTICES_NEW(state, practices) {
     console.log('setting practices to: '+ practices);
     state.practices = practices;
@@ -230,6 +235,9 @@ const actions = {
   },
   updatePractice({ commit }, payload) {
     commit('UPDATE_PRACTICE', payload);
+  },
+  searchPractices({ commit }, searchTerm) {
+    commit('SET_SEARCH_TERM', searchTerm);
   },
   unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
     unbindFirestoreRef('practices', false);

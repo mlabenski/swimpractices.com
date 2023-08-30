@@ -18,7 +18,18 @@
       <!-- Right Section: Magnifying Glass and Profile Picture -->
       <div class="flex items-center space-x-2">
         <span @click="toggleFilter" class="material-icons cursor-pointer">filter_list</span>
-        <span class="material-icons cursor-pointer">search</span>
+        <input 
+          v-if="isSearchActive" 
+          v-model="searchTerm" 
+          @keyup.enter="search" 
+          ref="searchInput"
+          class="rounded bg-gray-900 text-white px-2 py-1 transition-all duration-300" 
+          placeholder="Search...">
+        <span 
+          @click="toggleSearch" 
+          class="material-icons cursor-pointer">
+          search
+        </span>
         <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center" @click="$emit('openProfile')">
           <span class="material-icons text-white cursor-pointer">person</span>
       </div>
@@ -74,13 +85,26 @@ export default {
       isFilterOpen: false,
       minYardage: 0,
       maxYardage: 10000,
-      selectedStrokes: []
+      selectedStrokes: [],
+      searchTerm: '',
+      isSearchActive: false,
     };
   },
   computed: {
     ...mapGetters('practices', ['uniqueStrokes'])
   },
   methods: {
+    toggleSearch() {
+      this.isSearchActive = !this.isSearchActive;
+      this.$nextTick(() => {
+        if (this.isSearchActive && this.$refs.searchInput) {
+          this.$refs.searchInput.focus();
+        }
+      });
+    },
+    search() {
+      this.$store.dispatch('practices/searchPractices', this.searchTerm);
+    },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
