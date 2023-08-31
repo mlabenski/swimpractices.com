@@ -245,6 +245,25 @@ const actions = {
   unbindUserPractices: firestoreAction(function ({ unbindFirestoreRef }) {
     unbindFirestoreRef('userPractices', false);
   }),
+  async savePractice({ state, commit }, rootState, practiceId) {
+    // This function saves a practice ID to the user data collection
+    // It could be improved for free users by offering a cache system
+    const userID = rootState.auth.user.id;
+
+    const userRef = firebase.firestore().collection('userData').doc(userId);
+
+    try {
+        await userRef.update({
+            likes: firebase.firestore.FieldValue.arrayUnion(practiceId)
+        });
+        // You can commit any changes to the state here if needed.
+        // e.g. commit('ADD_LIKE', practiceId);
+        return { success: true };  // Indicate success
+    } catch (error) {
+        console.error('Error saving practice: ', error);
+        return { success: false, message: error.message };  // Indicate failure with a message
+    }
+},
 
 }
 

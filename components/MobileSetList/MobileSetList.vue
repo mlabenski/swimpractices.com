@@ -74,8 +74,8 @@
             </button>
           </div>
 
-          <div class="flex items-center space-x-2">
-            <span class="material-icons text-gray-700 z-130">share</span>
+          <div class="flex items-center space-x-2 z-205" @click.stop="savePractice(practice.id)">
+            <span class="material-icons text-gray-700 z-205">share</span>
             <span class="text-blue-600 z-130">Share</span>
           </div>
         </div>
@@ -196,6 +196,20 @@ export default {
         console.log(card);
         card.style.backgroundColor = 'lightyellow';  // Changes background color of each card
       });
+    },
+    async savePractice(id) {
+      if(!this.userID) {
+        alert('bot signed in')
+      }
+      else {
+        const result = await this.$store.dispatch('practices/savePractice', id);
+
+        if (result.success) {
+            alert('Practice saved successfully!');
+        } else {
+            alert(`Failed to save practice. ${result.message}`);
+        }
+      }
     },
     fetchMyTemplates() {
       // Make an API call to fetch user-specific templates
