@@ -101,7 +101,7 @@ export default {
     async submitPractice() {
       this.submitting = true;
       // Generate the practice request sentence
-      let sentence = `Generate a swim practice for the pool type ${this.practice.poolSize}, the practice should be ${this.practice.distance} long, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. The title should have a creative name, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
+      let sentence = `Generate a swim practice for the pool type ${this.practice.poolSize}, the practice should be consist of exercises for a total yardage of ${this.practice.distance} long, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
       let responseString = null;
       try {
         // Send a POST request to the API
