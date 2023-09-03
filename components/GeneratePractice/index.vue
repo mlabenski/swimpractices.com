@@ -101,8 +101,9 @@ export default {
     async submitPractice() {
       this.submitting = true;
       // Generate the practice request sentence
-      let sentence = `Generate a swim practice for the pool type ${this.practice.poolSize}, the practice should consist of exercises for a total yardage of ${this.practice.distance} long, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
+      let sentence = `Generate a swim practice that consists of exercises with a total distance of ${this.practice.distance} for the pool type ${this.practice.poolSize}, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
       let responseString = null;
+      console.log('submitting prompt: '+sentence)
       try {
         // Send a POST request to the API
         let response = await axios.post('https://genhppurl.mlabenski.repl.co/generate/v2/practice', {
