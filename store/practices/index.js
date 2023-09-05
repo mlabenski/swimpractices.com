@@ -134,8 +134,8 @@ const actions = {
       }
 
       // Merge Firestore and S3 data
-      const mergedData = [...state.practices, ...s3DataArray];
-
+      //const mergedData = [...state.practices, ...s3DataArray];
+      const mergedData = [...state.practices];
       // Compute totalYardage for each practice
       mergedData.forEach(practice => {
         let practiceTotalYards = 0;
