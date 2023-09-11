@@ -10,7 +10,7 @@
 
 
     <!-- Mobile view (Card Format) -->
-    <div class="sm:hidden">
+    <div class="sm:hidden pb-10">
       <div
         v-for="practice in paginatedData"
         :key="practice.practiceId"

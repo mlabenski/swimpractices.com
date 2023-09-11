@@ -50,45 +50,6 @@ export const actions = {
   createSeason({ commit }, payload) {
     commit('CREATE_SEASON', payload);
   },
-  bindPracticesOld: firestoreAction(async function ({ bindFirestoreRef, commit }) {
-    try {
-      commit('SET_LOADING', true)
-      const ref = this.$fire.firestore.collection('practices');
-      await bindFirestoreRef('practices', ref, { wait: true });
-    } catch (error) {
-
-    } finally {
-      commit('SET_LOADING', false)
-    }
-  }),
-  bindPractices: firestoreAction(async function ({ bindFirestoreRef, commit }) {
-    try {
-      commit('SET_LOADING', true)
-      const ref = this.$fire.firestore.collection('practices');
-      await bindFirestoreRef('practices', ref, { wait: true });
-
-      let totalYards = 0;
-      state.practices.forEach(practice => {
-        practice.sets.forEach(set => {
-          set.exercises.forEach(exercise => {
-            totalYards += exercise.distance * exercise.quantity;
-          });
-        });
-      });
-      commit('SET_TOTAL_YARDS', totalYards);
-
-    } catch (error) {
-      // handle error
-    } finally {
-      commit('SET_LOADING', false)
-    }
-  }),
-  bindUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState }) {
-    console.log('test')
-    const userID = rootState.auth.user.id;
-    const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
-    await bindFirestoreRef('userPractices', ref, { wait: true });
-  }),
   bindSeasonPractices: firestoreAction(async function ({ bindFirestoreRef, commit, rootState }) {
     try {
       commit('SET_LOADING', true);

@@ -61,15 +61,6 @@
           <!-- More SetList components here as needed -->
         </div>
       </div>
-
-
-
-      <!-- Manual practice entry -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 mt-4" v-if="user == '192019fps'">
-        <h3 class="text-lg font-bold mb-2">Manual Practice Entry</h3>
-        <textarea v-model="pastedPractice" rows="10" cols="50" placeholder="Paste the practice JSON here"></textarea>
-        <button @click="submitPractice">Submit Practice</button>
-      </div>
     </div>
 
 
@@ -92,6 +83,7 @@
 </template>
 
 <script>
+// Component imports
 import GenerateSetModel from '@/components/GenerateSetModel';
 import SetList from '@/components/SetList/SetList.vue';
 import MobileSetList from '@/components/MobileSetList/MobileSetList.vue';
@@ -100,11 +92,13 @@ import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
 import ProfileWidget from '@/components/ProfileWidget';
-import { mapGetters, mapActions } from "vuex";
-import practiceSetsNew from "../data/practiceSetsNew";
 import GeneratePractice from "@/components/GeneratePractice/index.vue";
 import TopNavBar from "@/components/TopNavBar/index.vue";
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
+
+//VueX inputs
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   head () {
     return {
@@ -127,8 +121,8 @@ export default {
   },
   async mounted() {
     try {
-      // await this.$store.dispatch('bindPractices');
       await this.$store.dispatch('practices/fetchPractices');
+      // Are we sure the fetchUserpractices should be called here because user isn't valid
       await this.$store.dispatch('practices/fetchUserPractices');
       await this.$store.dispatch('bindSeasonPractices');
     } catch (e) {
@@ -149,56 +143,6 @@ export default {
         'My Practices'
       ],
       notification: notificationsData.notifications[0],
-      seasonSet: [
-        {
-          seasonID: "S01",
-          userID: "U01",
-          setIDs: ["set1", "set2", "set3"],
-          description: "Sets from Villanova Swimming",
-          title: "Villanova",
-          totalYardage: 34000
-        },
-        {
-          seasonID: "S02",
-          userID: "U01",
-          setIDs: ["set4", "set5", "set6"],
-          description: "Swim the distance of an Iron man 77 miles",
-          title: "Iron Man Challenge",
-          totalYardage: 7500
-        },
-        {
-          seasonID: "S03",
-          userID: "U02",
-          setIDs: ["set7", "set8", "set9"],
-          description: "This is season set 3",
-          title: "Season Set 3",
-          totalYardage: 9200
-        },
-        {
-          seasonID: "S04",
-          userID: "U02",
-          setIDs: ["set10", "set11", "set12"],
-          description: "This is season set 4",
-          title: "Season Set 4",
-          totalYardage: 8800
-        },
-        {
-          seasonID: "S05",
-          userID: "U03",
-          setIDs: ["set13", "set14", "set15"],
-          description: "This is season set 5",
-          title: "Season Set 5",
-          totalYardage: 7400
-        },
-        {
-          seasonID: "S06",
-          userID: "U03",
-          setIDs: ["set16", "set17", "set18"],
-          description: "This is season set 6",
-          title: "Season Set 6",
-          totalYardage: 9800
-        },
-      ],
       generatePracticeModal: false,
       newPracticeId: null,
       profileOpened: false,
@@ -219,9 +163,6 @@ export default {
     this.forceRerender();
   },
   methods: {
-    practiceSetsNew() {
-      return practiceSetsNew
-    },
     ...mapActions({
       openLogin: 'auth/openLogin',
       openSignup: 'auth/openSignup',
@@ -232,7 +173,10 @@ export default {
     },
     startEmptyPractice() {
       // Logic to start an empty practice
+      // To be implemented
     },
+    
+    // This is the routing for a new practice. We could also move params: { idtwo: id } for mobile devices.
     async handleNewPractice(newPracticeId) {
       // Do something with newPracticeId, e.g., assign it to a local data property
       if(newPracticeId){
@@ -268,20 +212,6 @@ export default {
     },
     forceRerender() {
       this.componentKey += 1;
-    },
-    async submitPractice() {
-      try {
-        const practiceData = JSON.parse(this.pastedPractice); // Parse the JSON input
-
-        // Submit the practice data to Firestore
-        await this.$fire.firestore.collection('practices').add(practiceData);
-
-        // Optional: Reset the input field or do any other necessary actions
-        this.pastedPractice = '';
-      } catch (error) {
-        console.error('Error submitting practice:', error);
-        // Handle the error, e.g., display an error message
-      }
     },
     handleLike(seasonId) {
       if (!this.user) return;

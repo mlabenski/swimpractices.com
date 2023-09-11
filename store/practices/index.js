@@ -117,7 +117,9 @@ const actions = {
       // Fetch Firestore data
       const firestoreRef = this.$fire.firestore.collection('practices');
       await bindFirestoreRef('practices', firestoreRef, { wait: true });
-
+      if(!state.practices) {
+        throw new Error('Http error unable to load practices');
+      }
       // Fetch S3 bucket data
       const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
       if (!response.ok) {
@@ -152,7 +154,7 @@ const actions = {
         }
         practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
       });
-
+    
       commit('SET_PRACTICES', mergedData);
 
     } catch (error) {
