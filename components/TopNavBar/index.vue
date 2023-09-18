@@ -35,7 +35,6 @@
         <a href="#" class="flex flex-col items-center space-y-1 pt-1 pb-2" @click.prevent="logout" v-if="user">
           <span class="material-icons w-6 h-6 fill-current">lock_open</span>
           <span>Log Out</span>
-          <span>Log Out</span>
         </a>
       </div>
     </div>
