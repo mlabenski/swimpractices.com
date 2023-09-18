@@ -74,7 +74,7 @@
       </div>
     </div>
     <!-- Header -->
-    <div class="sm:hidden" v-if="practices">
+    <div class="sm:hidden">
       <keep-alive>
         <TopNavBar class="top-nav-bar-class" :key="componentKey" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
       </keep-alive>
