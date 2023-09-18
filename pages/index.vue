@@ -330,7 +330,7 @@ export default {
   position: fixed;
   bottom: 60px;
   right: 40px;
-  z-index: 9999;
+  z-index: 299;
   padding-bottom: 9px;
 }
 .top-nav-bar-class {
@@ -339,7 +339,7 @@ export default {
     height: 65px;
     left: 0;
     right: 0;
-    z-index: 9999;  /* Ensuring it's on top of other elements */
+    z-index: 299;  /* Ensuring it's on top of other elements */
 }
 
 </style>

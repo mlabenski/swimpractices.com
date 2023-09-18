@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg">
+  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350">
     <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <h2 class="font-semibold text-lg text-gray-700">Sorry! Create an account to generate a practice.</h2>
