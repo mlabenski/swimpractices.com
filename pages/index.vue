@@ -21,9 +21,9 @@
     <!-- Container for all the components below the header -->
     <div class="container mx-auto py-2">
       <div class="sm:px-4">
-        <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice" title="Create practice">
-          <span class="material-icons">add</span>
-          <span class="text-label">Create Practice</span>
+        <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" v-b-hover="hoverHandler"> 
+          <span class="material-icons" style="color: white">add</span>
+          {{ buttonText }}
         </b-button>
       </div>
 
@@ -148,6 +148,8 @@ export default {
       newPracticeId: null,
       profileOpened: false,
       componentKey: 0,
+      buttonText: '',
+      isHovered: false
     }
   },
   computed: {
@@ -176,7 +178,9 @@ export default {
       // Logic to start an empty practice
       // To be implemented
     },
-    
+    hoverHandler(isHovered) {
+      this.buttonText = isHovered ? 'Create Practice' : '';
+    },
     // This is the routing for a new practice. We could also move params: { idtwo: id } for mobile devices.
     async handleNewPractice(newPracticeId) {
       // Do something with newPracticeId, e.g., assign it to a local data property
@@ -318,6 +322,7 @@ export default {
   bottom: 75px;
   right: 8px;
   z-index: 9999;
+  background-color: #0C6DFD;
   border-radius: 50%; /* Ensures it's circular */
   width: 60px; /* Set a fixed width for the circular shape */
   height: 60px; /* Same height as width to ensure a perfect circle */
@@ -342,25 +347,13 @@ export default {
     right: 0;
     z-index: 299;  /* Ensuring it's on top of other elements */
 }
-.floating-button:hover .text-label {
-  max-width: 200px;
-  opacity: 1;
-  visibility: visible;
+.floating-button {
+  transition: 0.3s ease;
 }
 
-.text-label {
-  max-width: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: max-width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-  overflow: hidden;
-  white-space: nowrap;
-  margin-left: 10px;
-  vertical-align: middle;
-}
-
-.material-icons {
-  vertical-align: middle;
+.floating-button:hover {
+  transform: scale(1.05);
+  width: 200px; /* Adjust as needed */
 }
 
 </style>
