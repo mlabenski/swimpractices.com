@@ -38,8 +38,8 @@
     </div>
 
     <!-- REST OF THE TEMPLATE (Adjusted for the new header) -->
-    <div class="pt-2">
-      <div class="max-w-screen-lg mx-auto bg-gray-800 rounded-lg shadow-md mb-4 p-4 md:p-6">
+    <div class="pt-2 pb-14">
+      <div class="max-w-screen-lg mx-auto bg-gray-800 rounded-lg shadow-md pb-14 p-4 md:p-6">
 
         <div v-if="!practice" class="text-center text-gray-400 text-lg">
           Loading...
