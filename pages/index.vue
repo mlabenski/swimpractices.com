@@ -242,7 +242,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   padding-left: 1em;
   padding-right: 1em;
