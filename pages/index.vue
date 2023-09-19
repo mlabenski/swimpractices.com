@@ -23,6 +23,7 @@
       <div class="sm:px-4">
         <b-button pill variant="primary" class="floating-button" @click.prevent="startPractice" title="Create practice">
           <span class="material-icons">add</span>
+          <span class="text-label">Create Practice</span>
         </b-button>
       </div>
 
@@ -340,6 +341,26 @@ export default {
     left: 0;
     right: 0;
     z-index: 299;  /* Ensuring it's on top of other elements */
+}
+.floating-button:hover .text-label {
+  max-width: 200px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.text-label {
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-width 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.material-icons {
+  vertical-align: middle;
 }
 
 </style>
