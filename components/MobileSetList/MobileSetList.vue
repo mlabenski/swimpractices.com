@@ -205,6 +205,9 @@ export default {
     },
     isPinned(practice) {
       if(this.userPinnedPractices) {
+        console.log('there is a pinned practice, now we check if the array includes the ID');
+        console.log(practice.id);
+        console.log(this.userPinnedPractices);
         return this.userPinnedPractices.includes(practice.id);
       }
     },
