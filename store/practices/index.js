@@ -216,9 +216,11 @@ const actions = {
       const userID = rootState.auth.user.id;
       const ref = this.$fire.firestore.collection('users').doc(userID);
       const doc = await ref.get();
+      const data = doc.data.pinnedPractices;
+      console.log(data);
       console.log(doc.data());
       if (doc.exists) {
-        commit('SET_USER_PINNED_PRACTICES', ...doc.data());
+        commit('SET_USER_PINNED_PRACTICES', data);
       }
     }
     else {
