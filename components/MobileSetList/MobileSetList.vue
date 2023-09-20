@@ -17,9 +17,18 @@
         ref="swipeCards"
         :data-id="practice.id"
         @click="showPracticeOverlay(practice)"
-        class="bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block z-122"
+        :class="[
+          'bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block z-122',
+          isPinned(practice) ? 'pinned' : ''
+        ]"
       >
+      
         <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
+          <div v-if="isPinned(practice)" class="pinned-mark">
+            <div class="yellow-line"></div>
+            <div class="yellow-line"></div>
+            <div class="yellow-line"></div>
+          </div>
           <div class="bg-white p-4 rounded shadow-md">
             <span class="material-icons cursor-pointer absolute top-2 right-2" @click.stop="closeOverlay">close</span>
             <p class="mb-4 mt-3">Open practice?</p>
@@ -123,6 +132,11 @@ export default {
     changeTheme: {
       type: Number,
       required: false
+    },
+    userPinnedPractices: {
+      type: Array,
+      required: false,
+      default: () => [],
     }
   },
   data() {
@@ -188,6 +202,9 @@ export default {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => func.apply(context, args), delay);
       };
+    },
+    isPinned(practice) {
+      return this.userPinnedPractices.includes(practice.practiceId);
     },
     highlightCards() {
       console.log('hello');
@@ -391,5 +408,19 @@ export default {
 </script>
 
 <style scoped>
+.pinned-mark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.yellow-line {
+  width: 20px;
+  height: 4px;
+  background-color: yellow;
+}
 /* Add your custom styles here */
 </style>

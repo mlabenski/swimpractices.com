@@ -11,7 +11,8 @@ const state = () => ({
     minYardage: 0,
     maxYardage: 1000,
     applied: false,
-  }
+  },
+  userPinnedPractices: null
 });
 
 const mutations = {
@@ -45,6 +46,9 @@ const mutations = {
   },
   SET_PRACTICE(state, practice) {
     state.practice = practice;
+  },
+  SET_USER_PINNED_PRACTICES(state, value) {
+    state.userPinnedPractices = value;
   },
   UPDATE_PRACTICE(state, payload) {
     // Ensure the practice exists
@@ -207,6 +211,15 @@ const actions = {
       console.log('Practice not found');
     }
   }),
+  fetchPinnedPractices: firestoreAction(async function({bindFirestoreRef, rootState, commit}, id) {
+    const userID = rootState.auth.user.id;
+    const ref = this.$fire.firestore.collection('users').doc(userID);
+    const doc = await ref.get();
+
+    if (doc.exists) {
+      commit('SET_USER_PINNED_PRACTICES', {id, ...doc.data()});
+    }
+  }),
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes }) {
     console.log('apply yardage filter')
 
@@ -275,6 +288,9 @@ const getters = {
   },
   userPractices(state) {
     return state.userPractices;
+  },
+  userPinnedPractices(state) {
+    return state.userPinnedPractices;
   },
   filteredPractices: state => {
     if(state.filteredPractices) return state.filteredPractices;

@@ -57,7 +57,7 @@
 
         <!-- Free sets list -->
         <div v-if="filteredPractices">
-          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" ></MobileSetList>
+          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
           <SetList title="Free Sets" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
@@ -126,6 +126,7 @@ export default {
       // Are we sure the fetchUserpractices should be called here because user isn't valid
       await this.$store.dispatch('practices/fetchUserPractices');
       await this.$store.dispatch('bindSeasonPractices');
+      await this.$store.dispatch('practices/fetchPinnedPractices');
     } catch (e) {
       console.error(e)
     }
@@ -158,7 +159,8 @@ export default {
       practices: 'practices/practices',
       seasonPractices: 'seasons',
       userPractices: 'practices/userPractices',
-      filteredPractices: 'practices/filteredPractices'
+      filteredPractices: 'practices/filteredPractices',
+      userPinnedPractices: 'practices/userPinnedPractices'
     }),
   },
   created() {
