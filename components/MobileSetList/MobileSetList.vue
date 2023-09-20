@@ -413,6 +413,9 @@ export default {
 </script>
 
 <style scoped>
+.pinned {
+  background-color: green;
+}
 .pinned-mark {
   position: absolute;
   top: 10px;
