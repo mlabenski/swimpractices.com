@@ -22,13 +22,12 @@
           isPinned(practice) ? 'pinned' : ''
         ]"
       >
-      
-        <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
-          <div v-if="isPinned(practice)" class="pinned-mark">
+      <div v-if="isPinned(practice)" class="pinned-mark z999">
             <div class="yellow-line"></div>
             <div class="yellow-line"></div>
             <div class="yellow-line"></div>
           </div>
+        <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
           <div class="bg-white p-4 rounded shadow-md">
             <span class="material-icons cursor-pointer absolute top-2 right-2" @click.stop="closeOverlay">close</span>
             <p class="mb-4 mt-3">Open practice?</p>
