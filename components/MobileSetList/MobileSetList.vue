@@ -231,10 +231,27 @@ export default {
         { id: 3, name: 'Template 3' }
       ];
     },
-    likePractice(practice) {
-      practice.liked = !practice.liked;  // toggle like
-      practice.disliked = false;         // reset dislike if it was set
-      // If you have backend, you can send an API request here to save the user's preference.
+    async savePractice(practice) {
+      if(!this.userID) {
+        alert('Not signed in');
+        return;
+      }
+      
+      try {
+        // Reference to the user's document in the Firestore "users" collection
+        const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
+        console.log(practice);
+        // Use the `set` method with `{ merge: true }` to either create a new document
+        // or merge the new data with an existing document
+        await userDocRef.set({
+          pinnedPractices: firebase.firestore.FieldValue.arrayUnion(practice.id)
+        }, { merge: true });
+
+        alert('Practice pinned successfully');
+      } catch (error) {
+        console.error('Failed to pin practice', error);
+        alert('Failed to pin practice');
+      }
     },
     dislikePractice(practice) {
       practice.disliked = !practice.disliked;  // toggle dislike

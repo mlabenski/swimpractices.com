@@ -139,8 +139,8 @@ export default {
       selectedSetList: 'My Practices',
       practiceData: null,
       setListOptions: [ // Available SetList's titles
-        'Recommended Practices',
-        'Featured Practice',
+        'Favorited Practices',
+        'Daily Practice',
         'My Practices'
       ],
       notification: notificationsData.notifications[0],
