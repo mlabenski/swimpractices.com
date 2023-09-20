@@ -204,7 +204,9 @@ export default {
       };
     },
     isPinned(practice) {
-      return this.userPinnedPractices.includes(practice.practiceId);
+      if(this.userPinnedPractices) {
+        return this.userPinnedPractices.includes(practice.id);
+      }
     },
     highlightCards() {
       console.log('hello');

@@ -211,13 +211,18 @@ const actions = {
       console.log('Practice not found');
     }
   }),
-  fetchPinnedPractices: firestoreAction(async function({bindFirestoreRef, rootState, commit}, id) {
-    const userID = rootState.auth.user.id;
-    const ref = this.$fire.firestore.collection('users').doc(userID);
-    const doc = await ref.get();
-
-    if (doc.exists) {
-      commit('SET_USER_PINNED_PRACTICES', {id, ...doc.data()});
+  fetchPinnedPractices: firestoreAction(async function({bindFirestoreRef, rootState, commit}) {
+    if(rootState.auth.user){
+      const userID = rootState.auth.user.id;
+      const ref = this.$fire.firestore.collection('users').doc(userID);
+      const doc = await ref.get();
+      console.log(doc.data());
+      if (doc.exists) {
+        commit('SET_USER_PINNED_PRACTICES', ...doc.data());
+      }
+    }
+    else {
+      commit('SET_USER_PINNED_PRACTICES', [0])
     }
   }),
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes }) {
