@@ -244,7 +244,7 @@ export default {
         // Use the `set` method with `{ merge: true }` to either create a new document
         // or merge the new data with an existing document
         await userDocRef.set({
-      pinnedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practiceId)
+      pinnedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
     }, { merge: true });
 
         alert('Practice pinned successfully');
