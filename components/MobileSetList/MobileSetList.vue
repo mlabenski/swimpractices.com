@@ -231,7 +231,7 @@ export default {
         { id: 3, name: 'Template 3' }
       ];
     },
-    async savePractice(practice) {
+    async likePractice(practice) {
       if(!this.userID) {
         alert('Not signed in');
         return;
