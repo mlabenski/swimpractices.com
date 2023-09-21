@@ -12,7 +12,7 @@
     <!-- Mobile view (Card Format) -->
     <div class="sm:hidden pb-10">
       <div
-        v-for="practice in paginatedData"
+        v-for="practice in sortedPractices"
         :key="practice.practiceId"
         ref="swipeCards"
         :data-id="practice.id"
@@ -181,6 +181,19 @@ export default {
     },
     totalPages() {
       return Math.ceil(Object.keys(this.practiceSets).length / this.itemsPerPage);
+    },
+    sortedPractices() {
+      return [...this.paginatedData].sort((a, b) => {
+        const aIsPinned = this.isPinned(a);
+        const bIsPinned = this.isPinned(b);
+        if (aIsPinned && !bIsPinned) {
+          return -1;
+        }
+        if (!aIsPinned && bIsPinned) {
+          return 1;
+        }
+        return 0;
+      });
     },
   },
   created() {
