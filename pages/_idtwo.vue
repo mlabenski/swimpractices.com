@@ -5,9 +5,9 @@
     <div class="sticky top-0 z-50">
       <!-- Row 1 -->
       <div class="bg-gray-400 p-2 flex justify-between items-center shadow-md">
-        <span class="text-gray-800 material-icons" @click="goHome">
+        <a class="text-gray-800 material-icons" href="https://swimpractices.com">
           close
-        </span>
+        </a>
         <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
         <!-- Placeholder for alignment. Can be removed if not needed -->
         <div class="opacity-0">
