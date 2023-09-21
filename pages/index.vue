@@ -199,6 +199,10 @@ export default {
     openModal() {
       this.isModalOpen = true;
     },
+    goHome() {
+      // Navigate to the selected practice page
+      this.$router.push({ name: '/'});
+    },
     closeModal() {
       this.isModalOpen = false;
     },

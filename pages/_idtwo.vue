@@ -5,11 +5,9 @@
     <div class="sticky top-0 z-50">
       <!-- Row 1 -->
       <div class="bg-gray-400 p-2 flex justify-between items-center shadow-md">
-        <router-link to="/" class="text-gray-800">
-          <span class="material-icons" @click="closeAndNavigate">
-            close
-          </span>
-        </router-link>
+        <span class="text-gray-800 material-icons" @click="goHome">
+          close
+        </span>
         <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
         <!-- Placeholder for alignment. Can be removed if not needed -->
         <div class="opacity-0">
@@ -299,6 +297,10 @@ export default {
     closeAndNavigate() {
       //this.$router.push("/");
    },
+   goHome() {
+  // Navigate to the home page
+  this.$router.push({ path: '/' });
+  },
     checkActiveSet() {
       // Logic to determine which set is currently in view
       for (let i = 0; i < this.practice.sets.length; i++) {
