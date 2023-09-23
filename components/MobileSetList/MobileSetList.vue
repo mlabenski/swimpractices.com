@@ -74,9 +74,9 @@
         <!-- Footer -->
         <div class="flex justify-between mt-2">
           <div class="flex space-x-2 z-205">
-            <button @click.stop="likePractice(practice)" :class="{'text-blue-500': practice.liked, 'text-gray-500': !practice.liked}" class="z-130">
-              <span class="material-icons">thumb_up</span>
-            </button>
+            <button @click.stop="likePractice(practice)" :class="{'text-yellow-500': isPinned(practice), 'text-blue-500': !isPinned(practice) && practice.liked, 'text-gray-500': !isPinned(practice) && !practice.liked}" class="z-130">
+            <span class="material-icons">thumb_up</span>
+          </button>
             <button @click.stop="dislikePractice(practice)" :class="{'text-red-500': practice.disliked, 'text-gray-500': !practice.disliked}" class="z-130">
               <span class="material-icons">thumb_down</span>
             </button>
