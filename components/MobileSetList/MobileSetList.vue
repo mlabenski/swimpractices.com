@@ -270,23 +270,48 @@ export default {
         alert('Not signed in');
         return;
       }
-      
+
       try {
         // Reference to the user's document in the Firestore "users" collection
         const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
-        console.log(practice);
-        // Use the `set` method with `{ merge: true }` to either create a new document
-        // or merge the new data with an existing document
-        await userDocRef.set({
-      pinnedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
-    }, { merge: true });
+        const practiceDocRef = this.$fire.firestore.collection('practices').doc(practice.id);
 
-        alert('Practice pinned successfully');
+        // Retrieve user data
+        const userData = (await userDocRef.get()).data();
+
+        // Check if the user has already liked the practice
+        if(userData.pinnedPractices.includes(practice.id)) {
+          alert('You have already liked this practice');
+          return;
+        }
+
+        // If the user previously disliked the practice, remove it from the dislikedPractices array and decrement the likes on the practice
+        if(userData.dislikedPractices && userData.dislikedPractices.includes(practice.id)) {
+          await userDocRef.update({
+            dislikedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id)
+          });
+          await practiceDocRef.update({
+            likes: this.$fireModule.firestore.FieldValue.increment(1) // undoing the previous dislike
+          });
+        }
+
+        // Add the practice id to the user's pinnedPractices array
+        await userDocRef.update({
+          pinnedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
+        });
+
+        // Increment the likes in the practice collection
+        await practiceDocRef.update({
+          likes: this.$fireModule.firestore.FieldValue.increment(1)
+        });
+
+        alert('Practice liked successfully');
       } catch (error) {
-        console.error('Failed to pin practice', error);
-        alert('Failed to pin practice');
+        console.error('Failed to like practice', error);
+        alert('Failed to like practice');
       }
     },
+
     async dislikePractice(practice) {
       if(!this.userID) {
         alert('Not signed in');
