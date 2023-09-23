@@ -227,8 +227,8 @@ const actions = {
       commit('SET_USER_PINNED_PRACTICES', [0])
     }
   }),
-  applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedPractices }) {
-    if(showPinnedPractices) {
+  applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedOnly }) {
+    if(showPinnedOnly) {
       console.log('apply pinned practice filter')
       console.log(filteredPractices)
       //only show the pinned practices, this can be extended later to allow more filters on top of the pinned practices

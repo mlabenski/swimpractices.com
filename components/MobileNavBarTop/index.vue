@@ -126,6 +126,7 @@ export default {
     },
     applyYardageFilter() {
       console.log('apply yardage filter');
+      console.log(this.showPinnedPractices);
       this.$store.dispatch('practices/applyFilter', {
         minYardage: this.minYardage, 
         maxYardage: this.maxYardage, 
