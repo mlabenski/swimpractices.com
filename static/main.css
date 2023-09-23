@@ -10,6 +10,50 @@
   font-family: 'Noto Sans', sans-serif;
 }
 
+/* Set base font size for the application */
+body {
+  font-size: 1rem;
+}
+
+/* Use relative units for other text elements */
+h1 {
+  font-size: 2em; /* 2 times the base font size */
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p, li, a {
+  font-size: 1em; /* 1 times the base font size */
+}
+
+/* Use media queries for specific device characteristics */
+@media (max-width: 768px) {
+  body {
+    font-size: 0.875rem;
+  }
+
+  h1 {
+    font-size: 1.75em;
+  }
+
+  /* Adjust other elements as necessary */
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  body {
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  /* Adjust other elements as necessary */
+}
+
+
 @media (min-width: 600px) {
   #app {
     background-image: url(/static/background-912-1368-pro.svg);
