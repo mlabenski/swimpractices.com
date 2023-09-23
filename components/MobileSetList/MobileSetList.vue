@@ -287,69 +287,65 @@ export default {
         alert('Failed to pin practice');
       }
     },
-    dislikePractice(practice) {
-      practice.disliked = !practice.disliked;  // toggle dislike
-      practice.liked = false;                 // reset like if it was set
-      // If you have backend, you can send an API request here to save the user's preference.
-    },
     async dislikePractice(practice) {
-  if(!this.userID) {
-    alert('Not signed in');
-    return;
-  }
-  
-  try {
-    // Reference to the user's document in the Firestore "users" collection
-    const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
-    // Get the current user document
-    const userDoc = await userDocRef.get();
-    
-    if (!userDoc.exists) {
-      alert('User does not exist');
-      return;
-    }
-
-    const userData = userDoc.data();
-
-    // Reference to the practice's document in the Firestore "practices" collection
-    const practiceDocRef = this.$fire.firestore.collection('practices').doc(practice.id);
-    const practiceDoc = await practiceDocRef.get();
-    
-    if (!practiceDoc.exists) {
-      alert('Practice does not exist');
-      return;
-    }
-
-    // Check if the practice was previously liked
-    if (userData.likedPractices && userData.likedPractices.includes(practice.id)) {
-      // If it was liked, remove it from the liked practices
-      await userDocRef.update({
-        likedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id)
-      });
+      if(!this.userID) {
+        alert('Not signed in');
+        return;
+      }
       
-      // Decrement the practice likes in the Firestore "practices" collection
-      await practiceDocRef.update({
-        likes: practiceDoc.data().likes ? practiceDoc.data().likes - 1 : 0
-      });
-    } else if (!userData.dislikedPractices || !userData.dislikedPractices.includes(practice.id)) {
-      // If it wasn't liked or disliked before, add it to dislikedPractices
-      await userDocRef.update({
-        dislikedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
-      });
-      
-      // Decrement the practice likes in the Firestore "practices" collection
-      const newLikesCount = practiceDoc.data().likes ? practiceDoc.data().likes - 1 : -1;
-      await practiceDocRef.update({
-        likes: newLikesCount
-      });
-    }
+      try {
+        // Reference to the user's document in the Firestore "users" collection
+        const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
+        // Get the current user document
+        const userDoc = await userDocRef.get();
+        
+        if (!userDoc.exists) {
+          alert('User does not exist');
+          return;
+        }
 
-    alert('Practice disliked successfully');
-  } catch (error) {
-    console.error('Failed to dislike practice', error);
-    alert('Failed to dislike practice');
-  }
-},
+        const userData = userDoc.data();
+
+        // Reference to the practice's document in the Firestore "practices" collection
+        const practiceDocRef = this.$fire.firestore.collection('practices').doc(practice.id);
+        const practiceDoc = await practiceDocRef.get();
+        
+        if (!practiceDoc.exists) {
+          alert('Practice does not exist');
+          return;
+        }
+
+        // Check if the practice was previously liked
+        if (userData.pinnedPractices && userData.pinnedPractices.includes(practice.id)) {
+          // If it was liked, remove it from the pinned practices
+          await userDocRef.update({
+            pinnedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id)
+          });
+          
+          // Decrement the practice likes in the Firestore "practices" collection
+          await practiceDocRef.update({
+            likes: practiceDoc.data().likes ? practiceDoc.data().likes - 1 : 0
+          });
+        } else if (!userData.dislikedPractices || !userData.dislikedPractices.includes(practice.id)) {
+          // If it wasn't liked or disliked before, add it to dislikedPractices
+          await userDocRef.update({
+            dislikedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
+          });
+          
+          // Decrement the practice likes in the Firestore "practices" collection
+          const newLikesCount = practiceDoc.data().likes ? practiceDoc.data().likes - 1 : -1;
+          await practiceDocRef.update({
+            likes: newLikesCount
+          });
+        }
+
+        alert('Practice disliked successfully');
+      } catch (error) {
+        console.error('Failed to dislike practice', error);
+        alert('Failed to dislike practice');
+      }
+    },
+
 
 
     toggleTable() {
