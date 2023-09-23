@@ -315,11 +315,12 @@ export default {
           return;
         }
 
-        // Check if the practice was previously liked
+        // If the practice was previously liked
         if (userData.pinnedPractices && userData.pinnedPractices.includes(practice.id)) {
-          // If it was liked, remove it from the pinned practices
+          // Remove it from the pinned practices
           await userDocRef.update({
-            pinnedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id)
+            pinnedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id),
+            dislikedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id) // Add to disliked practices
           });
           
           // Decrement the practice likes in the Firestore "practices" collection
@@ -327,16 +328,20 @@ export default {
             likes: practiceDoc.data().likes ? practiceDoc.data().likes - 1 : 0
           });
         } else if (!userData.dislikedPractices || !userData.dislikedPractices.includes(practice.id)) {
-          // If it wasn't liked or disliked before, add it to dislikedPractices
+          // If it wasn't previously disliked, add it to dislikedPractices and decrement likes
           await userDocRef.update({
             dislikedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id)
           });
-          
+
           // Decrement the practice likes in the Firestore "practices" collection
           const newLikesCount = practiceDoc.data().likes ? practiceDoc.data().likes - 1 : -1;
           await practiceDocRef.update({
             likes: newLikesCount
           });
+        } else {
+          // The practice was already disliked by the user
+          alert('You have already disliked this practice');
+          return;
         }
 
         alert('Practice disliked successfully');
@@ -345,6 +350,7 @@ export default {
         alert('Failed to dislike practice');
       }
     },
+
 
 
 
