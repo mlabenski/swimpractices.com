@@ -228,12 +228,12 @@ const actions = {
     }
   }),
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedOnly }) {
-    if(showPinnedOnly) {
+    if(showPinnedOnly && state.userPinnedPractices) {
       console.log('apply pinned practice filter')
       console.log(filteredPractices)
       //only show the pinned practices, this can be extended later to allow more filters on top of the pinned practices
       const pinnedPracticeIds = state.userPinnedPractices || [];
-      filteredPractices = state.practices.filter(practice => 
+      let filteredPractices = state.practices.filter(practice => 
         pinnedPracticeIds.includes(practice.id)
       );
       commit('SET_FILTERED_PRACTICES', filteredPractices);
