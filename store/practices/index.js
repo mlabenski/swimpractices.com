@@ -228,25 +228,27 @@ const actions = {
     }
   }),
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedPractices }) {
-    console.log('apply yardage filter')
-  
-    let filteredPractices = state.practices.filter(practice => {
-      return practice.totalYardage >= minYardage && 
-             practice.totalYardage <= maxYardage &&
-             (strokes.length === 0 || strokes.includes(practice.primaryStroke));
-    });
-  
-    if (showPinnedPractices) {
+    if(showPinnedPractices) {
+      console.log('apply pinned practice filter')
+      console.log(filteredPractices)
+      //only show the pinned practices, this can be extended later to allow more filters on top of the pinned practices
       const pinnedPracticeIds = state.userPinnedPractices || [];
-      filteredPractices = filteredPractices.filter(practice => 
+      filteredPractices = state.practices.filter(practice => 
         pinnedPracticeIds.includes(practice.id)
       );
+      commit('SET_FILTERED_PRACTICES', filteredPractices);
     }
-  
-    console.log('filteredPractices')
-    console.log(filteredPractices)
-  
-    commit('SET_FILTERED_PRACTICES', filteredPractices);
+    else {
+      console.log('apply normal filter')
+      console.log(filteredPractices)
+      let filteredPractices = state.practices.filter(practice => {
+        return practice.totalYardage >= minYardage && 
+               practice.totalYardage <= maxYardage &&
+               (strokes.length === 0 || strokes.includes(practice.primaryStroke));
+      });
+      console.log(filteredPractices)
+      commit('SET_FILTERED_PRACTICES', filteredPractices);
+    }
   },
   clearFilter({ commit }) {
     commit('CLEAR_FILTER');
