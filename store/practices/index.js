@@ -227,17 +227,25 @@ const actions = {
       commit('SET_USER_PINNED_PRACTICES', [0])
     }
   }),
-  applyFilter({ commit, state }, { minYardage, maxYardage, strokes }) {
+  applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedPractices }) {
     console.log('apply yardage filter')
-
-    const filteredPractices = state.practices.filter(practice => {
+  
+    let filteredPractices = state.practices.filter(practice => {
       return practice.totalYardage >= minYardage && 
              practice.totalYardage <= maxYardage &&
              (strokes.length === 0 || strokes.includes(practice.primaryStroke));
     });
+  
+    if (showPinnedPractices) {
+      const pinnedPracticeIds = state.userPinnedPractices || [];
+      filteredPractices = filteredPractices.filter(practice => 
+        pinnedPracticeIds.includes(practice.id)
+      );
+    }
+  
     console.log('filteredPractices')
     console.log(filteredPractices)
-
+  
     commit('SET_FILTERED_PRACTICES', filteredPractices);
   },
   clearFilter({ commit }) {

@@ -65,7 +65,11 @@
             <label :for="stroke" class="ml-2 text-white cursor-pointer">{{ stroke }}</label>
           </div>
         </div>
-
+        <!-- Stroke Filters -->
+        <div class="bg-gray-900 p-2 rounded mb-4" v-if="userPinnedPractices">
+          <div class="font-medium text-white mb-2">Starred:</div>
+          <input type="checkbox" v-model="showPinnedPractices" class="cursor-pointer">
+        </div>
         <!-- Apply Button -->
         <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
           Apply
@@ -90,7 +94,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('practices', ['uniqueStrokes'])
+    ...mapGetters('practices', ['uniqueStrokes', 'userPinnedPractices'])
   },
   methods: {
     toggleSearch() {
@@ -121,9 +125,13 @@ export default {
       this.isFilterOpen = !this.isFilterOpen;
     },
     applyYardageFilter() {
-      console.log('apply yardage filter')
-      // Here, you'll dispatch the action to update your Vuex store with the filtered data
-      this.$store.dispatch('practices/applyFilter', { minYardage: this.minYardage, maxYardage: this.maxYardage, strokes: this.selectedStrokes });
+      console.log('apply yardage filter');
+      this.$store.dispatch('practices/applyFilter', {
+        minYardage: this.minYardage, 
+        maxYardage: this.maxYardage, 
+        strokes: this.selectedStrokes,
+        showPinnedOnly: this.showPinnedPractices
+      });
       this.toggleFilter();
     }
   }
