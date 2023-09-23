@@ -22,7 +22,7 @@
           isPinned(practice) ? 'pinned' : ''
         ]"
       >
-      <div v-if="isPinned(practice)" class="pinned-mark z999">
+      <div v-if="isPinned(practice)" class="pinned-mark z-999">
             <div class="yellow-line"></div>
             <div class="yellow-line"></div>
             <div class="yellow-line"></div>
