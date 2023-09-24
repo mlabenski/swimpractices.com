@@ -44,9 +44,6 @@
             {{ option }}
           </option>
         </select>
-        <span class="material-icons cursor-pointer" @click="toggleDropdown">
-          {{ isDropdownVisible ? 'expand_less' : 'expand_more' }}
-        </span>
       </div>
       <select v-else v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block bg-gray-200 text-black dropdown-style">
         <option value="Browse Practices">Browse Practices</option>
