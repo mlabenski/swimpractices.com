@@ -39,7 +39,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20">
       <!-- Dropdown for selecting set list -->
       <div v-if="user" class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black dropdown-style">
-        <select v-model="selectedSetList" @change="onSetListChange" class="text-2xl font-bold mb-1 cursor-pointer dropdown-style">
+        <select v-model="selectedSetList" @change="onSetListChange" class="text-2xl font-bold mb-1 cursor-pointer">
           <option v-for="option in setListOptions" :value="option">
             {{ option }}
           </option>
