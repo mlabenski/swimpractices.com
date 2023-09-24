@@ -54,7 +54,24 @@
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
           <ProfileWidget v-if="user && profileOpened" />
-          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user" class="sm:hidden"></SetList>
+          <MobileSetList 
+            v-if="user && selectedSetList === 'My Practices'" 
+            class="sm:hidden" 
+            title="My Templates" 
+            @hide-practice="handleHidePractice" 
+            :practiceSets="userPractices" 
+            :userID="user ? user.id : null" 
+            :userPinnedPractices="userPinnedPractices">
+          </MobileSetList>
+
+          <!-- Desktop version for My Templates -->
+          <SetList 
+            v-if="user && selectedSetList === 'My Practices'" 
+            title="My Templates" 
+            :userID="user ? user.id : null" 
+            :practiceSets="userPractices" 
+            class="hidden md:block">
+          </SetList>
           <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
