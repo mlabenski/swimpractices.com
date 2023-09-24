@@ -1,6 +1,6 @@
 <template>
   <div class="z-121">
-    <season-creation-component v-if="showSeasonCreation" @close="showSeasonCreation = false" :practiceID="selectedPractice.id" />
+    <season-creation-component v-if="showSeasonCreation" @close="showSeasonCreation = false" :owner="selectedPractice.userID"  :practiceID="selectedPractice.id" />
     <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black">
       <h2 class="text-2xl font-bold mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
