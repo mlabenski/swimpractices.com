@@ -81,8 +81,8 @@
 
         <!-- Free sets list -->
         <div v-if="filteredPractices">
-          <MobileSetList class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
-          <SetList title="Free Sets" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
+          <MobileSetList v-if="selectedSetList === 'My Practices'"  class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
+          <SetList title="Browse Practices" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
       </div>
