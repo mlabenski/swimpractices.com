@@ -388,6 +388,6 @@ export default {
 
 .dropdown-style {
   height: 50px; /* Adjusted height */
-  font-size: 18px; /* Adjust the font size as per your requirement */
+  font-size: 16px; /* Adjust the font size as per your requirement */
 }
 </style>
