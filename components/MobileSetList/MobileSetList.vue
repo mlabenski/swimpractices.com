@@ -115,7 +115,7 @@ function debounce(func, wait) {
   };
 }
 
-import SeasonCreationComponent from '@/components/SeasonCreationComponent.vue';
+import SeasonCreationComponent from '~/components/SeasonList';
 
 export default {
   components: {
