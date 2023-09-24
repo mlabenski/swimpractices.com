@@ -27,13 +27,13 @@
             <div class="yellow-line"></div>
             <div class="yellow-line"></div>
           </div>
-        <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-80 flex items-center justify-center z-129">
-          <div class="bg-white p-4 rounded shadow-md">
-            <span class="material-icons cursor-pointer absolute top-2 right-2" @click.stop="closeOverlay">close</span>
-            <p class="mb-4 mt-3">Open practice?</p>
-            <button @click.stop="confirmNavigate" class="bg-blue-500 text-white px-4 py-2 rounded">Confirm</button>
+          <div v-if="showOverlay && selectedPractice === practice" class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-90 flex items-center justify-center z-129">
+            <div class="bg-white p-4 rounded shadow-md">
+              <span class="material-icons cursor-pointer absolute top-2 right-2 z-6969 bg-white" @click.stop="closeOverlay">close</span>
+              <button @click.stop="addToSeason" class="bg-green-500 text-white px-4 py-2 rounded mb-2">Add to Season</button>
+              <button @click.stop="confirmNavigate" class="bg-blue-500 text-white px-4 py-2 rounded mb-2">Open</button>
+            </div>
           </div>
-        </div>
         <!-- Title -->
         <div class="flex justify-between items-center mb-2" v-if="!hiddenPractices.includes(practice)">
           <div class="font-bold text-lg">{{ practice.name }}</div>
@@ -265,6 +265,10 @@ export default {
         { id: 3, name: 'Template 3' }
       ];
     },
+    addToSeason() {
+    // Implement the logic to add the practice to the season
+      this.closeOverlay();
+    },
     async likePractice(practice) {
       if(!this.userID) {
         alert('Not signed in');
@@ -415,7 +419,8 @@ export default {
         this.debouncedHidePractice(practiceId);
       } else if (diffX > 50) { // Right swipe (positive difference)
         const practiceId = e.currentTarget.getAttribute("data-id");
-        this.debouncedOpenPractice(practiceId);
+        this.showOverlay = true;
+        this.selectedPractice = this.sortedPractices.find(practice => practice.id === practiceId);
       }
     },
     handleTouchMove2(event) {
@@ -493,7 +498,7 @@ export default {
     confirmNavigate() {
       // Navigate to the selected practice page
       this.$router.push({ name: 'idtwo', params: { idtwo: this.selectedPractice.id } });
-      this.showOverlay = false;
+      this.closeOverlay();
     },
     closeOverlay() {
       this.showOverlay = false;
