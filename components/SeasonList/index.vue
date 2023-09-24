@@ -143,7 +143,7 @@ export default {
     },
     async getSeasons() {
       try {
-        if(!this.user.id){
+        if(!this.user){
           return "no seasons";
         }
         const snapshot = await this.$fire.firestore.collection('seasons')

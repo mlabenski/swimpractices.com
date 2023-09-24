@@ -38,16 +38,26 @@
       <!-- Set lists -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20">
       <!-- Dropdown for selecting set list -->
-        <select v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block" v-if="user">
+      <div v-if="user" class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black dropdown-style">
+        <select v-model="selectedSetList" @change="onSetListChange" class="text-2xl font-bold mb-1 cursor-pointer dropdown-style">
           <option v-for="option in setListOptions" :value="option">
             {{ option }}
           </option>
         </select>
+        <span class="material-icons cursor-pointer" @click="toggleDropdown">
+          {{ isDropdownVisible ? 'expand_less' : 'expand_more' }}
+        </span>
+      </div>
+      <select v-else v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block bg-gray-200 text-black dropdown-style">
+        <option value="Browse Practices">Browse Practices</option>
+        <option value="Featured Practice">Featured Practice</option>
+        <!-- My Practices option is not rendered as user is not logged in -->
+      </select>
 
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
           <ProfileWidget v-if="user && profileOpened" />
-          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user"></SetList>
+          <SetList title="My Templates" :userID="user ? user.id : null" :practiceSets="userPractices" v-if="user" class="sm:hidden"></SetList>
           <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
@@ -137,20 +147,16 @@ export default {
       pastedPractice: '',
       hasNotification: false,
       isNotificationModalOpen: false,
-      selectedSetList: 'My Practices',
       practiceData: null,
-      setListOptions: [ // Available SetList's titles
-        'Favorited Practices',
-        'Daily Practice',
-        'My Practices'
-      ],
+      setListOptions: ['Browse Practices', 'Featured Practice', 'My Practices'],
       notification: notificationsData.notifications[0],
       generatePracticeModal: false,
       newPracticeId: null,
       profileOpened: false,
       componentKey: 0,
       buttonText: '',
-      isHovered: false
+      isHovered: false,
+      selectedSetList: 'Browse Practices',
     }
   },
   computed: {
@@ -362,4 +368,12 @@ export default {
   width: 200px; /* Adjust as needed */
 }
 
+.dropdown-height {
+  height: 70px; /* Adjust the height as per your requirement */
+}
+
+.dropdown-style {
+  height: 50px; /* Adjusted height */
+  font-size: 18px; /* Adjust the font size as per your requirement */
+}
 </style>
