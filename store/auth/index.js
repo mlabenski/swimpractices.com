@@ -11,12 +11,7 @@ export const getters = {
 
 export const mutations = {
   SET_USER(state, user) {
-    state.user = user ? {
-      username: user.username || user.user_metadata.full_name,
-      email: user.email,
-      id: user.id,
-      uuid: user.user_metadata.uuid
-    } : null;
+    state.user = user
   }
 }
 
@@ -27,6 +22,7 @@ export const actions = {
         commit('SET_USER', {
           username: user.user_metadata.full_name,
           email: user.email,
+          role: user.app_metadata.roles,
           id: user.id,
           token: user.token,
           uuid: user.user_metadata.uuid
@@ -39,6 +35,7 @@ export const actions = {
         commit('SET_USER', {
           username: user.user_metadata.full_name,
           email: user.email,
+          role: user.app_metadata.roles,
           id: user.id,
           uuid: user.user_metadata.uuid
         })
@@ -64,6 +61,7 @@ export const actions = {
       commit('SET_USER', {
         username: user.user_metadata.full_name,
         email: user.email,
+        role: user.app_metadata.roles,
         id: user.id,
         uuid: user.user_metadata.uuid
       })
