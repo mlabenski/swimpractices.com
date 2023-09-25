@@ -11,7 +11,13 @@ export const getters = {
 
 export const mutations = {
   SET_USER(state, user) {
-    state.user = user
+    state.user = user ? {
+      username: user.username || user.user_metadata.full_name,
+      email: user.email,
+      role: user.app_metadata.roles,
+      id: user.id,
+      uuid: user.user_metadata.uuid
+    } : null;
   }
 }
 
