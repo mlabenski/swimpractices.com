@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async updateUsername(newUsername) {
-    if (!this.userID) {
+    if (!this.user.id) {
       alert('Not signed in');
       return;
     }
