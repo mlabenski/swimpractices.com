@@ -74,7 +74,7 @@ export default {
       } else {
         // Create a new document with the given user ID and username if it doesn't exist
         await userDocRef.set({
-          userID: this.userID,
+          id: this.user.id,
           username: newUsername,
           // set other initial fields as needed
         });
