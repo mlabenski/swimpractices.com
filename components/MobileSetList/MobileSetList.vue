@@ -78,8 +78,9 @@
             </button>
           </div>
 
-          <div class="flex items-center space-x-2 z-205" @click.stop="savePractice(practice.id)">
-            <span class="material-icons text-gray-700 z-205">share</span>
+          <div class="flex items-center space-x-2 z-205">
+            <div v-if="practice.userData" class="text-sm text-gray-500 mr-2">{{ practice.userData.name }}</div>
+            <span class="material-icons text-gray-700 z-205" @click.stop="savePractice(practice.id)">share</span>
             <span class="text-blue-600 z-130">Share</span>
           </div>
         </div>
