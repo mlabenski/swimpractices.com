@@ -117,33 +117,18 @@ const actions = {
   fetchPractices: firestoreAction(async function ({ bindFirestoreRef, commit, state }) {
     try {
       commit('SET_LOADING', true);
-
+  
       // Fetch Firestore data
       const firestoreRef = this.$fire.firestore.collection('practices');
       await bindFirestoreRef('practices', firestoreRef, { wait: true });
-      if(!state.practices) {
+  
+      if (!state.practices) {
         throw new Error('Http error unable to load practices');
       }
-      // Fetch S3 bucket data
-      const response = await fetch('https://swimpractices.s3.us-east-2.amazonaws.com/backup.json');
-      if (!response.ok) {
-        throw new Error('HTTP error ' + response.status);
-      }
-      const s3Data = await response.json();
-
-      let s3DataArray = [];
-      if (s3Data) {
-        // Transform the S3 bucket data to an array of objects
-        s3DataArray = Object.keys(s3Data).map(id => {
-          return { id, ...s3Data[id] };
-        });
-      }
-
-      // Merge Firestore and S3 data
-      //const mergedData = [...state.practices, ...s3DataArray];
-      const mergedData = [...state.practices];
-      // Compute totalYardage for each practice
-      mergedData.forEach(practice => {
+  
+      const usersRef = this.$fire.firestore.collection('users');
+      const mergedData = await Promise.all(state.practices.map(async (practice) => {
+        // Compute totalYardage for each practice
         let practiceTotalYards = 0;
         if (practice.sets) {
           practice.sets.forEach(set => {
@@ -157,16 +142,27 @@ const actions = {
           });
         }
         practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
-      });
-    
+  
+        // Fetch and merge user data
+        if (practice.userID) {
+          const userDoc = await usersRef.doc(practice.userID).get();
+          if (userDoc.exists) {
+            practice.userData = userDoc.data();
+          }
+        }
+  
+        return practice;
+      }));
+  
       commit('SET_PRACTICES', mergedData);
-
+  
     } catch (error) {
       console.error("Error fetching practices:", error);
-    }finally {
-      commit('SET_LOADING', false)
+    } finally {
+      commit('SET_LOADING', false);
     }
   }),
+  
   fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState, commit}) {
     try {
       commit('SET_LOADING', true)
