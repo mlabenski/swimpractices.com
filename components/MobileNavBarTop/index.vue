@@ -70,6 +70,12 @@
           <div class="font-medium text-white mb-2">Starred:</div>
           <input type="checkbox" v-model="showPinnedPractices" class="cursor-pointer">
         </div>
+        <div class="bg-gray-900 p-2 rounded mb-4" v-if="userPinnedPractices">
+          <div class="font-medium text-white mb-2">Starred:</div>
+          <input type="checkbox" value="Easy" class="cursor-pointer">
+          <input type="checkbox" value="Medium" class="cursor-pointer">
+          <input type="checkbox" value="Advanced" class="cursor-pointer">
+        </div>
         <!-- Apply Button -->
         <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
           Apply
