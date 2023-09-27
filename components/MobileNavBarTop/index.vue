@@ -70,7 +70,7 @@
           <div class="font-medium text-white mb-2">Starred:</div>
           <input type="checkbox" v-model="showPinnedPractices" class="cursor-pointer">
         </div>
-        <div class="bg-gray-900 p-2 rounded mb-4" v-if="userPinnedPractices">
+        <div class="bg-gray-900 p-2 rounded mb-4 flex items-center" v-if="userPinnedPractices">
           <div class="font-medium text-white mb-2">Difficulty:</div>
           <input type="checkbox" value="Easy" class="ml-2 text-white cursor-pointer">
           <label :for="stroke" class="ml-2 text-white cursor-pointer">Easy</label>
