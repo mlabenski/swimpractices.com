@@ -70,14 +70,13 @@
           <div class="font-medium text-white mb-2">Starred:</div>
           <input type="checkbox" v-model="showPinnedPractices" class="cursor-pointer">
         </div>
-        <div class="bg-gray-900 p-2 rounded mb-4 flex items-center" v-if="userPinnedPractices">
-          <div class="font-medium text-white mb-2">Difficulty:</div>
-          <input type="checkbox" value="Easy" class="ml-2 text-white cursor-pointer">
-          <label :for="stroke" class="ml-2 text-white cursor-pointer">Easy</label>
-          <input type="checkbox" value="Medium" class="ml-2 text-white cursor-pointer">
-          <label :for="stroke" class="ml-2 text-white cursor-pointer">Medium</label>
-          <input type="checkbox" value="Advanced" class="ml-2 text-white cursor-pointer">
-          <label :for="stroke" class="ml-2 text-white cursor-pointer">Advanced</label>
+        <!-- Stroke Filters -->
+        <div class="bg-gray-900 p-2 rounded mb-4" v-if="difficulty">
+          <div class="font-medium text-white mb-2">Strokes:</div>
+          <div v-for="diff in difficulty" :key="diff" class="flex items-center mb-2">
+            <input type="checkbox" :id="diff" v-model="selectedStrokes" :value="diff" class="cursor-pointer">
+            <label :for="diff" class="ml-2 text-white cursor-pointer">{{ diff }}</label>
+          </div>
         </div>
         <!-- Apply Button -->
         <button @click="applyYardageFilter" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
@@ -100,6 +99,7 @@ export default {
       selectedStrokes: [],
       searchTerm: '',
       isSearchActive: false,
+      difficulty: ["Easy", "Medium", "Advanced"]
     };
   },
   computed: {
