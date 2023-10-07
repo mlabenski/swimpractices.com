@@ -40,7 +40,7 @@
       <div class="container mx-auto">
         <div @click="selectOption('Practices')" class="cursor-pointer px-4 py-2 hover:bg-gray-700">Practices</div>
         <div @click="selectOption('Seasons')" class="cursor-pointer px-4 py-2 hover:bg-gray-700">Seasons</div>
-        <div @click="selectOption('Featured')" class="cursor-pointer px-4 py-2 hover:bg-gray-700">Featured</div>
+        <div @click="selectOption('Featured')" class="cursor-pointer px-4 py-2 hover:˚bg-gray-700">Featured</div>
         <div @click="selectOption('My Profile')" class="cursor-pointer px-4 py-2 hover:bg-gray-700">My Profile</div>
       </div>
     </div>

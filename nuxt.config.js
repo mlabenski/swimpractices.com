@@ -79,5 +79,20 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  generate: {
+    routes() {
+      return this.$fire.firestore.collection('practices').get()
+        .then(snapshot => {
+          const practices = [];
+          snapshot.forEach(doc => {
+            practices.push({ id: doc.id, ...doc.data() });
+          });
+          return practices.map(practice => ({
+            route: '/practice/' + practice.id,
+            payload: practice
+          }));
+        });
+    }
   }
 }

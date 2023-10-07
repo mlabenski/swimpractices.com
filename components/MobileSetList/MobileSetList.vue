@@ -502,7 +502,9 @@ export default {
     },
     confirmNavigate() {
       // Navigate to the selected practice page
-      this.$router.push({ name: 'idtwo', params: { idtwo: this.selectedPractice.id } });
+      //this.$router.push({ name: 'idtwo', params: { idtwo: this.selectedPractice.id } });
+      console.log(this.selectedPractice.id)
+      this.$router.push({ path: `/practice/${this.selectedPractice.id}` });
       this.closeOverlay();
     },
     closeOverlay() {

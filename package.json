@@ -19,7 +19,6 @@
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.25.3",
     "firebase": "^8.2.1",
-    "netlify-cli": "^15.8.1",
     "netlify-identity-widget": "^1.9.2",
     "nuxt": "^2.15.8",
     "nuxt-material-design-icons": "^1.0.4",
@@ -33,6 +32,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^5.3.3",
+    "netlify-cli": "^16.5.1",
     "postcss": "^8.4.17"
   }
 }
