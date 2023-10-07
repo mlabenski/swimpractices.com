@@ -82,7 +82,7 @@ export default {
   },
   generate: {
     routes() {
-      return app.$fire.firestore.collection('practices').get()
+      return this.$firebase.firestore.collection('practices').get()
         .then(snapshot => {
           const practices = [];
           snapshot.forEach(doc => {
