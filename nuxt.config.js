@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 import 'firebase/firestore';
 
@@ -13,7 +13,7 @@ var firebaseConfig = {
 };
 
 var app = firebase.initializeApp(firebaseConfig);
-var dbx = app.database();
+var dbx = app.firestore();
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
