@@ -1,6 +1,6 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -82,7 +82,7 @@ export default {
   },
   generate: {
     routes() {
-      return firebase.firestore.collection('practices').get()
+      return app.$firestore.collection('practices').get()
         .then(snapshot => {
           const practices = [];
           snapshot.forEach(doc => {
