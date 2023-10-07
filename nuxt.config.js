@@ -1,3 +1,19 @@
+import * as firebase from 'firebase';
+
+import 'firebase/firestore';
+
+var firebaseConfig = {
+  apiKey: "AIzaSyAkWjY6a7XxH3rdUFmVgdRKSu-lSaAEHX8",
+  authDomain: "swimpractices-92836.firebaseapp.com",
+  projectId: "swimpractices-92836",
+  storageBucket: "swimpractices-92836.appspot.com",
+  messagingSenderId: "49510512079",
+  appId: "1:49510512079:web:914af8339da528d967ceba",
+  measurementId: "G-79B4V31K8Y"
+};
+
+var app = firebase.initializeApp(firebaseConfig);
+var dbx = app.database();
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
@@ -20,8 +36,11 @@ export default {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'
       }
+    ],
+    script:[
+      { src:'https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js' },
+      { src:'https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js' },
     ]
-
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -82,7 +101,7 @@ export default {
   },
   generate: {
     routes() {
-      return app.$firestore.collection('practices').get()
+      return dbx.collection('practices').get()
         .then(snapshot => {
           const practices = [];
           snapshot.forEach(doc => {
