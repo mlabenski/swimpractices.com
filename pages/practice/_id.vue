@@ -111,15 +111,24 @@ export default {
     LogsNotificationModel,
     TopNavBar,
   },
-  async asyncData({ params, store, error, payload }) {
+  async fetch({app, store}) {
+    if(process.browser) return
+      try {
+        await store.dispatch('bindPracticeDocument')
+        store.dispatch('unbindStoreDocument')
+      } catch (e) {
+        console.error(e)
+      }
+  },
+
+/*   async asyncData({ params, store, error, payload }) {
     if (payload) {
       return { practice: payload };
     } else {
       // This fallback is for development or direct navigation in SPA mode
       const doc = store.dispatch('practices/fetchPracticeByID', params.id);
       return { practice: store.state.practices.practice };
-    }
-  },
+    } */ //
 
   computed: {
     ...mapGetters({
@@ -330,7 +339,12 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
+    try {
+      await this.$store.dispatch('bindPracticeDocument')
+    } catch (e) {
+      console.error(e)
+    }
     window.addEventListener('scroll', this.checkActiveSet);
   },
   beforeDestroy() {

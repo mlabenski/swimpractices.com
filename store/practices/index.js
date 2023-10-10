@@ -162,6 +162,18 @@ const actions = {
       commit('SET_LOADING', false);
     }
   }),
+
+  async retrievePractices({commit, state, rootState}, practiceId) {
+    const ref = this.$fire.firestore.collection('practices').doc(userId)
+    try {
+      await exerciseRef.update({
+        [`randomFoo.FooFoo`]: this.$fireModule.firestore.FieldValue.delete(),
+      })
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  },
+
   
   fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState, commit}) {
     try {

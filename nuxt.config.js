@@ -1,22 +1,7 @@
-import firebase from 'firebase';
 
-import 'firebase/firestore';
-
-var firebaseConfig = {
-  apiKey: "AIzaSyAkWjY6a7XxH3rdUFmVgdRKSu-lSaAEHX8",
-  authDomain: "swimpractices-92836.firebaseapp.com",
-  projectId: "swimpractices-92836",
-  storageBucket: "swimpractices-92836.appspot.com",
-  messagingSenderId: "49510512079",
-  appId: "1:49510512079:web:914af8339da528d967ceba",
-  measurementId: "G-79B4V31K8Y"
-};
-
-var app = firebase.initializeApp(firebaseConfig);
-var dbx = app.firestore();
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: true,
+  mode: 'universal',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -75,32 +60,35 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'nuxt-material-design-icons',
-    '@nuxtjs/firebase',
+    '@nuxtjs/eslint-module',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    ['@nuxtjs/firebase',
+    {
+      config: {
+        apiKey: process.env.VUE_APP_FIREBASE_apiKey,
+        authDomain: process.env.VUE_APP_FIREBASE_authDomain,
+        projectId: process.env.VUE_APP_FIREBASE_projectId,
+        storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
+        messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
+        appId: process.env.VUE_APP_FIREBASE_appId,
+        measurementId: process.env.VUE_APP_FIREBASE_measurementd
+      },
+      services: {
+        firestore: true,
+        auth: true
+      },
+    },],
   ],
-  firebase: {
-    config: {
-      apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-      authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-      projectId: process.env.VUE_APP_FIREBASE_projectId,
-      storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-      messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-      appId: process.env.VUE_APP_FIREBASE_appId,
-      measurementId: process.env.VUE_APP_FIREBASE_measurementd
-    },
-    services: {
-      firestore: true
-    }
-  },
   tailwindcss: {
     configPath: '~/tailwind.config.js'
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
+
   generate: {
-    routes() {
+    async routes() {
       return dbx.collection('practices').get()
         .then(snapshot => {
           const practices = [];

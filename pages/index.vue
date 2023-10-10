@@ -145,6 +145,16 @@ export default {
     ProfileWidget,
     MobileNavBarTop
   },
+  async fetch({ app, store }) {
+    if (process.browser) return
+    try {
+      await store.dispatch('practices/fetchPractices');
+      await this.$store.dispatch('bindSeasonPractices');
+      store.dispatch('practices/unbindPractices')
+    } catch (e) {
+      console.error(e);
+    }
+  },
   async mounted() {
     try {
       await this.$store.dispatch('practices/fetchPractices');
