@@ -1,7 +1,7 @@
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  mode: 'universal',
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -75,8 +75,7 @@ export default {
         measurementId: process.env.VUE_APP_FIREBASE_measurementd
       },
       services: {
-        firestore: true,
-        auth: true
+        firestore: true
       },
     },],
   ],
