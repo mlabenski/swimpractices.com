@@ -1,3 +1,13 @@
+const admin = require('firebase-admin');
+const serviceAccount = require('./service-account-key.json');
+
+// Only initialize the app if it hasn't been initialized yet.
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+const db = admin.firestore();
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -89,7 +99,7 @@ export default {
 
   generate: {
     async routes() {
-      return dbx.collection('practices').get()
+      return db.collection('practices').get()
         .then(snapshot => {
           const practices = [];
           snapshot.forEach(doc => {
