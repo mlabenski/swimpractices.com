@@ -73,10 +73,9 @@
             class="hidden md:block">
           </SetList>
           <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
-            <EventFeed :is="eventFeedComponent" v-if="isDesktop" :events="events" ></EventFeed>
             <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
           </div>
-          <!-- More Seist components here as needed -->
+          <!-- More SetList components here as needed -->
           <!-- ...rest of your component... -->
         </div>
 
@@ -145,16 +144,6 @@ export default {
     ProfileWidget,
     MobileNavBarTop
   },
-  async fetch({ app, store }) {
-    if (process.browser) return
-    try {
-      await store.dispatch('practices/fetchPractices');
-      await this.$store.dispatch('bindSeasonPractices');
-      store.dispatch('practices/unbindPractices')
-    } catch (e) {
-      console.error(e);
-    }
-  },
   async mounted() {
     try {
       await this.$store.dispatch('practices/fetchPractices');
@@ -165,10 +154,6 @@ export default {
     } catch (e) {
       console.error(e)
     }
-    if (window.innerWidth > 768) {
-    this.isDesktop = true;
-    this.eventFeedComponent = () => import('@/components/Feed/index.vue');
-  }
   },
   data() {
     return {
@@ -186,15 +171,6 @@ export default {
       buttonText: '',
       isHovered: false,
       selectedSetList: 'Browse Practices',
-      isDesktop: false,
-      eventFeedComponent: null,
-      events: [
-        "User ABC123 has liked practice XYZ789",
-        "User DEF456 has disliked practice XYZ789",
-        "User GHI789 has created a new practice ABC123",
-        "User JKL101 has pinned practice XYZ789",
-        "User MNO112 has removed practice ABC123 from their list"
-      ]
     }
   },
   computed: {

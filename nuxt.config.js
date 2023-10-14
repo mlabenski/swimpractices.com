@@ -1,18 +1,6 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('./service-account-key.json');
-
-// Only initialize the app if it hasn't been initialized yet.
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
-}
-const db = admin.firestore();
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  target: 'server',
-  ssr: true,
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -32,11 +20,8 @@ export default {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'
       }
-    ],
-    script:[
-      { src:'https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js' },
-      { src:'https://www.gstatic.com/firebasejs/7.2.3/firebase-firestore.js' },
     ]
+
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -64,17 +49,15 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/firebase'
+    '@nuxtjs/tailwindcss'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'nuxt-material-design-icons',
-    '@nuxtjs/eslint-module',
-    'bootstrap-vue/nuxt',
-    '@nuxtjs/google-fonts',
     '@nuxtjs/firebase',
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/google-fonts'
   ],
   firebase: {
     config: {
@@ -86,30 +69,15 @@ export default {
       appId: process.env.VUE_APP_FIREBASE_appId,
       measurementId: process.env.VUE_APP_FIREBASE_measurementd
     },
-    services: {
-      firestore: true
-    }
   },
   tailwindcss: {
     configPath: '~/tailwind.config.js'
   },
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
+  services: {
+    firestore: true
   },
 
-  generate: {
-    async routes() {
-      return db.collection('practices').get()
-        .then(snapshot => {
-          const practices = [];
-          snapshot.forEach(doc => {
-            practices.push({ id: doc.id, ...doc.data() });
-          });
-          return practices.map(practice => ({
-            route: '/practice/' + practice.id,
-            payload: practice
-          }));
-        });
-    }
+  // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: {
   }
 }

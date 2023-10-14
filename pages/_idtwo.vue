@@ -111,15 +111,6 @@ export default {
     LogsNotificationModel,
     TopNavBar,
   },
-  async asyncData({ params, store, error, payload }) {
-    if (payload) {
-      return { practice: payload };
-    } else {
-      // This fallback is for development or direct navigation in SPA mode
-      const doc = store.dispatch('practices/fetchPracticeByID', params.id);
-      return { practice: store.state.practices.practice };
-    }
-  },
 
   computed: {
     ...mapGetters({
@@ -331,6 +322,7 @@ export default {
     }
   },
   mounted() {
+    this.fetchPractice();
     window.addEventListener('scroll', this.checkActiveSet);
   },
   beforeDestroy() {
