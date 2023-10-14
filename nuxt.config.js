@@ -1,6 +1,6 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: true,
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -76,35 +76,6 @@ export default {
   tailwindcss: {
     configPath: '~/tailwind.config.js'
   },
-  generate: {
-    async routes() {
-      const routes = [];
-      const firebase = require('firebase/app');
-      require('firebase/firestore');
-  
-      // Only initialize Firebase if it's not already initialized
-      if (!firebase.apps.length) {
-        firebase.initializeApp({
-          apiKey: process.env.VUE_APP_FIREBASE_apiKey,
-          authDomain: process.env.VUE_APP_FIREBASE_authDomain,
-          projectId: process.env.VUE_APP_FIREBASE_projectId,
-          storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
-          messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
-          appId: process.env.VUE_APP_FIREBASE_appId,
-          measurementId: process.env.VUE_APP_FIREBASE_measurementd
-        });
-      }
-      const db = firebase.firestore();
-  
-      const snapshot = await db.collection('practice').get();
-  
-      snapshot.forEach(doc => {
-        routes.push(`/${doc.id}`);
-      });
-  
-      return routes;
-    }
-  },  
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
