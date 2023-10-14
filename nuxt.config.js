@@ -69,12 +69,12 @@ export default {
       appId: process.env.VUE_APP_FIREBASE_appId,
       measurementId: process.env.VUE_APP_FIREBASE_measurementd
     },
+    services: {
+      firestore: true
+    },
   },
   tailwindcss: {
     configPath: '~/tailwind.config.js'
-  },
-  services: {
-    firestore: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
