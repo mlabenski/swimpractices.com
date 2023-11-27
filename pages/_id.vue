@@ -152,6 +152,21 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
+  head() {
+    return {
+      link: [
+        // Add this
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+      ],
+      title: this.practice.name,
+      meta: [
+        { hid: 'description',
+          name: 'description',
+          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`
+      }
+      ]
+    }
+  },
   components: {
     EditableField,
     SeasonList,
