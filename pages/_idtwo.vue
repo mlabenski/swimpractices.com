@@ -105,19 +105,50 @@ import TopNavBar from '@/components/TopNavBar'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
+  async asyncData({ params }) {
+    const practice = await fetchPracticeData(params.id);
+    return { asyncPractice } ;
+  },
   head() {
+    const jsonLd = {
+      "@context": "http://schema.org",
+      "@type": "SportsEvent",
+      "name": this.asyncPractice.name,
+      "description": this.asyncPractice.review,
+    }
     return {
-      link: [
-        // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
-      ],
-      title: this.practice.name,
+      title: this.asyncPractice.name,
       meta: [
         { hid: 'description',
           name: 'description',
-          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`
+          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`,
+      },
+      {
+        hid: 'json-ld',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(jsonLd)
+      },
+      {
+        name: 'apple-mobile-web-app-capable',
+        content: 'yes'
+      },
+      // Mobile-Optimized Content
+      {
+        name: 'mobile-optimized',
+        content: 'width'
       }
-      ]
+      ],
+      link: [
+        // Add this
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+        { rel: 'canonical', href:`https://www.swimpractices.com/${this.asyncPractice.id}`}
+      ],
+      script: [
+      { type: 'application/ld+json', json: jsonLd }
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        'json-ld': ['innerHTML'] // This disables sanitization for the JSON-LD
+      }
     }
   },
   components: {
