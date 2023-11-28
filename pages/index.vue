@@ -72,7 +72,9 @@
 
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
-          <ProfileWidget v-if="user && profileOpened" />
+          <client-only>
+            <ProfileWidget v-if="user && profileOpened" />
+          </client-only>
           <MobileSetList v-if="user && selectedSetList === 'My Practices'" class="sm:hidden" title="My Templates"
             @hide-practice="handleHidePractice" :practiceSets="userPractices" :userID="user ? user.id : null"
             :userPinnedPractices="userPinnedPractices">
