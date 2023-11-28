@@ -169,7 +169,7 @@ export default {
     const jsonLd = {
       "@context": "http://schema.org",
       "@type": "SportsEvent",
-      "name": this.practice.name,
+      "title": this.practice ? this.practice.name : 'Loading...',
       "description": this.practice.review,
     }
     return {
@@ -177,7 +177,7 @@ export default {
       meta: [
         { hid: 'description',
           name: 'description',
-          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`
+          content: this.practice ? `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}` : 'Loading practice...'
       },
       {
         hid: 'json-ld',
