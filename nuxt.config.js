@@ -76,6 +76,9 @@ export default {
   tailwindcss: {
     configPath: '~/tailwind.config.js'
   },
+  router: {
+    trailingSlash: false
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

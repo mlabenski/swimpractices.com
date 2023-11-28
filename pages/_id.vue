@@ -158,6 +158,9 @@ export default {
       console.log(db);
       console.log(doc);
       console.log(doc.data());
+      if(!doc.exists) {
+        throw new Error("This practice was not found!");
+      }
       return { practice: doc.data() };
     } catch (error) {
       console.log('Error fetching practices: ', error);
