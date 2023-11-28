@@ -31,10 +31,11 @@
             {{ getTotalYardage(practice.sets) }}
           </td>
           <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-            <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">
-              <span class="material-icons"> open_in_full
-              </span></router-link>
+            <router-link :to="`/p/${practice.id}`" class="text-blue-600 underline">
+            <span class="material-icons">open_in_full</span>
+          </router-link>
           </td>
+
           <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
             <button v-if="practice.userID === userID" @click="deletePractice(practiceId)"
               class="text-red-600 underline ml-4">
