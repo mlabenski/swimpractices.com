@@ -44,6 +44,23 @@ export const mutations = {
 };
 
 export const actions = {
+
+  async nuxtServerInit({ dispatch, rootState, commit }) {
+    try {
+      const fakeUserID = '2416d01c-e811-4f40-81c1-6ac762a89453';
+      commit('auth/SET_USER', {id: fakeUserID});
+
+      await dispatch('practices/fetchUserPractices');
+      await dispatch('practices/fetchPinnedPractices');
+      // Dispatch actions that are needed universally, not user-specific
+      await dispatch('practices/fetchPractices');
+      await dispatch('bindSeasonPractices');
+
+      // For user-specific data, ensure the user is authenticated
+    } catch (error) {
+      console.error('Error in nuxtServerInit:', error);
+    }
+  },
   addPracticeToSeason({ commit }, payload) {
     commit('ADD_PRACTICE_TO_SEASON', payload);
   },

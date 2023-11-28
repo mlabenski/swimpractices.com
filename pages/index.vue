@@ -109,9 +109,11 @@
         <div class="flex items-center justify-between sm:block">
         </div>
         <!-- Grouped Practices cards -->
-        <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user"
+        <client-only>
+          <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user"
           :rank="index + 1" :key="season.id" @like="handleLike(season.id)"
           class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24" />
+        </client-only>
       </div>
     </div>
     <!-- Header -->
