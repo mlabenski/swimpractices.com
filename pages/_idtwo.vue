@@ -123,11 +123,11 @@ export default {
     const jsonLd = {
       "@context": "http://schema.org",
       "@type": "SportsEvent",
-      "name": this.asyncPractice.name,
-      "description": this.asyncPractice.review,
+      "name": this.practice.name,
+      "description": this.practice.review,
     }
     return {
-      title: this.asyncPractice.name,
+      title: this.practice.name,
       meta: [
         { hid: 'description',
           name: 'description',
@@ -151,7 +151,7 @@ export default {
       link: [
         // Add this
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-        { rel: 'canonical', href:`https://www.swimpractices.com/${this.asyncPractice.id}`}
+        { rel: 'canonical', href:`https://www.swimpractices.com/${this.practice.id}`}
       ],
       script: [
       { type: 'application/ld+json', json: jsonLd }

@@ -59,8 +59,6 @@
 
 
 <script>
-import axios from 'axios';
-
 export default {
   props: ["user", "value"],
   data() {
@@ -113,7 +111,7 @@ export default {
       console.log('submitting prompt: '+sentence)
       try {
         // Send a POST request to the API
-        let response = await axios.post('https://genhppurl.mlabenski.repl.co/generate/v2/practice', {
+        let response = await $axios.post('https://genhppurl.mlabenski.repl.co/generate/v2/practice', {
           input_text: sentence,
         });
 

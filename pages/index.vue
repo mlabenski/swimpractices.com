@@ -31,14 +31,25 @@
       </div>
 
       <!-- Modal components -->
+      <template>
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice">
-        </GeneratePractice>
-        <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
-        <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal"
-          :notification="notification" />
-        <LogsNotificationModel></LogsNotificationModel>
+        <client-only>
+          <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice" />
+        </client-only>
+
+        <client-only>
+          <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
+        </client-only>
+
+        <client-only>
+          <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification" />
+        </client-only>
+
+        <client-only>
+          <LogsNotificationModel />
+        </client-only>
       </div>
+    </template>
 
       <!-- Set lists -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20">
