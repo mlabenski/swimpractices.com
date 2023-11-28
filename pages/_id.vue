@@ -149,7 +149,6 @@ import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
   async asyncData({ params, app }) {
-    if (process.server) {
       const db = app.$fire.firestore;
     try {
       const doc = await db.collection('practices').doc(params.id).get();
@@ -164,7 +163,6 @@ export default {
     } catch (error) {
       console.log('Error fetching practices: ', error);
       throw error;
-    }
     }
   },
   head() {
