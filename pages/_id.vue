@@ -152,9 +152,18 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
-  async asyncData({ params }) {
-    const practice = await fetchPracticeData(params.id);
-    return { asyncPractice } ;
+  async asyncData({ params, app }) {
+    const db = app.$fire.firestore;
+    try {
+      const doc = await db.collection('practices').doc(params.id).get();
+      if(!doc.exists) {
+        throw new Error("This practice was not found!");
+      }
+      return { asyncPractice: doc.data() };
+    } catch (error) {
+      console.log('Error fetching practices: ', error);
+      throw error;
+    }
   },
   head() {
     const jsonLd = {
