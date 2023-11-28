@@ -1,54 +1,61 @@
 <template>
   <div class="z-121">
-    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
+    <div
+      class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
       <h2 class="text-2xl font-bold mb-1" v-if="!changeTheme">{{ title }}</h2>
       <span class="material-icons cursor-pointer" @click="toggleTable">
-    {{ isTableVisible ? 'expand_less' : 'expand_more' }}
-  </span>
+        {{ isTableVisible ? "expand_less" : "expand_more" }}
+      </span>
     </div>
-
-
 
     <div v-if="isLoading">Loading...</div>
     <table v-else-if="isTableVisible" class="w-full mt-4 border-2 border-gray-400 divide-y divide-gray-200">
-      <thead style="background-color: #1F487E">
-      <tr>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Practice Name</th>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Distance</th>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
-        <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br></th>
-      </tr>
+      <thead style="background-color: #1f487e">
+        <tr>
+          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">
+            Practice Name
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">
+            Distance
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br /></th>
+          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"><br /></th>
+        </tr>
       </thead>
       <tbody class="bg-customGrey">
-      <tr v-for="practice in paginatedData" :key="practice.practiceId" class="text-center bg-white shadow-md">
-        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ practice.name }}</td>
-        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ getTotalYardage(practice.sets) }}</td>
-        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-          <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span class="material-icons">
-    open_in_full
-    </span></router-link>
-        </td>
-        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-          <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
-    delete_forever
-    </span></button>
-        </td>
-      </tr>
+        <tr v-for="practice in paginatedData" :key="practice.practiceId" class="text-center bg-white shadow-md">
+          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
+            {{ practice.name }}
+          </td>
+          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
+            {{ getTotalYardage(practice.sets) }}
+          </td>
+          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
+            <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline"><span
+                class="material-icons"> open_in_full </span></router-link>
+          </td>
+          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
+            <button v-if="practice.userID === userID" @click="deletePractice(practiceId)"
+              class="text-red-600 underline ml-4">
+              <span class="material-icons"> delete_forever </span>
+            </button>
+          </td>
+        </tr>
       </tbody>
     </table>
     <div v-if="isTableVisible" class="flex justify-center mt-4 space-x-1 sm:space-x-4">
-      <button @click="previousPage" :disabled="currentPage === 1" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
+      <button @click="previousPage" :disabled="currentPage === 1"
+        class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
         <span class="sm:hidden material-icons">chevron_left</span>
       </button>
-      <div class="self-center text-sm sm:text-lg font-bold">Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
+      <div class="self-center text-sm sm:text-lg font-bold">
+        Page {{ currentPage }} of {{ totalPages }}
+      </div>
+      <button @click="nextPage" :disabled="currentPage === totalPages"
+        class="px-2 sm:px-4 py-1 sm:py-2 bg-transparent text-xs sm:text-base text-black rounded disabled:opacity-50">
         <span class="sm:hidden material-icons">chevron_right</span>
       </button>
     </div>
-
-
-
-
   </div>
 </template>
 
@@ -56,6 +63,14 @@
 
 <script>
 export default {
+  head() {
+    return {
+      link: [
+        // Add this
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+      ],
+    }
+  },
   props: {
     title: {
       type: String,
@@ -94,7 +109,7 @@ export default {
       const end = start + this.itemsPerPage;
       return Object.entries(this.practiceSets)
         .slice(start, end)
-        .map(([practiceId, practice]) => ({...practice, practiceId}));
+        .map(([practiceId, practice]) => ({ ...practice, practiceId }));
     },
     totalPages() {
       return Math.ceil(Object.keys(this.practiceSets).length / this.itemsPerPage);
@@ -146,10 +161,10 @@ export default {
       ];
     },
     nextPage() {
-      if(this.currentPage < this.totalPages) this.currentPage++;
+      if (this.currentPage < this.totalPages) this.currentPage++;
     },
     previousPage() {
-      if(this.currentPage > 1) this.currentPage--;
+      if (this.currentPage > 1) this.currentPage--;
     },
     getTotalYardage(sets) {
       let totalYardage = 0;
