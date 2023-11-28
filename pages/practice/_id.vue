@@ -90,9 +90,9 @@
 
       </div>
     </div>
-    <div class="sm:hidden">
-      <TopNavBar class="top-nav-bar-class" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
-    </div>
+    <client-only>
+      <!-- <TopNavBar class="top-nav-bar-class" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/> -->
+    </client-only>
   </div>
 </template>
 
@@ -378,7 +378,7 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.checkActiveSet);
+    //window.addEventListener('scroll', this.checkActiveSet);
   },
   beforeDestroy() {
     this.closeZoom();

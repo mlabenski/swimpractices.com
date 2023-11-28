@@ -52,7 +52,8 @@
         <div v-else>
           <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
             <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
-            <div class="flex space-x-2">
+            <client-only>
+              <div class="flex space-x-2">
               <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
           <span class="material-icons text-white">
             {{ editorEnabled ? 'cancel' : 'edit' }}
@@ -64,6 +65,7 @@
           </span>
               </button>
             </div>
+            </client-only>
           </div>
           <div>
           </div>
@@ -116,7 +118,9 @@
             </div>
           </div>
         </div>
-        <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center sm:block hidden">
+        <client-only>
+
+          <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center sm:block hidden">
           <div>
             <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
           </div>
@@ -140,6 +144,8 @@
           </button>
 
         </div>
+              </client-only>
+
       </div>
     </div>
   </div>
@@ -154,6 +160,7 @@ export default {
   async asyncData({ params, app }) {
     const db = app.$fire.firestore;
     try {
+      console.log(params)
       const doc = await db.collection('practices').doc(params.id).get();
       if(!doc.exists) {
         throw new Error("This practice was not found!");
