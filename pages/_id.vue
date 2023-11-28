@@ -36,7 +36,6 @@
         Close
       </button>
     </div>
-    <SeasonList v-if="isSeasonModalOpen" :owner="practice.userID" :practiceID="practice.id" @close="closeModal"/>
     <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
 
       <div class="fixed right-0 bottom-0 m-4">
@@ -159,7 +158,7 @@ export default {
       if(!doc.exists) {
         throw new Error("This practice was not found!");
       }
-      return { asyncPractice: doc.data() };
+      return { practice: doc.data() };
     } catch (error) {
       console.log('Error fetching practices: ', error);
       throw error;
@@ -219,8 +218,7 @@ export default {
       isOptionsExpanded: false,
       isSeasonModalOpen: false,
       editorEnabled: false,
-      isDropdownOpen: false,
-      practice: null
+      isDropdownOpen: false
     }
   },
   watch: {
@@ -373,9 +371,6 @@ export default {
     toggleOptions() {
       this.isOptionsExpanded = !this.isOptionsExpanded;
     },
-  },
-  mounted() {
-    this.fetchPractice();
   },
   beforeDestroy() {
     this.closeZoom();

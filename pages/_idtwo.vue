@@ -112,11 +112,12 @@ export default {
       if(!doc.exists) {
         throw new Error("This practice was not found!");
       }
-      return { asyncPractice: doc.data() };
+      return { practice: doc.data() };
     } catch (error) {
       console.log('Error fetching practices: ', error);
       throw error;
     }
+
   },
   head() {
     const jsonLd = {
@@ -377,7 +378,6 @@ export default {
     }
   },
   mounted() {
-    this.fetchPractice();
     window.addEventListener('scroll', this.checkActiveSet);
   },
   beforeDestroy() {

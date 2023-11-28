@@ -197,8 +197,8 @@ export default {
     }),
   },
   created() {
-    this.checkNotifications();
-    this.forceRerender();
+    // this.checkNotifications();
+    // this.forceRerender();
   },
   methods: {
     ...mapActions({
@@ -251,12 +251,12 @@ export default {
     openProfile() {
       this.profileOpened = !this.profileOpened;
     },
-    checkNotifications() {
-      this.hasNotification = notificationsData.notifications.length > 0;
-    },
-    forceRerender() {
-      this.componentKey += 1;
-    },
+      // checkNotifications() {
+      //   this.hasNotification = notificationsData.notifications.length > 0;
+      // },
+      // forceRerender() {
+      //   this.componentKey += 1;
+      // },
     handleLike(seasonId) {
       if (!this.user) return;
       const jwt = this.user.token;
