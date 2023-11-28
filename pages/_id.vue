@@ -149,10 +149,9 @@ import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
   async asyncData({ params, app }) {
-    const db = app.$fire.firestore;
+    if (process.server) {
+      const db = app.$fire.firestore;
     try {
-      console.log('this is the param for the route:')
-      console.log(params.id)
       const doc = await db.collection('practices').doc(params.id).get();
       console.log('logging db');
       console.log(db);
@@ -165,6 +164,7 @@ export default {
     } catch (error) {
       console.log('Error fetching practices: ', error);
       throw error;
+    }
     }
   },
   head() {
