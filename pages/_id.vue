@@ -160,7 +160,8 @@ export default {
   async asyncData({ params, app }) {
     const db = app.$fire.firestore;
     try {
-      console.log(params)
+      console.log('this is the param for the route:')
+      console.log(params.id)
       const doc = await db.collection('practices').doc(params.id).get();
       if(!doc.exists) {
         throw new Error("This practice was not found!");
