@@ -1,171 +1,161 @@
 <template>
-  <div class="bg-gray-900 min-h-screen relative" v-if="practice">
-
-    <!-- START: Top Nav Bar (Header Rows) -->
-    <div class="sticky top-0 z-50">
-      <!-- Row 1 -->
-      <div class="bg-gray-400 p-2 flex justify-between items-center shadow-md">
-        <a class="text-gray-800 material-icons" href="https://swimpractices.com">
+  <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
+    <!-- START: Top Nav Bar -->
+    <div class="fixed top-0 left-0 right-0 bg-gray-400 p-2 flex justify-between items-center shadow-md z-50 mb-25 sm:mb-0 sm:hidden">
+      <router-link to="/" @click="isSeasonModalOpen = false" class="text-gray-800"><span class="material-icons">
           close
-        </a>
-        <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
-        <!-- Placeholder for alignment. Can be removed if not needed -->
-        <div class="opacity-0">
-          <span class="material-icons">
-            expand_more
-          </span>
-        </div>
-      </div>
-      <!-- Row 2 -->
-      <div class="bg-gray-600 p-2 flex justify-center items-center shadow-md">
-        <!-- Display set name of the current viewed set -->
-        {{ currentSet ? currentSet.name : 'Set Name' }}
-      </div>
-      <!-- Row 3 -->
-      <div class="bg-gray-600 p-2 flex justify-around items-center shadow-md">
-        <!-- Dynamically set the active class based on the activeSet value -->
-        <span
-          v-for="n in practice.sets.length"
-          :key="n"
-          @click="scrollToSet(n-1)"
-          :class="{ 'text-white': activeSet === n-1 }"
-          class="cursor-pointer">
-          {{ n }}
+        </span></router-link>
+
+      <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
+
+      <button @click="isDropdownOpen = !isDropdownOpen" class="text-gray-800">
+        <span class="material-icons">
+          expand_more
         </span>
-      </div>
+      </button>
     </div>
 
-    <!-- REST OF THE TEMPLATE (Adjusted for the new header) -->
-    <div class="pt-2 pb-14">
-      <div class="max-w-screen-lg mx-auto bg-gray-800 rounded-lg shadow-md pb-14 p-4 md:p-6">
+    <!-- START: Dropdown Menu -->
+    <div v-if="isDropdownOpen" class="fixed top-12 left-0 right-0 bg-gray-400 p-2 flex flex-col space-y-2 shadow-md z-50 sm:hidden">
+      <button
+        @click="isSeasonModalOpen = true"
+        class="px-3 py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Add to Profile
+      </button>
+      <button
+        @click="isSeasonModalOpen = true"
+        class="px-3 py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Add to Season
+      </button>
+      <button
+        @click="isDropdownOpen = false"
+        class="px-3 py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+      >
+        Close
+      </button>
+    </div>
+    <SeasonList v-if="isSeasonModalOpen" :owner="practice.userID" :practiceID="practice.id" @close="closeModal"/>
+    <div class="max-w-screen-sm mx-auto bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4"><div class="fixed right-0 mr-4" :class="{ 'sm:hidden': !isOptionsExpanded }">
 
-        <div v-if="!practice" class="text-center text-gray-400 text-lg">
-          Loading...
+      <div class="fixed right-0 bottom-0 m-4">
+        <div class="flex flex-col items-center bg-white p-2 rounded shadow-lg" style="padding-bottom: 45px;">
+          <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomIn">Zoom In</button>
+          <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="zoomOut">Zoom Out</button>
+          <button v-if="isOptionsExpanded" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="closeZoom">Close Zoom</button>
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded m-1" @click="toggleOptions">{{ isOptionsExpanded ? 'Hide' : 'Options' }}</button>
         </div>
-
+      </div>
+    </div>
+      <div class="px-2 md:px-6 py-2 md:py-4">
+        <div v-if="!practice">Loading...</div>
         <div v-else>
-          <div v-for="(set, setIndex) in practice.sets" :key="setIndex" :ref="'set' + setIndex" class="mb-6">
-
-            <!-- Set Header -->
-            <div class="flex justify-between items-center mb-4">
-              <div class="flex items-center">
-                {{setIndex}}
-                <LogsNotificationModel class="mr-2"></LogsNotificationModel>
-                <EditableField
-                  :value="set.name"
-                  @input="newValue => set.name = newValue"
-                  class="text-xl md:text-2xl font-bold text-gray-200">
-                </EditableField>
-              </div>
-              <button @click="toggleTableVisibility(setIndex)" class="text-gray-400 hover:text-gray-500">
-                {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
+          <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
+            <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
+            <div class="flex space-x-2">
+              <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+          <span class="material-icons text-white">
+            {{ editorEnabled ? 'cancel' : 'edit' }}
+          </span>
+              </button>
+              <button @click="savePractice" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
+          <span class="material-icons text-white">
+            save
+          </span>
               </button>
             </div>
-
-            <!-- Set Description -->
-            <p class="mb-4 text-gray-500 text-md">Set Topic: {{ set.description }}</p>
-
-            <!-- Exercise Table -->
-            <div class="bg-gray-700 rounded-lg">
-              <table v-if="!tableVisibility[setIndex]" class="table-auto w-full text-gray-300 text-sm md:text-base">
+          </div>
+          <div>
+          </div>
+          <div v-for="(set, setIndex) in practice.sets" :key="setIndex" class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+              <div>
+                <LogsNotificationModel></LogsNotificationModel>
+                <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
+                  <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
+                  <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
+                    {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
+                  </button>
+                </h3>
+                <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set.description }}</p>
+              </div>
+              <div>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">{{ set.numRounds }} round</p>
+                <p class="mt-1 text-white font-bold text-xs md:text-sm">HR: {{ set.heartRate }}</p>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table v-if="!tableVisibility[setIndex]" class="table-auto w-full mt-2 text-gray-300 text-xs md:text-sm">
                 <thead>
-                <tr>
-                  <th class="px-4 py-2 font-semibold">Details</th>
-                  <th class="px-4 py-2 font-semibold">Description</th>
-                  <th class="px-4 py-2 font-semibold">Interval</th>
+                <tr class="bg-gray-700">
+                  <th class="px-2 md:px-4 py-1 md:py-2">Stroke</th>
+                  <th class="px-2 md:px-4 py-1 md:py-2">Quantity</th>
+                  <th class="px-2 md:px-4 py-1 md:py-2">Distance</th>
+                  <th class="px-2 md:px-4 py-1 md:py-2">Description</th>
+                  <th class="px-2 md:px-4 py-1 md:py-2">Equipment</th>
+                  <th class="px-2 md:px-4 py-1 md:py-2">Interval</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(exercise, exerciseIndex) in set.exercises" :key="exerciseIndex">
-                  <td class="px-4 py-2 border-t">{{ exercise.quantity }}x{{ exercise.distance }}</td>
-                  <td class="px-4 py-2 border-t text-blue-500">{{ exercise.description }}</td>
-                  <td class="px-4 py-2 border-t">{{ exercise.interval }}</td>
+                  <EditableField :value="exercise.stroke" @input="newValue => updateExercise('stroke', newValue, setIndex, exerciseIndex)"></EditableField>
+                  <EditableField :value="exercise.quantity" @input="newValue => updateExercise('quantity', newValue, setIndex, exerciseIndex)"></EditableField>
+                  <EditableField :value="exercise.distance" @input="newValue => updateExercise('distance', newValue, setIndex, exerciseIndex)"></EditableField>
+                  <EditableField :value="exercise.description" @input="newValue => updateExercise('description', newValue, setIndex, exerciseIndex)"></EditableField>
+                  <EditableField :value="exercise.equipment" @input="newValue => updateExercise('equipment', newValue, setIndex, exerciseIndex)"></EditableField>
+                  <EditableField :value="exercise.interval" @input="newValue => updateExercise('interval', newValue, setIndex, exerciseIndex)"></EditableField>
                 </tr>
                 </tbody>
               </table>
+              <button v-if="editorEnabled" @click="addExercise(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                Add Exercise below
+              </button>
+              <button v-if="editorEnabled" @click="addSet(setIndex)" class="mt-2 px-2 py-1 bg-green-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+                Add Set below
+              </button>
             </div>
-
           </div>
         </div>
+        <div class="p-4 fixed inset-x-0 bottom-0 bg-gray-700 flex justify-between items-center sm:block hidden">
+          <div>
+            <router-link to="/" class="px-2 md:px-3 py-1 md:py-2 bg-blue-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">Close</router-link>
+          </div>
+          <button
+            @click="isSeasonModalOpen = true"
+            class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+            Bookmark
+          </button>
+          <button
+            @click="isSeasonModalOpen = true"
+            class="px-2 md:px-3 py-1 md:py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+            Add to Profile
+          </button>
+          <button
+            @click="isSeasonModalOpen = true"
+            class="px-2 md:px-3 py-1 md:py-2 bg-orange-500 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+          >
+            Add to Season
+          </button>
 
+        </div>
       </div>
-    </div>
-    <div class="sm:hidden">
-      <TopNavBar class="top-nav-bar-class" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
     </div>
   </div>
 </template>
 
-
-
 <script>
 import EditableField from '@/components/EditableField/EditableField.vue';
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
-import TopNavBar from '@/components/TopNavBar'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 export default {
-  async asyncData({ params, app }) {
-    const db = app.$fire.firestore;
-    try {
-      const doc = await db.collection('practices').doc(params.id).get();
-      if(!doc.exists) {
-        throw new Error("This practice was not found!");
-      }
-      return { practice: doc.data() };
-    } catch (error) {
-      console.log('Error fetching practices: ', error);
-      throw error;
-    }
-
-  },
-  head() {
-    const jsonLd = {
-      "@context": "http://schema.org",
-      "@type": "SportsEvent",
-      "name": this.practice.name,
-      "description": this.practice.review,
-    }
-    return {
-      title: this.practice.name,
-      meta: [
-        { hid: 'description',
-          name: 'description',
-          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`,
-      },
-      {
-        hid: 'json-ld',
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify(jsonLd)
-      },
-      {
-        name: 'apple-mobile-web-app-capable',
-        content: 'yes'
-      },
-      // Mobile-Optimized Content
-      {
-        name: 'mobile-optimized',
-        content: 'width'
-      }
-      ],
-      link: [
-        // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-        { rel: 'canonical', href:`https://www.swimpractices.com/${this.practice.id}`}
-      ],
-      script: [
-      { type: 'application/ld+json', json: jsonLd }
-      ],
-      __dangerouslyDisableSanitizersByTagID: {
-        'json-ld': ['innerHTML'] // This disables sanitization for the JSON-LD
-      }
-    }
-  },
   components: {
     EditableField,
     SeasonList,
-    LogsNotificationModel,
-    TopNavBar,
+    LogsNotificationModel
   },
 
   computed: {
@@ -184,9 +174,7 @@ export default {
       isSeasonModalOpen: false,
       editorEnabled: false,
       isDropdownOpen: false,
-      practice: null,
-      activeSet: 1,
-      currentSet: null
+      practice: null
     }
   },
   watch: {
@@ -205,8 +193,8 @@ export default {
       this.isSeasonModalOpen = false;
     },
     async fetchPractice() {
-      console.log('the route is:' + this.$route.params.idtwotwo);
-      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.idtwo);
+      console.log('the route is:' + this.$route.params.id);
+      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.id);
       this.practice = this.$store.state.practices.practice;
       console.log('the practice is:')
       console.log(this.practice);
@@ -218,7 +206,7 @@ export default {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     },
     async addToSeason(seasonID) {
-      const practiceID = this.$route.params.idtwo;
+      const practiceID = this.$route.params.id;
       await this.addPracticeToSeason({ seasonID, practiceID });
     },
     async createNewSeason(seasonData) {
@@ -245,7 +233,7 @@ export default {
 
       // Dispatch Vuex action
       this.$store.dispatch('practices/addOrUpdateSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex,
         set: newSet
       });
@@ -265,7 +253,7 @@ export default {
 
       // Dispatch Vuex action
       await this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex,
         exercise: newExercise,
       }).then(r => this.fetchPractice());
@@ -273,7 +261,7 @@ export default {
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
       this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex: setIndex,
         exerciseIndex: exerciseIndex,
         property: property,
@@ -294,7 +282,7 @@ export default {
         await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
         return;
       }
-      const practiceID = this.$route.params.idtwo;
+      const practiceID = this.$route.params.id;
       const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID);
       console.log('We will only work with this new practice:')
       console.log(practice);
@@ -339,51 +327,13 @@ export default {
     toggleOptions() {
       this.isOptionsExpanded = !this.isOptionsExpanded;
     },
-    scrollToSet(setNumber) {
-      const setElement = this.$refs['set' + setNumber];
-      if (setElement && setElement[0]) {
-        setElement[0].scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      } else {
-        console.warn(`Ref for set ${setNumber} not found.`);
-      }
-    },
-    closeAndNavigate() {
-      //this.$router.push("/");
-   },
-   goHome() {
-  // Navigate to the home page
-  this.$router.push({ path: '/' });
-  },
-    checkActiveSet() {
-      // Logic to determine which set is currently in view
-      for (let i = 0; i < this.practice.sets.length; i++) {
-        const refKey = 'set' + i;
-        if (this.$refs[refKey] && this.$refs[refKey].length > 0) {
-          const setElement = this.$refs[refKey][0];
-          const top = setElement.getBoundingClientRect().top;
-          const bottom = setElement.getBoundingClientRect().bottom;
-
-          if (top <= window.innerHeight / 2 && bottom >= window.innerHeight / 2) {
-            this.activeSet = i;
-            this.currentSet = this.practice.sets[i];
-            break;
-          }
-        } else {
-          console.warn(`Ref ${refKey} not found or has no elements.`);
-        }
-      }
-    }
   },
   mounted() {
-    window.addEventListener('scroll', this.checkActiveSet);
+    this.fetchPractice();
   },
   beforeDestroy() {
     this.closeZoom();
-    window.removeEventListener('scroll', this.checkActiveSet);
   },
-}
+};
 
 </script>
