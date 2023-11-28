@@ -158,6 +158,7 @@ export default {
       const doc = await db.collection('practices').doc(params.id).get();
       console.log('logging db');
       console.log(db);
+      console.log(doc);
       console.log(doc.data());
       if(!doc.exists) {
         throw new Error("This practice was not found!");
