@@ -71,12 +71,10 @@
             <div class="flex justify-between items-center mb-2">
               <div>
                 <LogsNotificationModel></LogsNotificationModel>
-                <h3 class="text-base md:text-lg font-semibold text-gray-300 flex items-center">
                   <EditableField :value="set.name" @input="newValue => set.name = newValue"></EditableField>
                   <button @click="toggleTableVisibility(setIndex)" class="mt-1 text-gray-500 text-xs md:text-sm">
                     {{ tableVisibility[setIndex] ? 'Expand' : 'Hide' }}
                   </button>
-                </h3>
                 <p class="mt-1 text-gray-500 text-xs md:text-sm">Set Topic: {{ set.description }}</p>
               </div>
               <div>
@@ -160,9 +158,6 @@ export default {
       console.log(db);
       console.log(doc);
       console.log(doc.data());
-      if(!doc.exists) {
-        throw new Error("This practice was not found!");
-      }
       return { practice: doc.data() };
     } catch (error) {
       console.log('Error fetching practices: ', error);
