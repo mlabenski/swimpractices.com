@@ -57,7 +57,8 @@ export default {
     'nuxt-material-design-icons',
     '@nuxtjs/firebase',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxtjs/axios',
   ],
   firebase: {
     config: {
