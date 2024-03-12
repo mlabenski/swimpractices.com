@@ -107,6 +107,7 @@ export default {
       this.submitting = true;
       // Generate the practice request sentence
       //Adding a comment to force commit
+      // Still no register
       let sentence = `Generate a swim practice that consists of exercises with a total distance of ${this.practice.distance} for the pool type ${this.practice.poolSize}, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
       let responseString = null;
       const requestData = {
