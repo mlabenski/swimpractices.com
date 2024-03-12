@@ -108,16 +108,18 @@ export default {
       // Generate the practice request sentence
       let sentence = `Generate a swim practice that consists of exercises with a total distance of ${this.practice.distance} for the pool type ${this.practice.poolSize}, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
       let responseString = null;
+      const requestData = {
+        input_text: sentence,
+        user_id: this.user.id
+
+      }
       console.log('submitting prompt: '+sentence)
       try {
-        // Send a POST request to the API
-        let response = await this.$axios.post('https://genhppurl.mlabenski.repl.co/generate/v2/practice', {
-          input_text: sentence,
-        });
-
+        const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v2/practice', requestData);
+        const { data } = response;
         // Handle the API response here, e.g., display a success message
-        responseString = response.data;
-        console.log('the response data is ' + response.data);
+        responseString = data.practice;
+        console.log('the response data is ' + responseString);
 
       } catch (error) {
         // Handle the error, e.g., display an error message
