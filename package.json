@@ -32,7 +32,7 @@
     "vuexfire": "^3.2.5"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^5.3.3",
+    "@nuxtjs/tailwindcss": "^6.11.4",
     "postcss": "^8.4.17"
   }
 }
