@@ -59,6 +59,8 @@
 
 
 <script>
+import axios from "axios";
+
 export default {
   props: ["user", "value"],
   data() {
