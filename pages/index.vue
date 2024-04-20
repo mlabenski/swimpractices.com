@@ -45,7 +45,6 @@
 
         </div>
     <!-- Infinite Set List Container -->
-    <keep-alive>
       <div class="container mx-auto py-10 flex items-center mt-8 justify-center"><!-- You may adjust the padding as needed -->
       <!-- Centering the component and following the same design as the video -->
       <div class="flex justify-center">
@@ -55,7 +54,6 @@
         </div>
       </div>
     </div>
-    </keep-alive>
     </div>
     </div>
     <!-- Container for all the components below the header -->
