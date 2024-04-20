@@ -4,20 +4,60 @@
     <MobileNavBarTop class="sm:hidden block z-99" @openProfile="openProfile"/>
     <!-- Banner image section -->
     <div class="md:block hidden">
-      <div class="relative">
-        <img src="@/static/swim-practices-header.png" class="object-cover w-full h-64" />
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="text-center text-white">
-            <h2 class="text-4xl font-bold mb-2">Swim Practices on Demand</h2>
-            <!-- Login button -->
-            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup" v-if="!user">Log in to create your own</p>
-            <p class="text-xl cursor-pointer hover:text-blue-500 hover:bg-gray-800 hover:rounded-full py-2 px-4" @click="openSignup" v-if="user">Welcome back {{user.username}}</p>
+      <div id="top" class="min-h-screen">
+
+        <div class="relative bg-customBlack h-auto min-h-72"> <!-- Ensure the height is auto to accommodate content -->
+
+          <!-- Logo and top-right buttons container -->
+          <div class="flex justify-between items-start p-4">
+            <img src="@/static/swim-practices-good-bg-lg.png" class="w-52" />
+            <div class="flex space-x-4">
+              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
+                Find a Practice
+              </button>
+              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
+                Log In
+              </button>
+            </div>
           </div>
+          <!-- Two columns -->
+          <div class="grid grid-cols-2 gap-4 p-4 md:p-8 lg:p-16">
+            <div class="flex flex-col justify-center text-left ml-12 md:ml-24 lg:ml-36 text-white">
+              <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
+              <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+              <button class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-backgroundBlue transition duration-300 ease-in-out mb-6">
+                Explore Practices
+              </button>
+              <p class="text-md md:text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
+              <div class="mt-4">
+                <span class="text-md md:text-lg">Practice like your coach is on the pool deck!</span>
+              </div>
+            </div>
+            <!-- Visual representation column (if needed) -->
+            <div class="">
+              <img src="@/static/background-1368-912-wide.svg" class="object-contain w-full h-full" />
+            </div>
+          </div>
+          <!-- Optional: Visual representation of piano keys and music notes (if needed) -->
+          <!-- <div class="w-full">
+            <img src="@/static/background-1368-912-wide.svg" class="object-contain w-full" />
+          </div> -->
+
+        </div>
+    <!-- Infinite Set List Container -->
+    <keep-alive>
+      <div class="container mx-auto py-10 flex items-center mt-8 justify-center"><!-- You may adjust the padding as needed -->
+      <!-- Centering the component and following the same design as the video -->
+      <div class="flex justify-center">
+        <div class="w-full max-w-8xl"> <!-- This should match the max-width of the video element in the design -->
+          <!-- Title and other elements here should match the style of the video title -->
+          <infinite-set-list class="align-center" :practice-sets="practices"/>
         </div>
       </div>
     </div>
-
+    </keep-alive>
+    </div>
+    </div>
     <!-- Container for all the components below the header -->
     <div class="container mx-auto py-2">
       <div class="sm:px-4">
@@ -120,7 +160,7 @@ import ProfileWidget from '@/components/ProfileWidget';
 import GeneratePractice from "@/components/GeneratePractice/index.vue";
 import TopNavBar from "@/components/TopNavBar/index.vue";
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
-
+import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 
@@ -142,7 +182,8 @@ export default {
     TopNavBar,
     LogsNotificationModel,
     ProfileWidget,
-    MobileNavBarTop
+    MobileNavBarTop,
+    InfiniteSetList
   },
   async mounted() {
     try {

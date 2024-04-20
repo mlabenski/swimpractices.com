@@ -13,6 +13,12 @@ module.exports = {
         },
         customBlue: {
           DEFAULT: '#4281A4'
+        },
+        customBlack: {
+          DEFAULT: '#171819'
+        },
+        backgroundBlue: {
+          DEFAULT: '#1F897E'
         }
       },
       fontFamily: {
