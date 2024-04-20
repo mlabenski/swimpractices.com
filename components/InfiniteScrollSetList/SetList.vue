@@ -9,7 +9,7 @@
     <div v-if="isLoading">Loading...</div>
     <div v-else-if="isTableVisible" class="table-container">
       <table class="w-full border-2 border-gray-400 divide-y divide-gray-200">
-        <thead style="background-color: #1F487E">
+        <thead style="background-color: #1F487E" class="sticky-header">
         <tr>
           <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Practice Name</th>
           <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Distance</th>
@@ -122,5 +122,14 @@ export default {
 .table-container {
   max-height: 400px; /* Adjust as necessary for your layout */
   overflow-y: scroll;
+}
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: inherit;
+}
+table {
+  border-collapse: separate;
 }
 </style>

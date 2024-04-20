@@ -1,8 +1,12 @@
 <template>
   <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350" hide-footer>
-    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm">
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <h2 class="font-semibold text-lg text-gray-700">Sorry! Create an account to generate a practice.</h2>
+    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm text-center">
+      <div class="mb-4">
+        <h2 class="font-semibold text-xl text-gray-700">Join Us!</h2>
+        <p class="text-gray-600 my-4">Create an account to start generating personalized swim practices.</p>
+        <b-button @click="emitSignUpEvent" variant="primary" class="px-5 py-2 font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+          Sign Up Now
+        </b-button>
       </div>
     </div>
     <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm">
@@ -145,6 +149,10 @@ export default {
       for (let s of activeStrokes) {
         this.strokePercentages[s] = perStroke;
       }
+    },
+    emitSignUpEvent() {
+      // Emit an event for the parent component to handle
+      this.$emit('sign-up-clicked');
     }
   },
 };

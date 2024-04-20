@@ -15,7 +15,7 @@
               <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
                 Find a Practice
               </button>
-              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
+              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple" @click="openSignup" >
                 Log In
               </button>
             </div>
@@ -67,7 +67,7 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice"></GeneratePractice>
+        <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice" @sign-up-clicked="handleSignUpClicked" ></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
         <LogsNotificationModel></LogsNotificationModel>
@@ -241,6 +241,11 @@ export default {
     },
     hoverHandler(isHovered) {
       this.buttonText = isHovered ? 'Create Practice' : '';
+    },
+    handleSignUpClicked() {
+      this.generatePracticeModal = false;
+      // This method will be triggered when the 'sign-up-clicked' event is emitted by the child
+      this.openSignup();
     },
     // This is the routing for a new practice. We could also move params: { idtwo: id } for mobile devices.
     async handleNewPractice(newPracticeId) {
