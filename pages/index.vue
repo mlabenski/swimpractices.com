@@ -70,7 +70,7 @@
         <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice" @sign-up-clicked="handleSignUpClicked" ></GeneratePractice>
         <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
-        <LogsNotificationModel></LogsNotificationModel>
+        <LogsNotificationModel> </LogsNotificationModel>
       </div>
 
       <!-- Set lists -->

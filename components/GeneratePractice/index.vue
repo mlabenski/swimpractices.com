@@ -140,7 +140,7 @@ export default {
         this.showModal = false;
         this.generatePracticeModal = false;
         this.submitting = false;
-        this.$emit('practice-generated', responseString);
+        this.$emit('practice-generated', data.practice_id);
       }
     },
     updateStrokePercentages(stroke) {
