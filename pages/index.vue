@@ -230,6 +230,7 @@ export default {
       if(newPracticeId){
         this.newPracticeId = newPracticeId;
         this.$forceUpdate();
+        console.log('new practice ID equals '+ newPracticeId)
         await this.$store.dispatch('practices/fetchUserPractices');
         this.$router.push({ name: 'id', params: { id: newPracticeId } });
       }
