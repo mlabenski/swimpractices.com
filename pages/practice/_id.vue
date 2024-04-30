@@ -62,8 +62,12 @@
               </button>
             </div>
 
-            <!-- Set Description -->
-            <p class="mb-4 text-gray-500 text-md">Set Topic: {{ set.description }}</p>
+            <!-- Set Description with Rounds -->
+            <div class="flex justify-between mb-4">
+              <p class="text-gray-500 text-md">Set Topic: {{ set.description }}</p>
+              <p class="text-white-50 text-md">Rds: x{{ set.numRounds }}</p>
+            </div>
+
 
             <!-- Exercise Table -->
             <div class="bg-gray-700 rounded-lg">
