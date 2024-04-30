@@ -123,7 +123,7 @@ export default {
       }
       console.log('submitting prompt: '+sentence)
       try {
-        const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v2/practice', requestData);
+        const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v3/practice', requestData);
         const { data } = response;
         // Handle the API response here, e.g., display a success message
         responseString = data.practice;
