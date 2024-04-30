@@ -127,6 +127,7 @@ export default {
         const { data } = response;
         // Handle the API response here, e.g., display a success message
         responseString = data.practice;
+        console.log('ths practice ID is '+ data.practice_id)
         console.log('the response data is ' + responseString);
 
       } catch (error) {
