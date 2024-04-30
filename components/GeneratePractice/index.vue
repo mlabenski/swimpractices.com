@@ -124,7 +124,7 @@ export default {
       console.log('submitting prompt: '+sentence)
       try {
         const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v3/practice', requestData);
-        const { data } = response;
+        var { data } = response;
         // Handle the API response here, e.g., display a success message
         responseString = data.practice;
         console.log('ths practice ID is '+ data.practice_id)
@@ -136,6 +136,7 @@ export default {
       }
       finally {
         await this.$emit('input', false);
+
         // assuming responseString is your new practice ID
         this.showModal = false;
         this.generatePracticeModal = false;
