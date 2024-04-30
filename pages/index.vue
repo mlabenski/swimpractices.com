@@ -25,7 +25,7 @@
             <div class="flex flex-col justify-center text-left ml-12 md:ml-24 lg:ml-36 text-white">
               <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
               <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
-              <button class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-backgroundBlue transition duration-300 ease-in-out mb-6">
+              <button class="bg-backgroundBlue text-white font-bold py-3 px-4 rounded-full hover:bg-backgroundBlue transition duration-300 ease-in-out mb-6 w-1/5">
                 Explore Practices
               </button>
               <p class="text-md md:text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
@@ -103,16 +103,6 @@
           </MobileSetList>
 
           <!-- Desktop version for My Templates -->
-          <SetList
-            v-if="user && selectedSetList === 'My Practices'"
-            title="My Templates"
-            :userID="user ? user.id : null"
-            :practiceSets="userPractices"
-            class="hidden md:block">
-          </SetList>
-          <div v-if="!user" class="absolute inset-0 bg-gray-800 bg-opacity-80 flex items-center justify-center z-50 mt-14 max-h-14 sm:block hidden">
-            <p class="text-white text-2xl sm:block hidden" @click="openSignup">Log in to save practices</p>
-          </div>
           <!-- More SetList components here as needed -->
           <!-- ...rest of your component... -->
         </div>
@@ -120,7 +110,6 @@
         <!-- Free sets list -->
         <div v-if="filteredPractices">
           <MobileSetList v-if="selectedSetList === 'Browse Practices'"  class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
-          <SetList title="Browse Practices" class="hidden md:block" :practiceSets="practices" :userID="user ? user.id : null" ></SetList>
           <!-- More SetList components here as needed -->
         </div>
       </div>
