@@ -76,18 +76,6 @@
       <!-- Set lists -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20">
       <!-- Dropdown for selecting set list -->
-      <div v-if="user" class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black dropdown-style">
-        <select v-model="selectedSetList" @change="onSetListChange" class="text-2xl font-bold mb-1 cursor-pointer bg-gray-200 w-full">
-          <option v-for="option in setListOptions" :value="option" :key="option">
-            {{ option }}
-          </option>
-        </select>
-      </div>
-      <select v-else v-model="selectedSetList" @change="onSetListChange" class="setlist-dropdown hidden md:block lg:block bg-gray-200 text-black dropdown-style w-full">
-        <option value="Browse Practices">Browse Practices</option>
-        <option value="Featured Practice">Featured Practice</option>
-        <!-- My Practices option is not rendered as user is not logged in -->
-      </select>
 
         <!-- My Templates set list -->
         <div class="relative flex flex-col items-center">
