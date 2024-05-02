@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const ACTION_KEY_LOGIN = 'login'
 export const ACTION_KEY_SIGNUP = 'signup'
 
@@ -59,7 +57,7 @@ export const actions = {
   },
   open({ commit }, action) {
     this.$netlifyIdentity.open(action)
-    this.$netlifyIdentity.on(action, async (user) => {
+    this.$netlifyIdentity.on(action, (user) => {
       commit('SET_USER', {
         username: user.user_metadata.full_name,
         email: user.email,
@@ -68,19 +66,6 @@ export const actions = {
         uuid: user.user_metadata.uuid
       })
       this.$netlifyIdentity.close()
-
-      // Call the Google Cloud Function after signup
-      if (action === ACTION_KEY_SIGNUP) {
-        try {
-          await axios.post(' https://us-central1-swimpractices-92836.cloudfunctions.n', {
-            username: user.user_metadata.full_name,
-            email: user.email,
-            uuid: user.id // Assuming 'id' is used as the uuid
-          });
-        } catch (error) {
-          console.error('Error calling cloud function:', error);
-        }
-      }
     })
   }
 }
