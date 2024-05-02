@@ -71,6 +71,7 @@ export const actions = {
 
       // Call the Google Cloud Function after signup
       if (action === ACTION_KEY_SIGNUP) {
+        console.log('trying to signuo!');
         try {
           await axios.post('https://us-central1-swimpractices-92836.cloudfunctions.net/createUserDocument', {
             username: user.user_metadata.full_name,
