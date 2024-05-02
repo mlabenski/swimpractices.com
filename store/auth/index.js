@@ -55,9 +55,9 @@ export const actions = {
     this.$netlifyIdentity.logout()
     commit('SET_USER', null)
   },
-  open({ commit }, action) {
+  pen({ commit }, action) {
     this.$netlifyIdentity.open(action)
-    this.$netlifyIdentity.on(action, (user) => {
+    this.$netlifyIdentity.on(action, async (user) => {
       commit('SET_USER', {
         username: user.user_metadata.full_name,
         email: user.email,
@@ -66,6 +66,19 @@ export const actions = {
         uuid: user.user_metadata.uuid
       })
       this.$netlifyIdentity.close()
+
+      // Call the Google Cloud Function after signup
+      if (action === ACTION_KEY_SIGNUP) {
+        try {
+          await axios.post('https://YOUR_GOOGLE_CLOUD_FUNCTION_URL', {
+            username: user.user_metadata.full_name,
+            email: user.email,
+            uuid: user.id // Assuming 'id' is used as the uuid
+          });
+        } catch (error) {
+          console.error('Error calling cloud function:', error);
+        }
+      }
     })
   }
 }
