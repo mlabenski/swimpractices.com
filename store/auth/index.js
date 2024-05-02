@@ -55,7 +55,7 @@ export const actions = {
     this.$netlifyIdentity.logout()
     commit('SET_USER', null)
   },
-  pen({ commit }, action) {
+  open({ commit }, action) {
     this.$netlifyIdentity.open(action)
     this.$netlifyIdentity.on(action, async (user) => {
       commit('SET_USER', {
