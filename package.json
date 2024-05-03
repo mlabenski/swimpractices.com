@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.25.3",
     "firebase": "^8.2.1",
+    "firebase-admin": "^12.1.0",
     "netlify-cli": "^15.8.1",
     "netlify-identity-widget": "^1.9.2",
     "nuxt": "^2.15.8",
