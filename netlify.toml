@@ -3,6 +3,9 @@ from = "/*"
 to = "/index.html"
 status = 200
 
+[functions]
+directory = "myfunctions/"
+node_bundler = "esbuild"
 
 [[edge_functions]]
 function = "TransferUserProfile"
