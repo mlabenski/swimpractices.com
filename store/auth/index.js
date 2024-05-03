@@ -57,7 +57,7 @@ export const actions = {
     this.$netlifyIdentity.logout()
     commit('SET_USER', null)
   },
-  open({ commit }, action) {
+  open({ commit, dispatch }, action) {
     this.$netlifyIdentity.open(action)
     this.$netlifyIdentity.on(action, async (user) => {
       commit('SET_USER', {
@@ -69,19 +69,21 @@ export const actions = {
       })
       this.$netlifyIdentity.close()
 
-      // Call the Google Cloud Function after signup
+      // Call the function to save user data
       if (action === ACTION_KEY_SIGNUP) {
-        console.log('trying to signuo!');
-        try {
-          await axios.post('https://us-central1-swimpractices-92836.cloudfunctions.net/createUserDocument', {
-            username: user.user_metadata.full_name,
-            email: user.email,
-            uuid: user.user_metadata.uuid
-          });
-        } catch (error) {
-          console.error('Error calling cloud function:', error);
-        }
+        dispatch('saveUserData', user)
       }
     })
+  },
+  async saveUserData({ commit }, user) {
+    try {
+      await axios.post('https://us-central1-swimpractices-92836.cloudfunctions.net/createUserDocument', {
+        username: user.user_metadata.full_name,
+        email: user.email,
+        uuid: user.user_metadata.uuid
+      });
+    } catch (error) {
+      console.error('Error calling cloud function:', error);
+    }
   }
 }
