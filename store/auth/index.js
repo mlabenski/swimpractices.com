@@ -76,7 +76,7 @@ export const actions = {
           await axios.post('https://us-central1-swimpractices-92836.cloudfunctions.net/createUserDocument', {
             username: user.user_metadata.full_name,
             email: user.email,
-            uuid: user.id // Assuming 'id' is used as the uuid
+            uuid: user.user_metadata.uuid
           });
         } catch (error) {
           console.error('Error calling cloud function:', error);
