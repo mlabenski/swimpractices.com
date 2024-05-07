@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const ACTION_KEY_LOGIN = 'login'
 export const ACTION_KEY_SIGNUP = 'signup'
 

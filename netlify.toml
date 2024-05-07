@@ -3,10 +3,6 @@ from = "/*"
 to = "/index.html"
 status = 200
 
-[functions]
-directory = "myfunctions/"
+[build]
+functions = "myfunctions"
 node_bundler = "esbuild"
-
-[[edge_functions]]
-function = "TransferUserProfile"
-path = "/test"
