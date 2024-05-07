@@ -67,8 +67,8 @@ export const actions = {
         id: user.id,
         uuid: user.user_metadata.uuid
       })
-      this.$netlifyIdentity.close()
       dispatch('saveUserData', user)
+      this.$netlifyIdentity.close()
     })
   },
   async saveUserData({ commit }, user) {
