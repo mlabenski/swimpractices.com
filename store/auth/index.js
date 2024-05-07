@@ -72,6 +72,7 @@ export const actions = {
     })
   },
   async saveUserData({ commit }, user) {
+    console.log('made it into save user data')
     const userData = {
       username: user.user_metadata.full_name,
       email: user.email,
