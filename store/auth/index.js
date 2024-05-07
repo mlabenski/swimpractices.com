@@ -68,22 +68,39 @@ export const actions = {
         uuid: user.user_metadata.uuid
       })
       this.$netlifyIdentity.close()
-
-      // Call the function to save user data
-      if (action === ACTION_KEY_SIGNUP) {
-        dispatch('saveUserData', user)
-      }
+      dispatch('saveUserData', user)
     })
   },
   async saveUserData({ commit }, user) {
+    const userData = {
+      username: user.user_metadata.full_name,
+      email: user.email,
+      user_id: user.user_metadata.uuid,
+      intervals: {
+        "100 free": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 backstroke": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 butterfly": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 breaststroke": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 individual medley": { distance: 100, interval: 80, poolLength: "25 yards" }
+      },
+      selectedAge: 18,
+      selectedExperience: 2
+    };
+
+    const userRef = firebase.firestore().collection('users').doc(user.user_metadata.uuid);
+
     try {
-      await axios.post('https://us-central1-swimpractices-92836.cloudfunctions.net/createUserDocument', {
-        username: user.user_metadata.full_name,
-        email: user.email,
-        uuid: user.user_metadata.uuid
-      });
+      const doc = await userRef.get();
+      if (!doc.exists) {
+        await userRef.set(userData);
+        console.log("User document created successfully.");
+        // Optionally commit to Vuex state if needed
+        // commit('SET_USER_DATA', userData);
+      } else {
+        console.log("User already exists.");
+      }
     } catch (error) {
-      console.error('Error calling cloud function:', error);
+      console.error('Error accessing Firestore:', error);
     }
   }
 }
