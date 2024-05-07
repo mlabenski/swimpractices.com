@@ -75,9 +75,10 @@ export const actions = {
   async saveUserData({ commit }, user) {
     console.log('made it into save user data')
     const userData = {
+      external_ids: {"netlify": user.id},
       username: user.user_metadata.full_name,
       email: user.email,
-      user_id: user.user_metadata.uuid,
+      user_id: user.id,
       intervals: {
         "100 free": { distance: 100, interval: 80, poolLength: "25 yards" },
         "100 backstroke": { distance: 100, interval: 80, poolLength: "25 yards" },
