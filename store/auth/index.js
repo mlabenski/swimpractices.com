@@ -90,7 +90,7 @@ export const actions = {
       selectedExperience: 2
     };
 
-    const userRef = this.$fire.firestore.collection('users').doc(user.user_metadata.uuid);
+    const userRef = this.$fire.firestore.collection('users').doc(user.id);
 
     try {
       const doc = await userRef.get();
