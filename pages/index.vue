@@ -139,7 +139,7 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
-import PendingPracticeNotification from './components/PendingPracticeNotification.vue';
+import PendingPracticeNotification from './components/PendingPracticeNotification/PendingPracticeNotification.vue';
 
 export default {
   head () {
