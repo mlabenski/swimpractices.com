@@ -278,7 +278,7 @@ export default {
 
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0]; // assuming there's one match
-            const arrayUnion = this.$fire.firestore.FieldValue.arrayUnion; // Correctly accessing arrayUnion
+            const arrayUnion = this.$fireModule.firestore.FieldValue.arrayUnion; // Correctly accessing arrayUnion
             await userDoc.ref.update({
               practices: arrayUnion(practiceId)
             });
