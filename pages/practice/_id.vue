@@ -421,6 +421,7 @@ export default {
       const practiceId = localStorage.getItem('pendingPractice');
       if (practiceId) {
         this.pendingPracticeExists = true;
+        this.isPracticeActive = true;
         this.practiceId = practiceId;
         console.log('Pending practice id:', this.practiceId);
       } else {
