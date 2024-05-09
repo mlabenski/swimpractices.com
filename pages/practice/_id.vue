@@ -274,7 +274,7 @@ export default {
       if (this.user && this.user.id) {
         try {
           const usersRef = this.$fire.firestore.collection('users');
-          const querySnapshot = await usersRef.where('userId', '==', this.user.id).get();
+          const querySnapshot = await usersRef.where('user_id', '==', this.user.id).get();
 
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0]; // assuming there's one match
