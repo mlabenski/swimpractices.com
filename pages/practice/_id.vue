@@ -249,6 +249,7 @@ export default {
       if (this.isPracticeActive) {
         this.endPractice();
       } else {
+        this.isPracticeActive = true;
         this.savePracticeToCache();
       }
     },
