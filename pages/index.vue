@@ -2,6 +2,7 @@
   <!-- Root Div -->
   <div id="app">
     <MobileNavBarTop class="sm:hidden block z-99" @openProfile="openProfile"/>
+    <PendingPracticeNotification/>
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div id="top" class="min-h-screen">
@@ -138,6 +139,7 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
+import PendingPracticeNotification from './components/PendingPracticeNotification.vue';
 
 export default {
   head () {
@@ -158,9 +160,11 @@ export default {
     LogsNotificationModel,
     ProfileWidget,
     MobileNavBarTop,
-    InfiniteSetList
+    InfiniteSetList,
+    PendingPracticeNotification
   },
   async mounted() {
+    this.checkPendingPractice();
     try {
       await this.$store.dispatch('practices/fetchPractices');
       // Are we sure the fetchUserpractices should be called here because user isn't valid
@@ -209,6 +213,17 @@ export default {
       openSignup: 'auth/openSignup',
       logout: 'auth/logout'
     }),
+    checkPendingPractice() {
+      const practiceId = localStorage.getItem('pendingPractice');
+      if (practiceId) {
+        this.pendingPracticeExists = true;
+        this.practiceId = practiceId;
+        console.log('Pending practice id:', this.practiceId);
+      } else {
+        this.pendingPracticeExists = false;
+        this.practiceId = null;
+      }
+    },
     toggleNotifications() {
       this.isNotificationModalOpen = !this.isNotificationModalOpen;
     },

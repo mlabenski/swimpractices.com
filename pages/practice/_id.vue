@@ -44,6 +44,7 @@
         </div>
 
         <div v-else>
+          <PendingPracticeNotification/>
           <div v-for="(set, setIndex) in practice.sets" :key="setIndex" :ref="'set' + setIndex" class="mb-6">
 
             <!-- Set Header -->
@@ -113,6 +114,7 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import TopNavBar from '@/components/TopNavBar'
 import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
+import PendingPracticeNotification from "@/components/PendingPracticeNotification/PendingPracticeNotification.vue";
 export default {
   async asyncData({ params, app }) {
     const db = app.$fire.firestore;
@@ -175,6 +177,7 @@ export default {
     SeasonList,
     LogsNotificationModel,
     TopNavBar,
+    PendingPracticeNotification
   },
 
   computed: {
@@ -242,6 +245,17 @@ export default {
         console.log(practiceIdToSave);
       } else {
         console.error('No practice to save.');
+      }
+    },
+    checkPendingPractice() {
+      const practiceId = localStorage.getItem('pendingPractice');
+      if (practiceId) {
+        this.pendingPracticeExists = true;
+        this.practiceId = practiceId;
+        console.log('Pending practice id:', this.practiceId);
+      } else {
+        this.pendingPracticeExists = false;
+        this.practiceId = null;
       }
     },
     addSet(setIndex) {
@@ -397,6 +411,7 @@ export default {
     }
   },
   mounted() {
+    this.checkPendingPractice();
     //window.addEventListener('scroll', this.checkActiveSet);
   },
   beforeDestroy() {
