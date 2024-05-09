@@ -44,7 +44,9 @@
         </div>
 
         <div v-else>
-          <PendingPracticeNotification/>
+          <div v-if="shouldShowNotification">
+            <PendingPracticeNotification/>
+          </div>
           <div v-for="(set, setIndex) in practice.sets" :key="setIndex" :ref="'set' + setIndex" class="mb-6">
 
             <!-- Set Header -->
@@ -185,6 +187,11 @@ export default {
       user: 'auth/user',
       isLoading: 'getLoading',
     }),
+    shouldShowNotification() {
+      const currentPracticeId = this.$route.params.id;  // Assuming the route param name is 'id'
+      const storedPracticeId = localStorage.getItem('pendingPractice');
+      return currentPracticeId !== storedPracticeId;
+    }
   },
   data() {
     return {
