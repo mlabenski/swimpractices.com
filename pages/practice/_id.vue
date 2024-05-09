@@ -91,6 +91,11 @@
 
           </div>
         </div>
+        <div class="sticky-button-container">
+          <button @click="savePracticeToCache" class="start-practice-button">
+            Start This Practice
+          </button>
+        </div>
 
       </div>
     </div>
@@ -228,6 +233,16 @@ export default {
     async createNewSeason(seasonData) {
       const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
       await this.createSeason({ seasonID, seasonData });
+    },
+    savePracticeToCache() {
+      if (this.practice) {
+        const practiceIdToSave = this.practice.id;
+        window.localStorage.setItem('pendingPractice', practiceIdToSave);
+        console.log('User has elected to perform this practice');
+        console.log(practiceIdToSave);
+      } else {
+        console.error('No practice to save.');
+      }
     },
     addSet(setIndex) {
       const newSet = {
@@ -391,3 +406,34 @@ export default {
 }
 
 </script>
+
+<style>
+.sticky-button-container {
+  position: fixed; /* Fixed positioning to make it stick to the viewport */
+  bottom: 0; /* Align to the bottom */
+  left: 0; /* Align to the left */
+  width: 100%; /* Full width */
+  background-color: rgba(17,24,39, 0.3);  /* Optional: background color for the button container */
+  text-align: center; /* Center the button inside the container */
+  padding: 10px 0; /* Padding for aesthetic spacing */
+  z-index: 1000; /* High z-index to ensure it's above other content */
+}
+
+.start-practice-button {
+  background-color: #007BFF; /* Bootstrap primary blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-practice-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+.min-h-screen {
+  padding-bottom: 60px; /* Adjust based on your button's height */
+}
+</style>
