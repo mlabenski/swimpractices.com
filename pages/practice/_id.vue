@@ -93,8 +93,8 @@
           </div>
         </div>
         <div class="sticky-button-container">
-          <button @click="savePracticeToCache" class="start-practice-button">
-            Start This Practice
+          <button @click="togglePracticeStatus" class="start-practice-button">
+            {{ isPracticeActive ? 'End This Practice' : 'Start This Practice' }}
           </button>
         </div>
 
@@ -188,6 +188,7 @@ export default {
   },
   data() {
     return {
+      isPracticeActive: false,
       tableVisibility: {},
       isEditing: false,
       localValue: this.value,
@@ -237,6 +238,13 @@ export default {
       const seasonID = this.generateRandomKey();  // Implement this function to generate unique IDs
       await this.createSeason({ seasonID, seasonData });
     },
+    togglePracticeStatus() {
+      if (this.isPracticeActive) {
+        this.endPractice();
+      } else {
+        this.savePracticeToCache();
+      }
+    },
     savePracticeToCache() {
       if (this.practice) {
         const practiceIdToSave = this.practice.id;
@@ -247,15 +255,34 @@ export default {
         console.error('No practice to save.');
       }
     },
-    checkPendingPractice() {
-      const practiceId = localStorage.getItem('pendingPractice');
-      if (practiceId) {
-        this.pendingPracticeExists = true;
-        this.practiceId = practiceId;
-        console.log('Pending practice id:', this.practiceId);
+    async endPractice() {
+      this.isPracticeActive = false;
+      const practiceId = this.practice.id;
+
+      // Remove from local storage or similar clean-up
+      window.localStorage.removeItem('pendingPractice');
+      console.log('Practice ended:', practiceId);
+
+      // Firestore update using query
+      if (this.user && this.user.id) {
+        try {
+          const usersRef = this.$fire.firestore.collection('users');
+          const querySnapshot = await usersRef.where('userId', '==', this.user.id).get();
+
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0]; // assuming there's one match
+            await userDoc.ref.update({
+              practices: this.$fire.firestore.FieldValue.arrayUnion(practiceId)
+            });
+            console.log('Firestore updated with practice ID for user:', this.user.id);
+          } else {
+            console.log('No user found with ID:', this.user.id);
+          }
+        } catch (error) {
+          console.error('Error querying Firestore:', error);
+        }
       } else {
-        this.pendingPracticeExists = false;
-        this.practiceId = null;
+        console.error('User not logged in or invalid user ID.');
       }
     },
     addSet(setIndex) {

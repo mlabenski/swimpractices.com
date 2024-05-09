@@ -1,6 +1,6 @@
 <template>
-  <div v-if="pendingPracticeExists" class="notification">
-    You have a pending practice. Click here to start!
+  <div v-if="pendingPracticeExists" class="notification" @click="navigateToPractice">
+    You have a pending practice. Click here to navigate back.
   </div>
 </template>
 
@@ -23,6 +23,14 @@ export default {
       } else {
         this.pendingPracticeExists = false;
         this.practiceId = null;
+      }
+    },
+    navigateToPractice() {
+      if (this.practiceId) {
+        // Using Vue Router to navigate
+        this.$router.push(`/practice/${this.practiceId}`);
+      } else {
+        console.error('No practice ID found for navigation.');
       }
     }
   },
