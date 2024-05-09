@@ -417,6 +417,17 @@ export default {
         console.warn(`Ref for set ${setNumber} not found.`);
       }
     },
+    checkPendingPractice() {
+      const practiceId = localStorage.getItem('pendingPractice');
+      if (practiceId) {
+        this.pendingPracticeExists = true;
+        this.practiceId = practiceId;
+        console.log('Pending practice id:', this.practiceId);
+      } else {
+        this.pendingPracticeExists = false;
+        this.practiceId = null;
+      }
+    },
     closeAndNavigate() {
       //this.$router.push("/");
    },
