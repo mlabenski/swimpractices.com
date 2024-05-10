@@ -166,6 +166,7 @@ export default {
         totalPercentage += parseFloat(this.strokePercentages[stroke] || 0);
       });
 
+
       if (totalPercentage > 100) {
         let excess = totalPercentage - 100;
         let reductionShare = 0;
