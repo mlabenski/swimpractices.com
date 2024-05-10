@@ -33,7 +33,7 @@
         <b-form-group label="Acceptable Strokes:" label-for="strokes" class="font-semibold text-gray-700">
           <div v-for="stroke in allStrokes" :key="stroke" class="flex items-center my-2">
             <span class="text-sm text-gray-600 mr-3">{{ stroke }}</span>
-            <b-form-slider v-model="strokePercentages[stroke]" @input="debouncedUpdateStrokePercentages(stroke)" min="0" max="100" variant="primary"></b-form-slider>
+            <b-form-slider v-model="strokePercentages[stroke]" @input="debouncedUpdateStrokePercentages" :min=0 :max=100 variant="primary"></b-form-slider>
             <span class="text-sm ml-2">{{ strokePercentages[stroke] }}%</span>
           </div>
         </b-form-group>
@@ -150,15 +150,18 @@ export default {
         this.strokePercentages[s] = perStroke;
       }
     },
+
     emitSignUpEvent() {
       // Emit an event for the parent component to handle
       this.$emit('sign-up-clicked');
     },
     // new features
     debouncedUpdateStrokePercentages: _.debounce((changedStroke) => {
-      this.updateStrokePercentagesNew(changedStroke);
+      console.log('hello')
+      this.updatedStrokePercentagesNew(changedStroke);
     }, 100),
-    updateStrokePercentagesNew(changedStroke) {
+
+    updatedStrokePercentagesNew(changedStroke) {
       let totalPercentage = 0;
 
       // Calculate the total percentage first
