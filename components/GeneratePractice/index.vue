@@ -1,6 +1,6 @@
 <template>
   <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350" hide-footer>
-    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm text-center">
+    <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm text-center">
       <div class="mb-4">
         <h2 class="font-semibold text-xl text-gray-700">Join Us!</h2>
         <p class="text-gray-600 my-4">Create an account to start generating personalized swim practices.</p>
@@ -9,7 +9,7 @@
         </b-button>
       </div>
     </div>
-    <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm">
+    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <b-form-group label="Distance:" label-for="distance" class="font-semibold text-gray-700">
           <b-form-input v-model.number="practice.distance" id="distance" type="number" class="form-input block w-full sm:text-sm md:text-base border-gray-300"></b-form-input>
@@ -33,7 +33,7 @@
         <b-form-group label="Acceptable Strokes:" label-for="strokes" class="font-semibold text-gray-700">
           <div v-for="stroke in allStrokes" :key="stroke" class="flex items-center my-2">
             <span class="text-sm text-gray-600 mr-3">{{ stroke }}</span>
-            <b-form-slider v-model="strokePercentages[stroke]" @input="debouncedUpdateStrokePercentages" :min=0 :max=100 variant="primary"></b-form-slider>
+            <b-form-slider v-model="strokePercentages[stroke]" @input="debouncedUpdateStrokePercentages(stroke)" :min=0 :max=100 variant="primary"></b-form-slider>
             <span class="text-sm ml-2">{{ strokePercentages[stroke] }}%</span>
           </div>
         </b-form-group>
@@ -101,47 +101,49 @@ export default {
   },
   methods: {
     async submitPractice() {
-      if (!this.practice.distance || !this.practice.poolSize || !this.practice.strokes.length) {
+      // Validate necessary fields
+      if (!this.practice.distance || !this.practice.poolSize) {
         this.$buefy.notification.open({
           message: 'Please fill out all required fields',
           type: 'is-danger',
         });
         return;
       }
+
       this.submitting = true;
-      // Generate the practice request sentence
-      //Adding a comment to force commit
-      // Still no register
-      let sentence = `Generate a swim practice that consists of exercises with a total distance of ${this.practice.distance} for the pool type ${this.practice.poolSize}, and focus on the following strokes ${this.practice.strokes.join(', ')} and allow the following equipment ${this.practice.equipment.join(', ')}. Use your text generation skills to create a meaningful practice, and the userID should be ${this.user.id}. The ID should be a number between 100 and 12000.`;
+
+      // Construct detailed stroke and equipment information
+      const strokeDetails = this.allStrokes.map(stroke => `${stroke}: ${this.strokePercentages[stroke]}%`).join(', ');
+      const equipmentList = this.practice.equipment.join(', ');
+
+      // Generate the practice request sentence with detailed information
+      let sentence = `Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${equipmentList}].`;
+
       let responseString = null;
       const requestData = {
         input_text: sentence,
-        user_id: this.user.id
+        user_id: this.user.id // Make sure `user.id` is properly defined elsewhere in your component
+      };
 
-      }
-      console.log('submitting prompt: '+sentence)
+      console.log('Submitting prompt:', sentence);
+
       try {
         const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v3/practice', requestData);
-        var { data } = response;
-        // Handle the API response here, e.g., display a success message
+        const { data } = response;
         responseString = data.practice;
-        console.log('ths practice ID is '+ data.practice_id)
-        console.log('the response data is ' + responseString);
+        console.log('The practice ID is:', data.practice_id);
+        console.log('The response data is:', responseString);
 
+        this.$emit('practice-generated', data.practice_id);
       } catch (error) {
-        // Handle the error, e.g., display an error message
         console.error('Error generating swim practice:', error);
-      }
-      finally {
-        await this.$emit('input', false);
-
-        // assuming responseString is your new practice ID
+      } finally {
         this.showModal = false;
         this.generatePracticeModal = false;
         this.submitting = false;
-        this.$emit('practice-generated', data.practice_id);
       }
     },
+
     updateStrokePercentages(stroke) {
       let activeStrokes = this.practice.strokes.filter(s => s !== stroke && this.allStrokes.includes(s));
       let remaining = 100 - this.strokePercentages[stroke];
@@ -155,20 +157,22 @@ export default {
       // Emit an event for the parent component to handle
       this.$emit('sign-up-clicked');
     },
-    // new features
-    debouncedUpdateStrokePercentages: _.debounce((changedStroke) => {
-      console.log('hello')
+
+    debouncedUpdateStrokePercentages: _.debounce(function (changedStroke) {
+      console.log('hello');
       this.updatedStrokePercentagesNew(changedStroke);
     }, 100),
 
+    // Main logic to update stroke percentages
     updatedStrokePercentagesNew(changedStroke) {
       let totalPercentage = 0;
 
-      // Calculate the total percentage first
+      // Calculate and round the total percentage first
       this.allStrokes.forEach(stroke => {
         totalPercentage += parseFloat(this.strokePercentages[stroke] || 0);
       });
 
+      totalPercentage = Math.round(totalPercentage); // Round the total percentage after summing
 
       if (totalPercentage > 100) {
         let excess = totalPercentage - 100;
@@ -186,11 +190,17 @@ export default {
         this.allStrokes.forEach(stroke => {
           if (stroke !== changedStroke && this.strokePercentages[stroke] > 0) {
             reductionShare = (this.strokePercentages[stroke] / totalDistributablePercentage) * excess;
-            // Ensure that no stroke goes negative
-            this.strokePercentages[stroke] = Math.max(this.strokePercentages[stroke] - reductionShare, 0);
+            reductionShare = Math.round(reductionShare); // Round each reduction share before applying
+            // Ensure that no stroke goes negative and round the final percentage
+            this.strokePercentages[stroke] = Math.max(Math.round(this.strokePercentages[stroke] - reductionShare), 0);
           }
         });
       }
+
+      // Optionally round all percentages after adjustments
+      this.allStrokes.forEach(stroke => {
+        this.strokePercentages[stroke] = Math.round(this.strokePercentages[stroke]);
+      });
     },
     toggleEquipment(itemName) {
       const index = this.practice.equipment.indexOf(itemName);
