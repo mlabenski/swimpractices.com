@@ -174,16 +174,20 @@ export default {
     this.checkPendingPractice();
     try {
       await this.$store.dispatch('practices/fetchPractices');
-      // Are we sure the fetchUserpractices should be called here because user isn't valid
-      await this.$store.dispatch('practices/fetchUserPractices');
       await this.$store.dispatch('bindSeasonPractices');
+      if (this.$store.state.auth.user) {
+        await this.$store.dispatch('practices/fetchUserPractices');
+      }
       await this.$store.dispatch('practices/fetchPinnedPractices');
     } catch (e) {
       console.error(e)
     }
   },
+
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
+    this.$store.dispatch('practices/unbindPractices');
+    this.$store.dispatch('practices/unbindUserPractices');
   },
   data() {
     return {
