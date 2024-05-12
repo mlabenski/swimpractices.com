@@ -51,7 +51,9 @@
       <div class="flex justify-center">
         <div class="w-full max-w-8xl"> <!-- This should match the max-width of the video element in the design -->
           <!-- Title and other elements here should match the style of the video title -->
-          <infinite-set-list class="align-center" :practice-sets="practices"/>
+         <div v-if="isDesktop">
+           <infinite-set-list class="align-center" :practice-sets="practices"/>
+         </div>
         </div>
       </div>
     </div>
@@ -68,8 +70,13 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <GeneratePractice :user="user" v-model="generatePracticeModal" @practice-generated="handleNewPractice" @sign-up-clicked="handleSignUpClicked" ></GeneratePractice>
-        <GenerateSetModel v-if="isModalOpen" @close="closeModal" />
+        <GeneratePractice
+          v-if="generatePracticeModal"
+          :user="user"
+          v-model="generatePracticeModal"
+          @practice-generated="handleNewPractice"
+          @sign-up-clicked="handleSignUpClicked" >
+        </GeneratePractice>
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
         <LogsNotificationModel> </LogsNotificationModel>
       </div>
@@ -133,7 +140,6 @@ import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
 import ProfileWidget from '@/components/ProfileWidget';
-import GeneratePractice from "@/components/GeneratePractice/index.vue";
 import TopNavBar from "@/components/TopNavBar/index.vue";
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
@@ -154,7 +160,7 @@ export default {
     SetList,
     SeasonCards,
     NotificationModal,
-    GeneratePractice,
+    GeneratePractice: () => import('@/components/GeneratePractice/index.vue'),
     TopNavBar,
     LogsNotificationModel,
     ProfileWidget,
@@ -163,6 +169,8 @@ export default {
     PendingPracticeNotification
   },
   async mounted() {
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
     this.checkPendingPractice();
     try {
       await this.$store.dispatch('practices/fetchPractices');
@@ -173,6 +181,9 @@ export default {
     } catch (e) {
       console.error(e)
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   data() {
     return {
@@ -225,6 +236,9 @@ export default {
     },
     toggleNotifications() {
       this.isNotificationModalOpen = !this.isNotificationModalOpen;
+    },
+    handleResize() {
+      this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
     },
     startEmptyPractice() {
       // Logic to start an empty practice

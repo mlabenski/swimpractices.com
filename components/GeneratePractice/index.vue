@@ -65,6 +65,7 @@ import _ from 'lodash';
 import axios from "axios";
 import 'bootstrap-slider/dist/css/bootstrap-slider.css'
 import bFormSlider from 'vue-bootstrap-slider/es/form-slider';
+import { onMounted } from 'vue';
 export default {
   components: {
     bFormSlider
@@ -117,7 +118,7 @@ export default {
       const equipmentList = this.practice.equipment.join(', ');
 
       // Generate the practice request sentence with detailed information
-      let sentence = `Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${equipmentList}].`;
+      let sentence = `Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${this.practice.equipment.join(", ")}].`;
 
       let responseString = null;
       const requestData = {
@@ -210,6 +211,11 @@ export default {
         this.practice.equipment.push(itemName);
       }
     }
+
   },
+  created() {
+    console.log("Component mounted and visible on the DOM");
+    // Code to measure or log performance impact here
+  }
 };
 </script>
