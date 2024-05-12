@@ -1,6 +1,6 @@
 <template>
   <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350" hide-footer>
-    <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm text-center">
+    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm text-center">
       <div class="mb-4">
         <h2 class="font-semibold text-xl text-gray-700">Join Us!</h2>
         <p class="text-gray-600 my-4">Create an account to start generating personalized swim practices.</p>
@@ -9,7 +9,7 @@
         </b-button>
       </div>
     </div>
-    <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm">
+    <div v-if="user" class="p-5 bg-white rounded-lg shadow-sm">
       <div class="mb-4 grid grid-cols-2 gap-4">
         <b-form-group label="Distance:" label-for="distance" class="font-semibold text-gray-700">
           <b-form-input v-model.number="practice.distance" id="distance" type="number" class="form-input block w-full sm:text-sm md:text-base border-gray-300"></b-form-input>
