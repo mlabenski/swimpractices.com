@@ -266,6 +266,7 @@ export default {
     async endPractice() {
       this.isPracticeActive = false;
       const practiceId = this.practice.id;
+      const endTime = new Date(); // Create a new Date object for the current datetime
 
       // Remove from local storage or similar clean-up
       window.localStorage.removeItem('pendingPractice');
@@ -281,9 +282,12 @@ export default {
             const userDoc = querySnapshot.docs[0]; // assuming there's one match
             const arrayUnion = this.$fireModule.firestore.FieldValue.arrayUnion; // Correctly accessing arrayUnion
             await userDoc.ref.update({
-              practices: arrayUnion(practiceId)
+              practices: arrayUnion({
+                id: practiceId,
+                endedAt: this.$fireModule.firestore.Timestamp.fromDate(endTime) // Firestore server timestamp for consistency
+              })
             });
-            console.log('Firestore updated with practice ID for user:', this.user.id);
+            console.log('Firestore updated with practice ID and end time for user:', this.user.id);
           } else {
             console.log('No user found with ID:', this.user.id);
           }
@@ -294,6 +298,7 @@ export default {
         console.error('User not logged in or invalid user ID.');
       }
     },
+
     addSet(setIndex) {
       const newSet = {
         favorites: 0,
