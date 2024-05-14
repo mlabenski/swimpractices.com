@@ -114,35 +114,36 @@ const mutations = {
 }
 
 const actions = {
-  fetchPractices: firestoreAction(async function ({ bindFirestoreRef, commit, state }) {
+  fetchPractices: firestoreAction(async function ({ commit, state }) {
     try {
       commit('SET_LOADING', true);
-  
+
       // Fetch Firestore data
       const firestoreRef = this.$fire.firestore.collection('practices');
-      await bindFirestoreRef('practices', firestoreRef, { wait: true });
-  
-      if (!state.practices) {
+      const snapshot = await firestoreRef.get();
+      const practices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+      if (practices.length === 0) {
         throw new Error('Http error unable to load practices');
       }
-  
+
       const usersRef = this.$fire.firestore.collection('users');
-      const mergedData = await Promise.all(state.practices.map(async (practice) => {
+      const mergedData = await Promise.all(practices.map(async (practice) => {
         // Compute totalYardage for each practice
         let practiceTotalYards = 0;
         if (practice.sets) {
           practice.sets.forEach(set => {
-            if (set.exercises) {
+            if (set.exercises && set.numRounds) {
               set.exercises.forEach(exercise => {
                 if (exercise) {
-                  practiceTotalYards += exercise.distance * exercise.quantity;
+                  practiceTotalYards += set.numRounds * (exercise.distance * exercise.quantity);
                 }
               });
             }
           });
         }
         practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
-  
+
         // Fetch and merge user data
         if (practice.userID) {
           const userDoc = await usersRef.doc(practice.userID).get();
@@ -150,19 +151,19 @@ const actions = {
             practice.userData = userDoc.data();
           }
         }
-  
+
         return practice;
       }));
-  
+
       commit('SET_PRACTICES', mergedData);
-  
+
     } catch (error) {
       console.error("Error fetching practices:", error);
     } finally {
       commit('SET_LOADING', false);
     }
   }),
-  
+
   fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState, commit}) {
     try {
       commit('SET_LOADING', true)
@@ -229,7 +230,7 @@ const actions = {
       console.log(filteredPractices)
       //only show the pinned practices, this can be extended later to allow more filters on top of the pinned practices
       const pinnedPracticeIds = state.userPinnedPractices || [];
-      let filteredPractices = state.practices.filter(practice => 
+      let filteredPractices = state.practices.filter(practice =>
         pinnedPracticeIds.includes(practice.id)
       );
       commit('SET_FILTERED_PRACTICES', filteredPractices);
@@ -238,7 +239,7 @@ const actions = {
       console.log('apply normal filter')
       console.log(filteredPractices)
       let filteredPractices = state.practices.filter(practice => {
-        return practice.totalYardage >= minYardage && 
+        return practice.totalYardage >= minYardage &&
                practice.totalYardage <= maxYardage &&
                (strokes.length === 0 || strokes.includes(practice.primaryStroke));
       });
