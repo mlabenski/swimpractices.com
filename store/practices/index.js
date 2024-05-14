@@ -164,29 +164,32 @@ const actions = {
     }
   }),
 
-  fetchUserPractices: firestoreAction(async function ({ bindFirestoreRef, rootState, commit}) {
+  fetchUserPractices: firestoreAction(async function ({ commit, rootState }) {
     try {
       commit('SET_LOADING', true)
       const userID = rootState.auth.user.id;
       const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
-      await bindFirestoreRef('userPractices', ref, { wait: true });
+      const snapshot = await ref.get();
+      const userPractices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
       let totalYards = 0;
-      state.userPractices.forEach(practice => {
+      userPractices.forEach(practice => {
         practice.sets.forEach(set => {
           set.exercises.forEach(exercise => {
             totalYards += exercise.distance * exercise.quantity;
           });
         });
       });
+      commit('SET_USER_PRACTICES', userPractices);  // Assumes there is a mutation to handle this
       commit('SET_TOTAL_YARDS', totalYards);
     } catch (error) {
-
+      console.error("Error fetching user practices:", error);
     } finally {
       commit('SET_LOADING', false)
     }
-    console.log('test')
   }),
-  fetchPracticeByID: firestoreAction(async function({ state, bindFirestoreRef, commit }, id) {
+
+  fetchPracticeByID: firestoreAction(async function({ state, commit }, id) {
     // First, check if state.practices exists and try to find the practice in it
     if (state.practices) {
       const practice = state.practices.find(practice => practice.id === id);
@@ -208,22 +211,33 @@ const actions = {
       console.log('Practice not found');
     }
   }),
-  fetchPinnedPractices: firestoreAction(async function({bindFirestoreRef, rootState, commit}) {
-    if(rootState.auth.user){
+
+  fetchPinnedPractices: firestoreAction(async function({ rootState, commit }) {
+    if (rootState.auth.user) {
       const userID = rootState.auth.user.id;
       const ref = this.$fire.firestore.collection('users').doc(userID);
       const doc = await ref.get();
-      const data = doc.data();
-      console.log(data);
-      console.log(doc.data());
+
       if (doc.exists) {
-        commit('SET_USER_PINNED_PRACTICES', data.pinnedPractices);
+        const data = doc.data();
+        console.log(data);  // Optional: for debugging, can be removed in production
+        if (data.pinnedPractices) {
+          commit('SET_USER_PINNED_PRACTICES', data.pinnedPractices);
+        } else {
+          // Handle the case where there are no pinned practices
+          commit('SET_USER_PINNED_PRACTICES', []);
+        }
+      } else {
+        // If the user document does not exist
+        console.log('User document not found');
+        commit('SET_USER_PINNED_PRACTICES', []);
       }
-    }
-    else {
-      commit('SET_USER_PINNED_PRACTICES', [0])
+    } else {
+      // If there is no authenticated user
+      commit('SET_USER_PINNED_PRACTICES', []);
     }
   }),
+
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedOnly }) {
     if(showPinnedOnly && state.userPinnedPractices) {
       console.log('apply pinned practice filter')
