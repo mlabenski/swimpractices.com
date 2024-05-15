@@ -147,11 +147,27 @@ import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
 export default {
-  head () {
+  head() {
     return {
+      title: 'Swim Practice Generator',
+      meta: [
+        { hid: 'description',
+          name: 'description',
+          content: `Check out swim practices created by AI for free. Sign-up to track your season goals and to generate aligned practices to reach them`,
+        },
+        {
+          name: 'apple-mobile-web-app-capable',
+          content: 'yes'
+        },
+        // Mobile-Optimized Content
+        {
+          name: 'mobile-optimized',
+          content: 'width'
+        }
+      ],
       link: [
         // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
       ],
     }
   },
