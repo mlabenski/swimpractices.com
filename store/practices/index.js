@@ -113,6 +113,7 @@ const mutations = {
     state.filteredPractices = practices;
   },
   SET_LAST_FETCH(state, timestamp) {
+    console.log('last fetch!');
     state.lastFetch = timestamp;
   }
 }
