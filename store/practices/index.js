@@ -3,6 +3,7 @@ import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
 
 const state = () => ({
   practices: null,
+  lastFetch: null,
   filteredPractices: null,
   loading: false,
   totalYards: 0,
@@ -111,12 +112,23 @@ const mutations = {
   SET_FILTERED_PRACTICES(state, practices) {
     state.filteredPractices = practices;
   },
+  SET_LAST_FETCH(state, timestamp) {
+    state.lastFetch = timestamp;
+  }
 }
 
 const actions = {
   fetchPractices: firestoreAction(async function ({ commit, state }) {
     try {
+      const cacheTimeout = 3000000;
+      const now = Date.now();
+      if (state.lastFetch && (now - state.lastFetch < cacheTimeout)) {
+
+        console.log('we have cached data- no firebase requests!');
+        return; //Use cached data
+      }
       commit('SET_LOADING', true);
+
 
       // Fetch Firestore data
       const firestoreRef = this.$fire.firestore.collection('practices');
@@ -156,6 +168,7 @@ const actions = {
       }));
 
       commit('SET_PRACTICES', mergedData);
+      commit('SET_LAST_FETCH', now);
 
     } catch (error) {
       console.error("Error fetching practices:", error);
