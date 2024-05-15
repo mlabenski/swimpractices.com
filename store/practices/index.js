@@ -130,6 +130,7 @@ const actions = {
       if (lastFetch && cachedPractices && (now - parseInt(lastFetch) < cacheTimeout)) {
         console.log('We have cached data - no firebase requests!');
         commit('SET_PRACTICES', JSON.parse(cachedPractices));  // Assuming the data structure aligns with what's expected
+        commit('SET_LOADING', false);
         return;  // Use cached data
       }
       commit('SET_LOADING', true);
