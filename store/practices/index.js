@@ -123,10 +123,14 @@ const actions = {
     try {
       const cacheTimeout = 3000000;
       const now = Date.now();
-      if (state.lastFetch && (now - state.lastFetch < cacheTimeout)) {
 
-        console.log('we have cached data- no firebase requests!');
-        return; //Use cached data
+      const lastFetch = localStorage.getItem('lastFetch');
+      const cachedPractices = localStorage.getItem('practices');
+
+      if (lastFetch && cachedPractices && (now - parseInt(lastFetch) < cacheTimeout)) {
+        console.log('We have cached data - no firebase requests!');
+        commit('SET_PRACTICES', JSON.parse(cachedPractices));  // Assuming the data structure aligns with what's expected
+        return;  // Use cached data
       }
       commit('SET_LOADING', true);
 
@@ -167,6 +171,10 @@ const actions = {
 
         return practice;
       }));
+
+      // Cache the practices and the fetch timestamp in local storage
+      localStorage.setItem('practices', JSON.stringify(mergedData));
+      localStorage.setItem('lastFetch', now.toString());
 
       commit('SET_PRACTICES', mergedData);
       commit('SET_LAST_FETCH', now);
