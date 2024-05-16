@@ -32,7 +32,7 @@
       </div>
     </div>
     <!-- User Practices Message -->
-    <div class="user-practices-message">
+    <div class="user-practices-message" v-if="userPracticeOpen">
       <span>User Practices</span>
     </div>
   </b-card>
@@ -47,7 +47,8 @@ export default {
       user: {},
       numPractices: 0,
       editing: false,
-      editedUsername: ''
+      editedUsername: '',
+      userPracticeOpen: false,
     };
   },
   mounted() {
@@ -92,8 +93,16 @@ export default {
     }
   },
     filterUserPractices() {
-      // Dispatch the Vuex action that filters practices by the user ID
-      this.$store.dispatch('practices/filterPracticesByUser');
+      // Toggle the state of userPracticeOpen
+      this.userPracticeOpen = !this.userPracticeOpen;
+
+      if (this.userPracticeOpen) {
+        // If userPracticeOpen is now true, clear the filtered practices
+        this.$store.dispatch('practices/clearFilteredPractices');
+      } else {
+        // If userPracticeOpen is now false, filter practices by the user
+        this.$store.dispatch('practices/filterPracticesByUser');
+      }
     }
 },
 };
