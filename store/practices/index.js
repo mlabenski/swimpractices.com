@@ -103,6 +103,9 @@ const mutations = {
       }
     }
   },
+  CLEAR_FILTERED_PRACTICES(state) {
+    state.filteredPractices = null; // or set it to the initial state
+  },
   removePractice(state, practiceId) {
     const index = state.practices.findIndex(p => p.practiceId === practiceId);
     if (index !== -1) {
@@ -111,6 +114,9 @@ const mutations = {
   },
   SET_FILTERED_PRACTICES(state, practices) {
     state.filteredPractices = practices;
+  },
+  FILTER_PRACTICES_BY_USER(state, userID) {
+    state.filteredPractices = state.practices.filter(practice => practice.userID === userID)
   },
   SET_LAST_FETCH(state, timestamp) {
     console.log('last fetch!');
@@ -260,6 +266,15 @@ const actions = {
       commit('SET_USER_PINNED_PRACTICES', []);
     }
   }),
+
+  filterPracticesByUser({ commit, rootState }) {
+    if(rootState.auth.user && rootState.auth.user.id) {
+      commit('FILTER_PRACTICES_BY_USER', rootState.auth.user.id);
+    }
+  },
+  clearFilteredPractices({ commit }) {
+    commit('CLEAR_FILTERED_PRACTICES');
+  },
 
   applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedOnly }) {
     if(showPinnedOnly && state.userPinnedPractices) {

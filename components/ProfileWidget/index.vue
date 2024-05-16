@@ -1,5 +1,5 @@
 <template>
-  <b-card class="text-center">
+  <b-card class="text-center sticky-card">
     <!-- User Avatar -->
     <b-avatar size="128px" variant="primary" class="mb-2">
       <span class="material-icons" style="font-size: 64px;">person</span>
@@ -20,7 +20,7 @@
     <div class="flex justify-center mt-3 space-x-4">
       <div>
         <span class="material-icons">create</span>
-        <span>Practices: {{ numPractices }}</span>
+        <span @click="filterUserPractices">Practices: {{ numPractices }}</span>
       </div>
       <div>
         <span class="material-icons">group</span>
@@ -31,10 +31,12 @@
         <span>Liked Practices: {{ 3 }}</span>
       </div>
     </div>
+    <!-- User Practices Message -->
+    <div class="user-practices-message">
+      <span>User Practices</span>
+    </div>
   </b-card>
 </template>
-
-
 
 
 <script>
@@ -51,6 +53,9 @@ export default {
   mounted() {
     this.user = this.$store.state.auth.user;
     this.numPractices = this.$store.state.practices.userPractices.length;
+  },
+  beforeDestroy() {
+    this.$store.dispatch('practices/clearFilteredPractices');
   },
   methods: {
     async updateUsername(newUsername) {
@@ -86,9 +91,28 @@ export default {
       alert('Failed to update username');
     }
   },
+    filterUserPractices() {
+      // Dispatch the Vuex action that filters practices by the user ID
+      this.$store.dispatch('practices/filterPracticesByUser');
+    }
 },
 };
 </script>
 
 <style scoped>
+.sticky-card {
+  position: sticky;
+  top: 0; /* Adjust this value based on your specific header/nav height */
+  z-index: 1000; /* Ensures the card stays on top */
+  background-color: white; /* Optional: for better visibility against other content */
+}
+
+.user-practices-message {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9; /* Light grey background */
+  border-top: 1px solid #ddd; /* Adds a subtle separation line */
+}
 </style>
