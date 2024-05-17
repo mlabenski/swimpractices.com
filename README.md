@@ -1,69 +1,109 @@
-# swimpractices
+# Swimpractices.com 
 
-## Build Setup
+:sparkle: View the web application here [official GitHub public product roadmap](https://swimpractices.com/)[^1]
 
-```bash
-# install dependencies
-$ npm install
+Our product roadmap is where you can learn about what features we're working on, what stage they're in, and when we expect to bring them to you. Have any questions or comments about items on the roadmap? Share your feedback via [GitHub Issues](https://github.com/mlabenski/swimpractices.com/issues). 
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
-
-## Special Directories
-
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
-
-### `assets`
-
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
-
-### `components`
-
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+Swim Practices is a side project and solely maintained by the repository owner [mlabenski](https://github.com/mlabenski/). Our mission is to explore generative AI capabilities at generating meaningful swim practices for any proficiency. The tech stack is a vue 2 application deployed using the Nuxt server side rendering tools. While this repository features the web application itself, magic happens behind the scenes with Google Firebase, ChatGPT API, and Replit servers. 
 
 
-### `pages`
+## Guide to the roadmap
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+Every item on the roadmap is an issue, with a label that indicates each of the following:
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+- A **release phase** that describes the next expected phase of the roadmap item. See below for a guide to release phases. 
 
-### `plugins`
+- A **feature area** that indicates the area of the product to which the item belongs. For a list of current product areas, see below.
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+- A **feature** that indicates the feature or product to which the item belongs. For a list of current features, see below. 
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+- One or more **product SKU** labels that indicate which product SKUs we expect the feature to be available in. For a list of current product SKUs, see below.
 
-### `static`
+- One or more **deployment models** (cloud, server, and/or ae). Where not stated, features will generally come out Cloud first, and follow on Server and GHAE at or soon after GA.
 
-This directory contains your static files. Each file inside this directory is mapped to `/`.
+- Once a feature is delivered, the **shipped** label will be applied to the roadmap issue and the issue will be closed with a comment linking to the relevant [Changelog](https://github.blog/changelog/) post.
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+## Release phases
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+Release phases indicate the stages that the product or feature goes through, from early testing to general availability.
 
-### `store`
+- **alpha:** *Primarily for testing and feedback*\
+Limited availability, requires pre-release agreement. Features still under heavy development, and subject to change. Not for production use, and no documentation, SLAs or support provided.
 
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+- **beta:** *Publicly available in full or limited capacity*\
+Features mostly complete and documented. Timeline and requirements for GA usually published. No SLAs or support provided.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+- **ga:** *Generally available to all customers*\
+Ready for production use with associated SLA and technical support obligations. Approximately 1-2 quarters from Beta.
+
+Some of our features may still be in the exploratory stages, and have no timeframe available. These are included in the roadmap only for early feedback. These are marked as follows: 
+
+- **in design:**\
+Feature in discovery phase. We have decided to build this feature, but are still figuring out _how_.
+
+- **exploring:**\
+Feature under consideration. We are considering building this feature, and gathering feedback on it.
+
+## Release phases - For GHES
+
+Some features may be marked with a GHES 3.X label, which indicates that the feature will also become available for Github Enterprise Server customers. Below are the release version numbers and expected release quarters (_Note: these dates are subject to change_). 
+
+**GHES release version dates**:
+| **Version Number** | **Release Quarter** | **Release Notes** |
+|-|-|-|
+| 3.5 | Q2 2022 | [Release Notes](https://docs.github.com/en/enterprise-server@3.5/admin/release-notes) |
+| 3.6 | Q3 2022 | [Release Notes](https://docs.github.com/en/enterprise-server@3.6/admin/release-notes) |
+| 3.7 | Q4 2022 | - |
+| 3.8 | Q1 2023 | - |
+
+## Roadmap stages
+
+The roadmap is arranged on a project board to give a sense for how far out each item is on the horizon. Every product or feature is added to a particular project board column according to the quarter in which it is expected to ship next. Be sure to read the [disclaimer](#disclaimer) below since the roadmap is subject to change, especially further out on the timeline.  You'll also find an **Exploratory** column, which is used in conjunction with the **in design** and **exploring** release phase labels for when no timeframe is yet available.
+
+GitHub Enterprise Server has major releases on a quarterly basis, and minor releases on a monthly basis. Once we know what version we are delivering a feature, we will update the issue to indicate that information.
+
+## Feature Areas
+
+The following is a list of our current product areas:
+
+- **code:** Code experiences (Repositories, Pull Requests, Gists)
+- **planning:** Planning and tracking tools (Issues, Projects)
+- **code-to-cloud:** Code-to-cloud DevOps (Actions, Packages)
+- **collaboration:** Collaboration features (Pages, Wikis, Discussions)
+- **security & compliance:** Code security and compliance features
+- **admin-server:** Administrative features specific to GitHub Enterprise Server
+- **admin-cloud:** Administrative features specific to GitHub Cloud
+- **communities:** Community and social features
+- **ecosystem:** Ecosystem and API features
+- **learning:** Education and learning features
+- **insights:** Continuous learning and insights features
+- **client-apps:** Client applications (Desktop, Mobile)
+- **other:** Other features
+
+## Feature
+
+The following is a list of our current features and products, with distinct labels for filtering:
+
+- **actions:** GitHub Actions
+- **docs:** GitHub Docs
+- **packages:** GitHub Packages
+- **pages:** GitHub Pages
+
+_More labels will be added in the future as needed._
+
+## Product SKUs 
+
+The following is a list of our current product SKUs. 
+
+- **all:** Available to all users, including a free tier. Different SKUs may have different levels of functionality.
+- **github team:** GitHub Team
+- **github enterprise:** GitHub Enterprise (Cloud and Server)
+- **github one:** GitHub One (Cloud and Server)
+- **github ae:** GitHub AE (GHAE)
+- **github advanced security:** GitHub Advanced Security (add-on to GHE)
+- **github insights:** GitHub Insights (add-on to GHE)
+- **github learning lab:** GitHub Learning Lab (add-on to GHE)
+
+## Disclaimer 
+
+Any statement in this repository that is not purely historical is considered a forward-looking statement. Forward-looking statements included in this repository are based on information available to GitHub as of the date they are made, and GitHub assumes no obligation to update any forward-looking statements. The forward-looking product roadmap does not represent a commitment, guarantee, obligation or promise to deliver any product or feature, or to deliver any product and feature by any particular date, and is intended to outline the general development plans. Customers should not rely on this roadmap to make any purchasing decision.
