@@ -23,26 +23,6 @@ Every item on the roadmap is an issue, with a label that indicates each of the f
 
 - Once a feature is delivered, the **shipped** label will be applied to the roadmap issue and the issue will be closed with a comment linking to the relevant [Changelog](https://github.blog/changelog/) post.
 
-## Release phases
-
-Release phases indicate the stages that the product or feature goes through, from early testing to general availability.
-
-- **alpha:** *Primarily for testing and feedback*\
-Limited availability, requires pre-release agreement. Features still under heavy development, and subject to change. Not for production use, and no documentation, SLAs or support provided.
-
-- **beta:** *Publicly available in full or limited capacity*\
-Features mostly complete and documented. Timeline and requirements for GA usually published. No SLAs or support provided.
-
-- **ga:** *Generally available to all customers*\
-Ready for production use with associated SLA and technical support obligations. Approximately 1-2 quarters from Beta.
-
-Some of our features may still be in the exploratory stages, and have no timeframe available. These are included in the roadmap only for early feedback. These are marked as follows: 
-
-- **in design:**\
-Feature in discovery phase. We have decided to build this feature, but are still figuring out _how_.
-
-- **exploring:**\
-Feature under consideration. We are considering building this feature, and gathering feedback on it.
 
 ## Release phases - For GHES
 
