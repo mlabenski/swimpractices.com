@@ -118,7 +118,7 @@ export default {
       const equipmentList = this.practice.equipment.join(', ');
 
       // Generate the practice request sentence with detailed information
-      let sentence = `The last Practice you generated had distances distributed as 20% of the practice 50 yards, 60% of the practice 100 yards, the 20% of the practice 200 yards. Use those distributions as historial data so you do not write the same swim practice. Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${this.practice.equipment.join(", ")}].`;
+      let sentence = `The last Practice you generated had distances distributed as 20% of the practice 50 yards, 60% of the practice 100 yards, the 20% of the practice 200 yards. Use those distributions as historical data so you do not write the same swim practice. The next practice should consist of at least 5 sets, with a mandatory 4 exercises per set. Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${this.practice.equipment.join(", ")}].`;
 
       let responseString = null;
       const requestData = {
