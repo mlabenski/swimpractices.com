@@ -38,7 +38,7 @@
 
         <!-- Pills -->
         <div class="flex">
-          <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ getTotalYardage(practice.sets) }} Distance</span>
+          <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ practice.totalYardage }} Distance</span>
           <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">{{practice.primaryStroke}}</span>
 
           <!-- Conditional rendering for the measurement pill -->
@@ -63,7 +63,9 @@
             50 Meters
           </span>
 
-          <span class="bg-yellow-200 text-yellow-700 px-3 py-1 rounded-full text-sm">Advanced</span>
+          <span class="bg-yellow-400 text-yellow-800 px-3 py-1 rounded-full text-sm" v-if="practice.totalYardage >= 5000">Adv</span>
+          <span class="bg-yellow-200 text-yellow-600 px-3 py-1 rounded-full text-sm" v-else-if="practice.totalYardage >= 3000">Med</span>
+          <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm" v-else-if="practice.totalYardage >= 500">Easy</span>
         </div>
 
 
