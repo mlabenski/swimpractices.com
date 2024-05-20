@@ -6,7 +6,7 @@
 
     <!-- Mobile view (Card Format) -->
     <div class="sm:hidden pb-10">
-      
+
       <div
         v-for="practice in sortedPractices"
         :key="practice.practiceId"
@@ -80,8 +80,8 @@
 
           <div class="flex items-center space-x-2 z-205">
             <div v-if="practice.userData" class="text-sm text-gray-500 mr-2">@{{ practice.userData.username }}</div>
-            <span class="material-icons text-gray-700 z-205" @click.stop="savePractice(practice.id)">share</span>
-            <span class="text-blue-600 z-130">Share</span>
+            <span class="material-icons text-gray-700 z-205" @click.stop="emitShareEvent(practice.id)">share</span>
+            <span class="text-blue-600 z-205" @click.stop="emitShareEvent(practice.id)">Share</span>
           </div>
         </div>
       </div>
@@ -323,13 +323,13 @@ export default {
         alert('Not signed in');
         return;
       }
-      
+
       try {
         // Reference to the user's document in the Firestore "users" collection
         const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
         // Get the current user document
         const userDoc = await userDocRef.get();
-        
+
         if (!userDoc.exists) {
           alert('User does not exist');
           return;
@@ -340,7 +340,7 @@ export default {
         // Reference to the practice's document in the Firestore "practices" collection
         const practiceDocRef = this.$fire.firestore.collection('practices').doc(practice.id);
         const practiceDoc = await practiceDocRef.get();
-        
+
         if (!practiceDoc.exists) {
           alert('Practice does not exist');
           return;
@@ -353,7 +353,7 @@ export default {
             pinnedPractices: this.$fireModule.firestore.FieldValue.arrayRemove(practice.id),
             dislikedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(practice.id) // Add to disliked practices
           });
-          
+
           // Decrement the practice likes in the Firestore "practices" collection
           await practiceDocRef.update({
             likes: practiceDoc.data().likes ? practiceDoc.data().likes - 1 : 0
@@ -454,6 +454,9 @@ export default {
 
     openPractice(practiceId) {
       this.$router.push({ name: 'idtwo', params: { idtwo: practiceId } });
+    },
+    emitShareEvent(practiceId) {
+      this.$emit('share-practice', practiceId);
     },
     fetchRecommendedTemplates() {
       // Fetch recommended templates from a JSON file stored on the frontend

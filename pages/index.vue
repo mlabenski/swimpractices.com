@@ -3,6 +3,7 @@
   <div id="app">
     <MobileNavBarTop class="sm:hidden block z-99" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
+    <LogsNotificationModel> </LogsNotificationModel>
     <!-- Banner image section -->
     <div class="md:block hidden">
       <div id="top" class="min-h-screen">
@@ -78,7 +79,6 @@
           @sign-up-clicked="handleSignUpClicked" >
         </GeneratePractice>
         <NotificationModal :isNotificationModalOpen="isNotificationModalOpen" @close="closeNotificationModal" :notification="notification"/>
-        <LogsNotificationModel> </LogsNotificationModel>
       </div>
 
       <!-- Set lists -->
@@ -105,7 +105,7 @@
 
         <!-- Free sets list -->
         <div v-if="filteredPractices">
-          <MobileSetList v-if="selectedSetList === 'Browse Practices'"  class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
+          <MobileSetList v-if="selectedSetList === 'Browse Practices'"  class="sm:hidden" title="Free Sets" @hide-practice="handleHidePractice" @share-practice="shareUrl" :practiceSets="filteredPractices" :userID="user ? user.id : null" :userPinnedPractices="userPinnedPractices" ></MobileSetList>
           <!-- More SetList components here as needed -->
         </div>
       </div>
@@ -146,6 +146,7 @@ import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
+import {theme} from "@/tailwind.config";
 export default {
   head() {
     return {
@@ -260,6 +261,7 @@ export default {
     handleResize() {
       this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
     },
+
     startEmptyPractice() {
       // Logic to start an empty practice
       // To be implemented
@@ -271,6 +273,17 @@ export default {
       this.generatePracticeModal = false;
       // This method will be triggered when the 'sign-up-clicked' event is emitted by the child
       this.openSignup();
+    },
+    async shareUrl(practiceId) {
+      const urlToCopy = `https://swimpractices.com/${practiceId}`;
+      navigator.clipboard.writeText(urlToCopy).then(async () => {
+        await this.$store.dispatch('notifications/addNotification', {
+          message: 'Practice copied to clipboard!',
+          type: 3
+        });
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      })
     },
     // This is the routing for a new practice. We could also move params: { idtwo: id } for mobile devices.
     async handleNewPractice(newPracticeId) {

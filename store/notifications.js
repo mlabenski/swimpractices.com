@@ -14,11 +14,12 @@ export const mutations = {
 };
 
 export const actions = {
-  async addNotification({ commit }, {message, type}) {
+  async addNotification({ commit }, {message, type, duration = 5}) {
     commit('ADD_NOTIFICATION', {
       id: new Date().getTime(),
       message,
-      type
+      type,
+      duration
     });
   },
 };

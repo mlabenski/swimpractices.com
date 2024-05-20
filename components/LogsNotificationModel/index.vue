@@ -27,6 +27,20 @@ export default {
       notifications: state => state.notifications
     })
   },
+  watch: {
+    notifications: {
+      deep: true,
+      handler(newNotifications) {
+        newNotifications.forEach(notification => {
+          if (notification.duration) {
+            setTimeout(() => {
+              this.removeNotification(notification);
+            }, notification.duration * 1000); // Convert seconds to milliseconds
+          }
+        });
+      }
+    }
+  },
   methods: {
     removeNotification(notification) {
       this.$store.commit('notifications/REMOVE_NOTIFICATION', notification);
@@ -54,6 +68,18 @@ export default {
 .list-enter, .list-leave-to {
   transform: translateY(100px);
   opacity: 0;
+}
+
+/* Adjustments for Notification Container */
+.fixed.bottom-0.right-0 {
+  padding-bottom: 15px;
+  position: fixed;          /* Keeps the notification fixed during scrolling */
+  bottom: 100px;             /* Distance from the bottom of the screen */
+  right: 0;                 /* Reset right positioning */
+  left: 0;                  /* Reset left positioning */
+  display: flex;            /* Using flexbox to center the items */
+  justify-content: center;  /* Centers the flex items on the horizontal line */
+  z-index: 50;              /* Ensure it's above other content */
 }
 </style>
 
