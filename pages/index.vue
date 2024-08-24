@@ -62,29 +62,44 @@
     </div>
     <!-- Mobile Landing Page -->
     <div class="mobile-landing-page pt-10 sm:hidden">
-      <div :class="['mobile-landing-page', 'sm:hidden', { 'slide-up': showPracticeList }]">
-        <div class="landing-page-container w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
-          <div class="flex flex-col justify-between h-full p-4">
-            <div class="flex-shrink-0 pt-safe">
-              <img src="@/static/swim-practices-good-bg-lg.png" class="w-2/3 max-w-xs mb-4" />
-              <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
-              <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
-            </div>
-            <div class="flex-grow flex flex-col justify-center">
-              <!-- App Install Suggestion component -->
-              <AppInstallSuggestion class="mb-4" />
+      <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
+        <div class="flex flex-col justify-between h-full p-4">
+          <div class="flex-shrink-0 pt-safe">
+            <img src="@/static/swim-practices-good-bg-lg.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
+            <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
+            <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
+          </div>
 
-              <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full mb-4">
-                See All Practices
-              </button>
-              <div class="flex space-x-2 mb-4">
-                <button class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow">
-                  Open Daily Practice
-                </button>
-                <button class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center">
-                  <span class="material-icons">help</span>
-                </button>
+          <div class="flex-grow flex flex-col justify-center">
+            <div class="mb-6 bg-gray-800 p-4 rounded-lg shadow-inner">
+              <p class="text-center text-sm uppercase tracking-wide mb-3">Available on</p>
+              <div class="flex justify-center space-x-6">
+                <div class="flex flex-col items-center" v-for="platform in platforms" :key="platform.name">
+                  <i :class="platform.icon" class="text-2xl mb-1"></i>
+                  <span class="text-xs">{{ platform.name }}</span>
+                </div>
               </div>
+            </div>
+
+            <button
+              @click="scrollToContent"
+              class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out w-full mb-4 shadow-lg"
+            >
+              See All Practices
+            </button>
+
+            <div class="flex space-x-2 mb-4">
+              <button
+                @click="openDailyPractice"
+                class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow shadow-lg"
+              >
+                Open Daily Practice
+              </button>
+              <button
+                class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center shadow-lg"
+              >
+                ?
+              </button>
             </div>
           </div>
         </div>
@@ -222,6 +237,7 @@ export default {
     this.checkPendingPractice();
     try {
       await this.$store.dispatch('practices/fetchPractices');
+      await this.$store.dispatch('practices/fetchDailyPractice')
       await this.$store.dispatch('bindSeasonPractices');
       if (this.$store.state.auth.user) {
         await this.$store.dispatch('practices/fetchUserPractices');
@@ -253,12 +269,18 @@ export default {
       buttonText: '',
       isHovered: false,
       selectedSetList: 'Browse Practices',
+      platforms: [
+        { name: 'iOS', icon: 'fas fa-apple' },
+        { name: 'Android', icon: 'fab fa-android' },
+        { name: 'Web', icon: 'fas fa-globe' }
+      ]
     }
   },
   computed: {
     ...mapGetters({
       user: 'auth/user',
       practices: 'practices/practices',
+      dailyPractice: 'practices/dailyPractice',
       seasonPractices: 'seasons',
       userPractices: 'practices/userPractices',
       filteredPractices: 'practices/filteredPractices',
@@ -292,7 +314,11 @@ export default {
     handleResize() {
       this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
     },
-
+    openDailyPractice() {
+      console.log(this.dailyPractice)
+      const daily_id = this.dailyPractice.id
+      this.$router.push({ name: 'idtwo', params: { idtwo: daily_id } });
+    },
     startEmptyPractice() {
       // Logic to start an empty practice
       // To be implemented
@@ -387,10 +413,6 @@ export default {
       if (contentElement) {
         contentElement.scrollIntoView({ behavior: 'smooth' });
       }
-    },
-    openDailyPractice() {
-      // Implement the logic for opening daily practice
-      console.log('Opening daily practice');
     },
 
     showHelp() {

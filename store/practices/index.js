@@ -5,6 +5,7 @@ const state = () => ({
   practices: null,
   lastFetch: null,
   filteredPractices: null,
+  dailyPractice: null,
   loading: false,
   totalYards: 0,
   userPractices: null,
@@ -28,6 +29,9 @@ const mutations = {
   },
   SET_PRACTICES(state, practices) {
     state.practices = practices;
+  },
+  SET_DAILY_PRACTICES(state, practices) {
+    state.dailyPractice = practices;
   },
   SET_USER_PRACTICES(state, userPractices) {
     console.log('setting user practices to: '+ userPractices);
@@ -125,6 +129,38 @@ const mutations = {
 }
 
 const actions = {
+
+  fetchDailyPractice: firestoreAction(async function ({ commit, state }) {
+    const firestoreRef = this.$fire.firestore.collection('daily_practice');
+    const snapshot = await firestoreRef.get();
+    const practices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
+    if (practices.length === 0) {
+      console.log('practice length error')
+      throw new Error('Failed to read the daily practice!');
+    }
+    //compute total yardage for the practice
+    const mergedData = await Promise.all(practices.map(async (practice) => {
+      // Compute totalYardage for each practice
+      let practiceTotalYards = 0;
+      if (practice.sets) {
+        practice.sets.forEach(set => {
+          if (set.exercises && set.numRounds) {
+            set.exercises.forEach(exercise => {
+              if (exercise) {
+                practiceTotalYards += set.numRounds * (exercise.distance * exercise.quantity);
+              }
+            });
+          }
+        });
+      }
+      practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
+      return practice;
+    }));
+    commit('SET_DAILY_PRACTICES', mergedData);
+  }
+
+  ),
+
   fetchPractices: firestoreAction(async function ({ commit, state }) {
     try {
       const cacheTimeout = 3000000;
@@ -351,6 +387,9 @@ const actions = {
 const getters = {
   practices(state) {
     return state.practices;
+  },
+  dailyPractice(state) {
+    return state.dailyPractice[0];
   },
   userPractices(state) {
     return state.userPractices;
