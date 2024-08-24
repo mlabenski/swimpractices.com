@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-50" @openProfile="openProfile"/>
+    <MobileNavBarTop class="sm:hidden block z-50 fixed" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
     <LogsNotificationModel> </LogsNotificationModel>
     <!-- Banner image section -->
@@ -61,25 +61,30 @@
     </div>
     </div>
     <!-- Mobile Landing Page -->
-    <div class="mobile-landing-page sm:hidden">
-      <div class="landing-page-container w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
-        <div class="flex flex-col justify-between h-full p-4">
-          <div class="flex-shrink-0 pt-safe">
-            <img src="@/static/swim-practices-good-bg-lg.png" class="w-2/3 max-w-xs mb-4" />
-            <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
-            <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
-          </div>
-          <div class="flex-grow flex flex-col justify-center">
-            <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full mb-4">
-              See All Practices
-            </button>
-            <div class="flex space-x-2 mb-4">
-              <button class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow">
-                Open Daily Practice
+    <div class="mobile-landing-page pt-10 sm:hidden">
+      <div :class="['mobile-landing-page', 'sm:hidden', { 'slide-up': showPracticeList }]">
+        <div class="landing-page-container w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
+          <div class="flex flex-col justify-between h-full p-4">
+            <div class="flex-shrink-0 pt-safe">
+              <img src="@/static/swim-practices-good-bg-lg.png" class="w-2/3 max-w-xs mb-4" />
+              <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
+              <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
+            </div>
+            <div class="flex-grow flex flex-col justify-center">
+              <!-- App Install Suggestion component -->
+              <AppInstallSuggestion class="mb-4" />
+
+              <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full mb-4">
+                See All Practices
               </button>
-              <button class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center">
-                <span class="material-icons">help</span>
-              </button>
+              <div class="flex space-x-2 mb-4">
+                <button class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow">
+                  Open Daily Practice
+                </button>
+                <button class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center">
+                  <span class="material-icons">help</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -167,6 +172,7 @@ import ProfileWidget from '@/components/ProfileWidget';
 import TopNavBar from "@/components/TopNavBar/index.vue";
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
+import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.vue";
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
@@ -207,7 +213,8 @@ export default {
     ProfileWidget,
     MobileNavBarTop,
     InfiniteSetList,
-    PendingPracticeNotification
+    PendingPracticeNotification,
+    AppInstallSuggestion
   },
   async mounted() {
     this.handleResize();
@@ -408,8 +415,10 @@ export default {
 }
 
 .mobile-landing-page .landing-page-container {
-  height: calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height)) !important;
-  max-height: calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height)) !important;
+  position: relative;
+  overflow: hidden;
+  height: 70vh;
+  max-height: calc(100vh - var(20px) - var(20px)) !important;
 }
 
 .mobile-landing-page h1 {

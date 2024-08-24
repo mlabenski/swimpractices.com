@@ -1,7 +1,8 @@
 <template>
-  <nav class="relative bg-gray-900 text-white px-2 py-1 z-99 sticky top-0">
+  <nav class="bg-gray-900 text-white px-2 py-1 fixed top-0 left-0 right-0 z-50">
     <!-- Container for navbar items -->
     <div class="container mx-auto flex justify-between items-center">
+
 
       <!-- Left Section: Menu Icon and Dropdown section -->
       <div class="flex items-center space-x-2">
@@ -148,12 +149,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .sticky {
   position: sticky;
   top: 0;
   z-index: 99; /* Adjust if needed to ensure it's above other elements */
 }
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+body {
+  padding-top: 48px; /* Adjust this value based on your navbar's height */
+}
+
 .container {
     overflow: hidden;
 }
