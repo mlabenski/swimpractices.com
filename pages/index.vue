@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-99" @openProfile="openProfile"/>
+    <MobileNavBarTop class="sm:hidden block z-50" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
     <LogsNotificationModel> </LogsNotificationModel>
     <!-- Banner image section -->
@@ -60,26 +60,32 @@
     </div>
     </div>
     </div>
-    <!-- Container for all the components below the header -->
+    <!-- Mobile Landing Page -->
     <div class="sm:hidden">
-      <div class="min-h-screen flex flex-col justify-between bg-customBlack text-white">
-        <div class="p-6 pt-16">
-          <img src="@/static/swim-practices-good-bg-lg.png" class="w-40 mb-8" />
-          <h1 class="text-4xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
-          <p class="text-xl mb-6">1000+ achievable and thought out practices to use.</p>
-          <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out mb-6 w-full">
-            See All Practices
-          </button>
-          <p class="text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
-          <p class="text-lg">Practice like your coach is on the pool deck!</p>
+      <div class="h-screen w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
+        <div class="p-6 pt-16 flex flex-col justify-between h-full">
+          <div>
+            <img src="@/static/swim-practices-good-bg-lg.png" class="w-70 mb-8" />
+            <h1 class="text-4xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
+            <p class="text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+          </div>
+
+          <div class="space-y-4">
+            <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full">
+              See All Practices
+            </button>
+
+            <div class="flex space-x-2">
+            </div>
+          </div>
         </div>
-        <div class="p-6">
-          <img src="@/static/background-1368-912-wide.svg" class="w-full" />
+        <div class="w-full">
+          <img src="@/static/background-1368-912-wide.svg" class="w-full object-cover h-32" />
         </div>
       </div>
     </div>
     <div class="container mx-auto py-2">
-      <div class="sm:px-4">
+      <div class="sm:px-4" v-if="user">
         <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" v-b-hover="hoverHandler">
           <span class="material-icons" style="color: white">add</span>
           {{ buttonText }}
@@ -373,6 +379,15 @@ export default {
       if (contentElement) {
         contentElement.scrollIntoView({ behavior: 'smooth' });
       }
+    },
+    openDailyPractice() {
+      // Implement the logic for opening daily practice
+      console.log('Opening daily practice');
+    },
+
+    showHelp() {
+      // Implement the logic for showing help
+      console.log('Showing help');
     }
   }
 }
@@ -384,6 +399,10 @@ export default {
   padding-right: 1em;
 }
 
+html, body, #app {
+  height: 100%;
+  overflow-x: hidden;
+}
 
 @media (min-width: 984px) {
   .container {

@@ -16,16 +16,16 @@
       <!-- Right Section: Magnifying Glass and Profile Picture -->
       <div class="flex items-center space-x-2 ml-auto">
         <span v-if="!isSearchActive" @click="toggleFilter" class="material-icons cursor-pointer">filter_list</span>
-        <input 
-          v-if="isSearchActive" 
-          v-model="searchTerm" 
-          @keyup.enter="search" 
+        <input
+          v-if="isSearchActive"
+          v-model="searchTerm"
+          @keyup.enter="search"
           ref="searchInput"
-          class="rounded bg-gray-900 text-white px-2 py-1 transition-all duration-300 sm:w-36" 
+          class="rounded bg-gray-900 text-white px-2 py-1 transition-all duration-300 sm:w-36"
           placeholder="Search...">
 
-          <span 
-          @click="toggleSearch" 
+          <span
+          @click="toggleSearch"
           class="material-icons cursor-pointer">
           search
         </span>
@@ -137,8 +137,8 @@ export default {
       console.log('apply yardage filter');
       console.log(this.showPinnedPractices);
       this.$store.dispatch('practices/applyFilter', {
-        minYardage: this.minYardage, 
-        maxYardage: this.maxYardage, 
+        minYardage: this.minYardage,
+        maxYardage: this.maxYardage,
         strokes: this.selectedStrokes,
         showPinnedOnly: this.showPinnedPractices
       });
