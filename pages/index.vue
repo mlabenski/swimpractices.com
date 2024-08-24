@@ -61,6 +61,23 @@
     </div>
     </div>
     <!-- Container for all the components below the header -->
+    <div class="sm:hidden">
+      <div class="min-h-screen flex flex-col justify-between bg-customBlack text-white">
+        <div class="p-6 pt-16">
+          <img src="@/static/swim-practices-good-bg-lg.png" class="w-40 mb-8" />
+          <h1 class="text-4xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
+          <p class="text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+          <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out mb-6 w-full">
+            See All Practices
+          </button>
+          <p class="text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
+          <p class="text-lg">Practice like your coach is on the pool deck!</p>
+        </div>
+        <div class="p-6">
+          <img src="@/static/background-1368-912-wide.svg" class="w-full" />
+        </div>
+      </div>
+    </div>
     <div class="container mx-auto py-2">
       <div class="sm:px-4">
         <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" v-b-hover="hoverHandler">
@@ -350,6 +367,12 @@ export default {
       // Commit a mutation to the Vuex store
       console.log('commit');
       this.$store.commit('practices/removePractice', practiceId);
+    },
+    scrollToContent() {
+      const contentElement = document.getElementById('content');
+      if (contentElement) {
+        contentElement.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 }
@@ -472,5 +495,12 @@ export default {
 .dropdown-style {
   height: 50px; /* Adjusted height */
   font-size: 16px; /* Adjust the font size as per your requirement */
+}
+.bg-customBlack {
+  background-color: #1a1a1a;
+}
+
+.bg-backgroundBlue {
+  background-color: #0C6DFD;
 }
 </style>
