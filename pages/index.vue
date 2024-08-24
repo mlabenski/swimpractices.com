@@ -61,30 +61,31 @@
     </div>
     </div>
     <!-- Mobile Landing Page -->
-    <div class="sm:hidden">
-      <div class="h-screen w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
-        <div class="p-6 pt-16 flex flex-col justify-between h-full">
-          <div>
-            <img src="@/static/swim-practices-good-bg-lg.png" class="w-70 mb-8" />
-            <h1 class="text-4xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
-            <p class="text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+    <div class="mobile-landing-page sm:hidden">
+      <div class="landing-page-container w-screen flex flex-col justify-between bg-customBlack text-white overflow-hidden">
+        <div class="flex flex-col justify-between h-full p-4">
+          <div class="flex-shrink-0 pt-safe">
+            <img src="@/static/swim-practices-good-bg-lg.png" class="w-2/3 max-w-xs mb-4" />
+            <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
+            <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
           </div>
-
-          <div class="space-y-4">
-            <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full">
+          <div class="flex-grow flex flex-col justify-center">
+            <button @click="scrollToContent" class="bg-backgroundBlue text-white font-bold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out w-full mb-4">
               See All Practices
             </button>
-
-            <div class="flex space-x-2">
+            <div class="flex space-x-2 mb-4">
+              <button class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow">
+                Open Daily Practice
+              </button>
+              <button class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center">
+                <span class="material-icons">help</span>
+              </button>
             </div>
           </div>
         </div>
-        <div class="w-full">
-          <img src="@/static/background-1368-912-wide.svg" class="w-full object-cover h-32" />
-        </div>
       </div>
     </div>
-    <div class="container mx-auto py-2">
+    <div class="container mx-auto">
       <div class="sm:px-4" v-if="user">
         <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" v-b-hover="hoverHandler">
           <span class="material-icons" style="color: white">add</span>
@@ -394,6 +395,41 @@ export default {
 </script>
 
 <style scoped>
+
+:root {
+  --navbar-top-height: 20px; /* Adjust based on your top navbar height */
+  --navbar-bottom-height: 2px; /* Adjust based on your bottom navbar height */
+}
+
+.mobile-landing-page {
+  /* Override any conflicting styles from main.css */
+  background-image: none !important;
+  font-size: 16px; /* Set a base font size for this component */
+}
+
+.mobile-landing-page .landing-page-container {
+  height: calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height)) !important;
+  max-height: calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height)) !important;
+}
+
+.mobile-landing-page h1 {
+  font-size: 1.875rem !important; /* Equivalent to text-3xl */
+}
+
+.mobile-landing-page p {
+  font-size: 1rem !important; /* Equivalent to text-base */
+}
+
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0.5rem);
+}
+
+@supports (-webkit-touch-callout: none) {
+  .landing-page-container {
+    height: calc(100vh - var(--navbar-top-height) - var(--navbar-bottom-height));
+    height: calc(-webkit-fill-available - var(--navbar-top-height) - var(--navbar-bottom-height));
+  }
+}
 .container {
   padding-left: 1em;
   padding-right: 1em;
