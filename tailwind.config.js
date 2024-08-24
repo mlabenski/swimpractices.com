@@ -15,7 +15,7 @@ module.exports = {
           DEFAULT: '#4281A4'
         },
         customBlack: {
-          DEFAULT: '#171819'
+          DEFAULT: '#161918'
         },
         backgroundBlue: {
           DEFAULT: '#1F897E'
