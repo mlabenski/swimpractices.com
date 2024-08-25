@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-50 fixed" @openProfile="openProfile"/>
+    <MobileNavBarTop class="sm:hidden block z-200 fixed" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
     <LogsNotificationModel> </LogsNotificationModel>
     <!-- Banner image section -->
@@ -61,8 +61,8 @@
     </div>
     </div>
     <!-- Mobile Landing Page -->
-    <div class="mobile-landing-page pt-10 sm:hidden z-200">
-      <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
+    <div class="mobile-landing-page pt-10 sm:hidden">
+      <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden z-200">
         <div class="flex flex-col justify-between h-full p-4">
           <div class="flex-shrink-0 pt-safe">
             <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
