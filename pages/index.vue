@@ -61,7 +61,7 @@
     </div>
     </div>
     <!-- Mobile Landing Page -->
-    <div class="mobile-landing-page pt-10 sm:hidden">
+    <div class="mobile-landing-page pt-10 sm:hidden z-200">
       <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
         <div class="flex flex-col justify-between h-full p-4">
           <div class="flex-shrink-0 pt-safe">
@@ -433,6 +433,7 @@ export default {
 .mobile-landing-page {
   /* Override any conflicting styles from main.css */
   background-image: none !important;
+  z-index: 200;
   font-size: 16px; /* Set a base font size for this component */
 }
 
@@ -563,7 +564,7 @@ html, body, #app {
     height: 65px;
     left: 0;
     right: 0;
-    z-index: 299;  /* Ensuring it's on top of other elements */
+    z-index: 100;  /* Ensuring it's on top of other elements */
 }
 .floating-button {
   transition: 0.3s ease;
