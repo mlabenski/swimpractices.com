@@ -65,7 +65,7 @@
       <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
         <div class="flex flex-col justify-between h-full p-4">
           <div class="flex-shrink-0 pt-safe">
-            <img src="@/static/swim-practices-good-bg-lg.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
+            <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
             <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
             <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
           </div>
@@ -126,7 +126,7 @@
       </div>
 
       <!-- Set lists -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:mt-20" id="content">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2" id="content">
       <!-- Dropdown for selecting set list -->
 
         <!-- My Templates set list -->
@@ -439,7 +439,7 @@ export default {
 .mobile-landing-page .landing-page-container {
   position: relative;
   overflow: hidden;
-  height: 70vh;
+  height: 100%;
   max-height: calc(100vh - var(20px) - var(20px)) !important;
 }
 
