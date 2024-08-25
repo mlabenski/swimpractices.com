@@ -88,12 +88,12 @@
               See All Practices
             </button>
 
-            <div class="flex space-x-2 mb-4">
+            <div class="flex space-x-5 mb-4">
               <button
                 @click="openDailyPractice"
-                class="bg-green-500 text-white font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow shadow-lg"
+                class="bg-white text-black font-bold py-1 px-4 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow shadow-lg"
               >
-                Open Daily Practice
+                Daily Practice
               </button>
               <button
                 class="bg-yellow-500 text-white font-bold py-2 px-2 rounded-full hover:bg-yellow-600 transition duration-300 ease-in-out flex-shrink-0 w-12 h-12 flex items-center justify-center shadow-lg"
