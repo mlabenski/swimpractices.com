@@ -166,13 +166,38 @@
       </div>
     </div>
     <!-- Header -->
-    <div class="sm:hidden">
+    <div id="scrollElement" class="sm:hidden opacity-0 transition-opacity duration-300">
       <keep-alive>
-        <TopNavBar class="top-nav-bar-class" :key="componentKey" :user="user ? user.id : null" @startPractice="startPractice" @openSignup="openSignup" @logout="logout"/>
+        <TopNavBar
+          class="top-nav-bar-class"
+          :key="componentKey"
+          :user="user ? user.id : null"
+          @startPractice="startPractice"
+          @openSignup="openSignup"
+          @logout="logout"
+        />
       </keep-alive>
     </div>
   </div>
 </template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const scrollElement = document.getElementById('scrollElement');
+
+  window.addEventListener('scroll', function() {
+    const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+    if (scrollPercentage >= 5) {
+      scrollElement.classList.remove('opacity-0');
+      scrollElement.classList.add('opacity-100');
+    } else {
+      scrollElement.classList.remove('opacity-100');
+      scrollElement.classList.add('opacity-0');
+    }
+  });
+});
+</script>
 
 <script>
 // Component imports
