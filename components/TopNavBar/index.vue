@@ -1,6 +1,6 @@
 <template>
-  <!-- Top navigation bar -->
-  <nav class="fixed bottom-0 inset-x-0 w-full bg-gray-900 text-white px-2 py-1 z-100">
+  <!-- Bottom navigation bar -->
+  <nav class="fixed bottom-0 inset-x-0 w-full bg-gray-900 text-white px-2 py-1 z-50">
     <div class="container mx-auto">
       <div class="flex justify-between items-center text-xs">
         <!-- Create practice button -->
@@ -41,20 +41,16 @@
   </nav>
 </template>
 
-
-
-
 <script>
 export default {
   head () {
     return {
       link: [
-        // Add this
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
       ],
     }
   },
-  name: 'TopNavBar',
+  name: 'TopNavBaar',
   props: ['user'],
   methods: {
     startPractice() {
@@ -71,4 +67,5 @@ export default {
 </script>
 
 <style scoped>
+/* Add any additional styles here */
 </style>

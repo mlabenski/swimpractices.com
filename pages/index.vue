@@ -1,7 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
-    <MobileNavBarTop class="sm:hidden block z-200 fixed" @openProfile="openProfile"/>
+    <MobileNavBarTop v-if="user" class="sm:hidden block z-200 fixed pt-10" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
     <LogsNotificationModel> </LogsNotificationModel>
     <!-- Banner image section -->
@@ -61,7 +61,7 @@
     </div>
     </div>
     <!-- Mobile Landing Page -->
-    <div class="mobile-landing-page pt-10 sm:hidden">
+    <div class="mobile-landing-page sm:hidden">
       <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
         <div class="flex flex-col justify-between h-full p-4 z-200">
           <div class="flex-shrink-0 pt-safe">
@@ -166,10 +166,10 @@
       </div>
     </div>
     <!-- Header -->
-    <div id="scrollElement" class="sm:hidden opacity-0 transition-opacity duration-300">
+    <div class="sm:hidden">
       <keep-alive>
         <TopNavBar
-          class="top-nav-bar-class"
+          class="bottom-nav-bar-class z-200"
           :key="componentKey"
           :user="user ? user.id : null"
           @startPractice="startPractice"
@@ -180,24 +180,6 @@
     </div>
   </div>
 </template>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const scrollElement = document.getElementById('scrollElement');
-
-  window.addEventListener('scroll', function() {
-    const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-
-    if (scrollPercentage >= 5) {
-      scrollElement.classList.remove('opacity-0');
-      scrollElement.classList.add('opacity-100');
-    } else {
-      scrollElement.classList.remove('opacity-100');
-      scrollElement.classList.add('opacity-0');
-    }
-  });
-});
-</script>
 
 <script>
 // Component imports
@@ -452,7 +434,7 @@ export default {
 
 :root {
   --navbar-top-height: 20px; /* Adjust based on your top navbar height */
-  --navbar-bottom-height: 2px; /* Adjust based on your bottom navbar height */
+  --navbar-bottom-height: 4px; /* Adjust based on your bottom navbar height */
 }
 
 .mobile-landing-page {
