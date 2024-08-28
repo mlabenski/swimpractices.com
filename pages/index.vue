@@ -8,7 +8,7 @@
     <div class="md:block hidden">
       <div id="top" class="min-h-screen">
 
-        <div class="relative bg-customBlack h-auto min-h-72"> <!-- Ensure the height is auto to accommodate content -->
+        <div class="relative customOrange h-auto min-h-72"> <!-- Ensure the height is auto to accommodate content -->
 
           <!-- Logo and top-right buttons container -->
           <div class="flex justify-between items-start p-4">
@@ -166,7 +166,7 @@
       </div>
     </div>
     <!-- Header -->
-    <div class="sm:hidden">
+    <div class="sm:hidden" v-if="user">
       <keep-alive>
         <TopNavBar
           class="bottom-nav-bar-class z-200"

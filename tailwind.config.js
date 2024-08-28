@@ -19,7 +19,10 @@ module.exports = {
         },
         backgroundBlue: {
           DEFAULT: '#1F897E'
-        }
+        },
+          customOrange: {
+            DEFAULT: '#111827'
+          }
       },
       fontFamily: {
         handwritten: ['Architects Daughter']
