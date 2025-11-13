@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/netlify-identity-widget.js', mode: 'client' },
+    { src: '~/plugins/firebase-auth-helper.js', mode: 'client' },
     { src: '~/plugins/touch-events.js', mode: 'client'}
   ],
 
@@ -68,7 +69,7 @@ export default {
       storageBucket: process.env.VUE_APP_FIREBASE_storageBucket,
       messagingSenderId: process.env.VUE_APP_FIREBASE_messagingSenderId,
       appId: process.env.VUE_APP_FIREBASE_appId,
-      measurementId: process.env.VUE_APP_FIREBASE_measurementd
+      measurementId: process.env.VUE_APP_FIREBASE_measurementId
     },
     services: {
       auth: true,
