@@ -71,6 +71,7 @@ export default {
       measurementId: process.env.VUE_APP_FIREBASE_measurementd
     },
     services: {
+      auth: true,
       firestore: true
     },
   },
