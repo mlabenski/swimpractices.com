@@ -1,25 +1,89 @@
 <template>
-  <div class="realtime-metrics p-6 rounded-lg bg-gray-800 shadow-lg text-white text-center">
-    <div class="flex justify-around items-center">
-      <div class="metric-item">
-        <div class="text-4xl font-bold text-green-400">
+  <div class="realtime-metrics p-5 rounded-xl text-white">
+    <div class="metrics-grid">
+      <!-- Live Practices Now -->
+      <div class="metric-card">
+        <div class="metric-icon">
+          <span class="pulsing-dot"></span>
+          <activity-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value text-green-400">
           <span ref="currentPractices">0</span>
         </div>
-        <div class="text-sm uppercase tracking-wider text-gray-400">
-          <span class="pulsing-dot"></span>
-          Practices Now
-        </div>
+        <div class="metric-label">Practices Now</div>
       </div>
-      <div class="metric-item">
-        <div class="text-lg font-semibold">{{ mostRecentTimeAgo }}</div>
-        <div class="text-sm uppercase tracking-wider text-gray-400">Most Recent</div>
+
+      <!-- Total Practices Library -->
+      <div v-if="metrics.total_practices" class="metric-card">
+        <div class="metric-icon">
+          <library-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value">
+          {{ formatNumber(metrics.total_practices) }}
+        </div>
+        <div class="metric-label">Total Practices</div>
+      </div>
+
+      <!-- Active Users Today -->
+      <div v-if="metrics.active_users_today" class="metric-card">
+        <div class="metric-icon">
+          <account-group-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value text-blue-400">
+          {{ formatNumber(metrics.active_users_today) }}
+        </div>
+        <div class="metric-label">Active Today</div>
+      </div>
+
+      <!-- Practices This Week -->
+      <div v-if="metrics.practices_this_week" class="metric-card">
+        <div class="metric-icon">
+          <plus-circle-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value text-purple-400">
+          +{{ formatNumber(metrics.practices_this_week) }}
+        </div>
+        <div class="metric-label">Added This Week</div>
+      </div>
+
+      <!-- Most Recent Activity -->
+      <div class="metric-card">
+        <div class="metric-icon">
+          <clock-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value text-sm">{{ mostRecentTimeAgo }}</div>
+        <div class="metric-label">Most Recent</div>
+      </div>
+
+      <!-- Trending Category (if available) -->
+      <div v-if="metrics.trending_category" class="metric-card">
+        <div class="metric-icon">
+          <fire-icon :size="20" class="icon" />
+        </div>
+        <div class="metric-value text-sm text-orange-400">{{ metrics.trending_category }}</div>
+        <div class="metric-label">Trending</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ActivityIcon from 'vue-material-design-icons/ChartLineVariant.vue';
+import LibraryIcon from 'vue-material-design-icons/BookMultiple.vue';
+import AccountGroupIcon from 'vue-material-design-icons/AccountGroup.vue';
+import PlusCircleIcon from 'vue-material-design-icons/PlusCircle.vue';
+import ClockIcon from 'vue-material-design-icons/ClockOutline.vue';
+import FireIcon from 'vue-material-design-icons/Fire.vue';
+
 export default {
+  components: {
+    ActivityIcon,
+    LibraryIcon,
+    AccountGroupIcon,
+    PlusCircleIcon,
+    ClockIcon,
+    FireIcon,
+  },
   props: {
     metrics: {
       type: Object,
@@ -55,6 +119,12 @@ export default {
     clearInterval(this.animationIntervalId);
   },
   methods: {
+    formatNumber(num) {
+      if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+      }
+      return num.toString();
+    },
     animateValue(start, end, duration) {
       const counter = this.$refs.currentPractices;
       if (!counter) return;
@@ -116,20 +186,89 @@ export default {
 </script>
 
 <style scoped>
+/* Glassmorphism container */
 .realtime-metrics {
-  border: 1px solid #4a5568;
+  background: rgba(31, 41, 55, 0.5); /* gray-800 with transparency */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(107, 114, 128, 0.2); /* subtle border */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 }
-.metric-item .text-4xl {
+
+/* Grid layout - responsive */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+/* Individual metric card */
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  background: rgba(55, 65, 81, 0.3); /* gray-700 subtle background */
+  border-radius: 0.75rem;
+  border: 1px solid rgba(75, 85, 99, 0.3);
+  transition: all 0.3s ease;
+  min-height: 100px;
+}
+
+.metric-card:hover {
+  background: rgba(55, 65, 81, 0.5);
+  border-color: rgba(107, 114, 128, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon container */
+.metric-icon {
+  position: relative;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-icon .icon {
+  color: rgba(229, 231, 235, 0.8); /* gray-200 */
+}
+
+/* Metric value */
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #f3f4f6; /* gray-100 */
   transition: all 0.5s ease-in-out;
+  margin-bottom: 0.25rem;
 }
+
+/* Metric label */
+.metric-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(156, 163, 175, 0.9); /* gray-400 */
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Pulsing dot for live indicator */
 .pulsing-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-color: #48bb78; /* green-500 */
   border-radius: 50%;
-  margin-right: 8px;
   animation: pulse 1.5s infinite;
+  z-index: 10;
 }
 
 @keyframes pulse {
@@ -139,11 +278,32 @@ export default {
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+    box-shadow: 0 0 0 8px rgba(72, 187, 120, 0);
   }
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .metric-card {
+    padding: 0.75rem 0.5rem;
+    min-height: 90px;
+  }
+
+  .metric-value {
+    font-size: 1.25rem;
+  }
+
+  .metric-label {
+    font-size: 0.65rem;
   }
 }
 </style>

@@ -12,7 +12,7 @@
 
           <!-- Logo and top-right buttons container -->
           <div class="flex justify-between items-start p-4">
-            <img src="@/static/swim-practices-good-bg-lg.png" class="w-52" />
+            <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
             <div class="flex space-x-4">
               <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
                 Find a Practice
@@ -312,11 +312,19 @@ export default {
       openSignup: 'auth/openSignup',
       logout: 'auth/logout'
     }),
-    async fetchPracticeMetrics() { // New method
+    async fetchPracticeMetrics() {
       try {
         const doc = await this.$fire.firestore.collection('analytics').doc('practice_summary').get();
         if (doc.exists) {
           this.practiceMetrics = doc.data();
+          // Expected fields in practice_summary document:
+          // - hour_count_min: Number (required) - Min value for animated practice count
+          // - hour_count_max: Number (required) - Max value for animated practice count
+          // - most_recent: Timestamp (required) - Most recent practice activity
+          // - total_practices: Number (optional) - Total practices in library
+          // - active_users_today: Number (optional) - Active users today
+          // - practices_this_week: Number (optional) - Practices added this week
+          // - trending_category: String (optional) - Most popular category name
         } else {
           console.log("No such document!");
         }
