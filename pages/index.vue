@@ -37,7 +37,9 @@
 
                 <button
                     @click="openDailyPractice"
+                    :disabled="!dailyPractice"
                     class="bg-white text-black font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out shadow-lg"
+                    :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
                 >
                     Daily Practice
                 </button>
@@ -91,7 +93,9 @@
             <div class="flex space-x-5 mb-4">
               <button
                 @click="openDailyPractice"
+                :disabled="!dailyPractice"
                 class="bg-white text-black font-bold py-1 px-4 rounded-full hover:bg-green-600 transition duration-300 ease-in-out flex-grow shadow-lg"
+                :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
               >
                 Daily Practice
               </button>
@@ -338,6 +342,7 @@ export default {
       this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
     },
     openDailyPractice() {
+      if (!this.dailyPractice) return;
       console.log(this.dailyPractice)
       const daily_id = this.dailyPractice.id
       this.$router.push({ name: 'idtwo', params: { idtwo: daily_id } });

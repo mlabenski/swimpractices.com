@@ -135,8 +135,9 @@ const actions = {
     const snapshot = await firestoreRef.get();
     const practices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
     if (practices.length === 0) {
-      console.log('practice length error')
-      throw new Error('Failed to read the daily practice!');
+      console.log('No daily practice found.');
+      commit('SET_DAILY_PRACTICES', []);
+      return;
     }
     //compute total yardage for the practice
     const mergedData = await Promise.all(practices.map(async (practice) => {
@@ -390,7 +391,10 @@ const getters = {
     return state.practices;
   },
   dailyPractice(state) {
-    return state.dailyPractice[0];
+    if (state.dailyPractice && state.dailyPractice.length > 0) {
+      return state.dailyPractice[0];
+    }
+    return null;
   },
   userPractices(state) {
     return state.userPractices;
