@@ -1,39 +1,50 @@
 <template>
   <div class="z-121">
-    <div class="flex items-center justify-between border sm:border-transparent sm:bg-transparent sm:text-white bg-gray-200 text-black px-2">
-      <span class="material-icons cursor-pointer" @click="toggleTable">
-        {{ isTableVisible ? 'expand_less' : 'expand_more' }}
-      </span>
-    </div>
-
     <div v-if="isLoading">Loading...</div>
-    <div v-else-if="isTableVisible" class="table-container">
-      <table class="w-full border-2 border-gray-400 divide-y divide-gray-200">
-        <thead style="background-color: #1F487E" class="sticky-header">
-        <tr>
-          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Practice Name</th>
-          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base text-white">Distance</th>
-          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"></th>
-          <th class="px-2 sm:px-4 py-2 text-xs sm:text-base pl-2"></th>
-        </tr>
-        </thead>
-        <tbody class="bg-customGrey">
-        <tr v-for="practice in practiceSets" :key="practice.practiceId" class="text-center bg-white shadow-md">
-          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ practice.name }}</td>
-          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ getTotalYardage(practice.sets) }}</td>
-          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-            <router-link :to="{ name: 'id', params: { id: practice.id } }" class="text-blue-600 underline">
-              <span class="material-icons">open_in_full</span>
-            </router-link>
-          </td>
-          <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-            <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4">
-              <span class="material-icons">delete_forever</span>
+    <div v-else class="card-list-container space-y-4">
+      <div
+        v-for="practice in practiceSets"
+        :key="practice.id"
+        @click="openPractice(practice.id)"
+        class="bg-white shadow-md p-4 rounded border-b border-gray-300 cursor-pointer text-gray-800"
+      >
+        <!-- Title -->
+        <div class="flex justify-between items-center mb-2">
+          <div class="font-bold text-lg">{{ practice.name }}</div>
+          <div class="text-lg text-gray-600">{{ practice.totalTime }}</div>
+        </div>
+
+        <!-- Pills -->
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-blue-200 text-blue-700 px-3 py-1 rounded-full text-sm">{{ practice.totalYardage }} Distance</span>
+          <span class="bg-green-200 text-green-700 px-3 py-1 rounded-full text-sm">{{ practice.primaryStroke }}</span>
+
+          <span v-if="practice.measurement === 1" class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm">25 Yards</span>
+          <span v-if="practice.measurement === 2" class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm">25 Meters</span>
+          <span v-if="practice.measurement === 3" class="bg-red-200 text-red-700 px-3 py-1 rounded-full text-sm">50 Meters</span>
+
+          <span class="bg-yellow-400 text-yellow-800 px-3 py-1 rounded-full text-sm" v-if="practice.totalYardage >= 5000">Adv</span>
+          <span class="bg-yellow-200 text-yellow-600 px-3 py-1 rounded-full text-sm" v-else-if="practice.totalYardage >= 3000">Med</span>
+          <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm" v-else-if="practice.totalYardage >= 500">Easy</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between mt-4">
+          <div class="flex space-x-2">
+            <button @click.stop="" class="text-gray-500">
+              <span class="material-icons">thumb_up</span>
             </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+            <button @click.stop="" class="text-gray-500">
+              <span class="material-icons">thumb_down</span>
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="material-icons text-gray-700" @click.stop="">share</span>
+            <span class="text-blue-600" @click.stop="">Share</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -61,7 +72,6 @@ export default {
   data() {
     return {
       templates: [],
-      isTableVisible: true
     };
   },
   computed: {
@@ -77,8 +87,8 @@ export default {
     }
   },
   methods: {
-    toggleTable() {
-      this.isTableVisible = !this.isTableVisible;
+    openPractice(practiceId) {
+      this.$router.push({ name: 'id', params: { id: practiceId } });
     },
     fetchMyTemplates() {
       this.templates = [
@@ -94,17 +104,6 @@ export default {
         { id: 3, name: 'Recommended Template 3' }
       ];
     },
-    getTotalYardage(sets) {
-      let totalYardage = 0;
-      for (const setId in sets) {
-        const set = sets[setId];
-        for (const exerciseId in set.exercises) {
-          const exercise = set.exercises[exerciseId];
-          totalYardage += exercise.distance * exercise.quantity;
-        }
-      }
-      return totalYardage;
-    },
     async deletePractice(practiceId) {
       try {
         await this.$fire.firestore.collection('practices').doc(practiceId).delete();
@@ -116,20 +115,3 @@ export default {
   },
 };
 </script>
-
-
-<style scoped>
-.table-container {
-  max-height: 400px; /* Adjust as necessary for your layout */
-  overflow-y: scroll;
-}
-.sticky-header th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: inherit;
-}
-table {
-  border-collapse: separate;
-}
-</style>

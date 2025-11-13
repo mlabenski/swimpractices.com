@@ -8,7 +8,7 @@
     <div class="md:block hidden">
       <div id="top" class="min-h-screen">
 
-        <div class="relative customOrange h-auto min-h-72"> <!-- Ensure the height is auto to accommodate content -->
+        <div class="relative h-auto min-h-72 text-white"> <!-- Ensure the height is auto to accommodate content -->
 
           <!-- Logo and top-right buttons container -->
           <div class="flex justify-between items-start p-4">
@@ -22,29 +22,32 @@
               </button>
             </div>
           </div>
-          <!-- Two columns -->
-          <div class="grid grid-cols-2 gap-4 p-4 md:p-8 lg:p-16">
-            <div class="flex flex-col justify-center text-left ml-12 md:ml-24 lg:ml-36 text-white">
-              <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
-              <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
-              <button class="bg-backgroundBlue text-white font-bold py-3 px-4 rounded-full hover:bg-backgroundBlue transition duration-300 ease-in-out mb-6 w-1/5">
-                Explore Practices
-              </button>
-              <p class="text-md md:text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
-              <div class="mt-4">
-                <span class="text-md md:text-lg">Practice like your coach is on the pool deck!</span>
-              </div>
+          <!-- Centered content -->
+          <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
+            <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+            
+            <div class="flex space-x-5 mb-4">
+                <button
+                @click="scrollToContent"
+                class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out shadow-lg"
+                >
+                See All Practices
+                </button>
+
+                <button
+                    @click="openDailyPractice"
+                    class="bg-white text-black font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out shadow-lg"
+                >
+                    Daily Practice
+                </button>
             </div>
-            <!-- Visual representation column (if needed) -->
-            <div class="">
-              <img src="@/static/background-1368-912-wide.svg" class="object-contain w-full h-full" />
+
+            <p class="text-md md:text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
+            <div class="mt-4">
+              <span class="text-md md:text-lg">Practice like your coach is on the pool deck!</span>
             </div>
           </div>
-          <!-- Optional: Visual representation of piano keys and music notes (if needed) -->
-          <!-- <div class="w-full">
-            <img src="@/static/background-1368-912-wide.svg" class="object-contain w-full" />
-          </div> -->
-
         </div>
     <!-- Infinite Set List Container -->
       <div class="container mx-auto py-10 flex items-center mt-8 justify-center"><!-- You may adjust the padding as needed -->
@@ -497,29 +500,10 @@ html, body, #app {
 }
 
 
-@media (min-width: 600px) {
-  #app {
-    background-image: url(@/static/background-912-1368-pro.svg) !important;
-  }
-  .container {
-    padding-left: 0em;
-    padding-right: 0em;
-  }
-}
-
 @media (min-width: 768px) {
   #app {
-    background-image: url(@/static/background-1368-912-wide.svg) !important;
-  }
-  .container {
-    padding-left: 0em;
-    padding-right: 0em;
-  }
-}
-
-@media (min-width: 1024px) {
-  #app {
-    background-image: url(@/static/desktop-1920-1260.svg) !important;
+    background-image: none !important;
+    background-color: #111827 !important; /* gray-900 */
   }
   .container {
     padding-left: 0em;
