@@ -26,7 +26,7 @@
           <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
             <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
             <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
-            
+
             <div class="flex space-x-5 mb-4">
                 <button
                 @click="scrollToContent"
@@ -314,7 +314,7 @@ export default {
     }),
     async fetchPracticeMetrics() { // New method
       try {
-        const doc = await this.$fire.firestore.collection('metrics').doc('practice_summary').get();
+        const doc = await this.$fire.firestore.collection('analytics').doc('practice_summary').get();
         if (doc.exists) {
           this.practiceMetrics = doc.data();
         } else {
