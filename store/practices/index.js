@@ -265,6 +265,15 @@ const actions = {
       }
     }
 
+    // Check if it's the daily practice in state
+    if (state.dailyPractice && state.dailyPractice.length > 0) {
+      const dailyPractice = state.dailyPractice[0];
+      if (dailyPractice.id === id) {
+        commit('SET_PRACTICE', dailyPractice);
+        return;
+      }
+    }
+
     // If we didn't return above, we either don't have state.practices or didn't find the practice in it.
     // In this case, fetch the practice from Firestore.
     const ref = this.$fire.firestore.collection('practices').doc(id);
@@ -274,7 +283,15 @@ const actions = {
       // Commit the practice to the Vuex store
       commit('SET_PRACTICE', { id, ...doc.data() });
     } else {
-      console.log('Practice not found');
+      // Try fetching from daily_practice collection as fallback
+      const dailyRef = this.$fire.firestore.collection('daily_practice').doc(id);
+      const dailyDoc = await dailyRef.get();
+
+      if (dailyDoc.exists) {
+        commit('SET_PRACTICE', { id, ...dailyDoc.data() });
+      } else {
+        console.log('Practice not found');
+      }
     }
   }),
 

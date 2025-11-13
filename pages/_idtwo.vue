@@ -194,7 +194,18 @@ export default {
     },
     async fetchPractice() {
       console.log('the route is:' + this.$route.params.idtwo);
-      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.idtwo);
+      const practiceId = this.$route.params.idtwo;
+
+      // Check if this is the daily practice
+      const dailyPractice = this.$store.getters['practices/dailyPractice'];
+      if (dailyPractice && dailyPractice.id === practiceId) {
+        console.log('Loading daily practice from state');
+        this.practice = dailyPractice;
+        return;
+      }
+
+      // Otherwise fetch from practices collection
+      await this.$store.dispatch('practices/fetchPracticeByID', practiceId);
       this.practice = this.$store.state.practices.practice;
       console.log('the practice is:')
       console.log(this.practice);
