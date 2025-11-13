@@ -193,8 +193,8 @@ export default {
       this.isSeasonModalOpen = false;
     },
     async fetchPractice() {
-      console.log('the route is:' + this.$route.params.id);
-      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.id);
+      console.log('the route is:' + this.$route.params.idtwo);
+      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.idtwo);
       this.practice = this.$store.state.practices.practice;
       console.log('the practice is:')
       console.log(this.practice);
@@ -206,7 +206,7 @@ export default {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     },
     async addToSeason(seasonID) {
-      const practiceID = this.$route.params.id;
+      const practiceID = this.$route.params.idtwo;
       await this.addPracticeToSeason({ seasonID, practiceID });
     },
     async createNewSeason(seasonData) {
@@ -233,7 +233,7 @@ export default {
 
       // Dispatch Vuex action
       this.$store.dispatch('practices/addOrUpdateSet', {
-        practiceID: this.$route.params.id,
+        practiceID: this.$route.params.idtwo,
         setIndex,
         set: newSet
       });
@@ -253,7 +253,7 @@ export default {
 
       // Dispatch Vuex action
       await this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.id,
+        practiceID: this.$route.params.idtwo,
         setIndex,
         exercise: newExercise,
       }).then(r => this.fetchPractice());
@@ -261,7 +261,7 @@ export default {
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
       this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.id,
+        practiceID: this.$route.params.idtwo,
         setIndex: setIndex,
         exerciseIndex: exerciseIndex,
         property: property,
@@ -282,7 +282,7 @@ export default {
         await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
         return;
       }
-      const practiceID = this.$route.params.id;
+      const practiceID = this.$route.params.idtwo;
       const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID);
       console.log('We will only work with this new practice:')
       console.log(practice);
