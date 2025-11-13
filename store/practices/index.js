@@ -279,28 +279,34 @@ const actions = {
   }),
 
   fetchPinnedPractices: firestoreAction(async function({ rootState, commit }) {
-    if (rootState.auth.user) {
-      const userID = rootState.auth.user.id;
-      // Use users_private collection for pinned practices (personal data)
-      const ref = this.$fire.firestore.collection('users_private').doc(userID);
-      const doc = await ref.get();
+    try {
+      if (rootState.auth.user) {
+        const userID = rootState.auth.user.id;
+        // Use users_private collection for pinned practices (personal data)
+        const ref = this.$fire.firestore.collection('users_private').doc(userID);
+        const doc = await ref.get();
 
-      if (doc.exists) {
-        const data = doc.data();
-        console.log(data);  // Optional: for debugging, can be removed in production
-        if (data.pinnedPractices) {
-          commit('SET_USER_PINNED_PRACTICES', data.pinnedPractices);
+        if (doc.exists) {
+          const data = doc.data();
+          console.log(data);  // Optional: for debugging, can be removed in production
+          if (data.pinnedPractices) {
+            commit('SET_USER_PINNED_PRACTICES', data.pinnedPractices);
+          } else {
+            // Handle the case where there are no pinned practices
+            commit('SET_USER_PINNED_PRACTICES', []);
+          }
         } else {
-          // Handle the case where there are no pinned practices
+          // If the user document does not exist
+          console.log('User document not found');
           commit('SET_USER_PINNED_PRACTICES', []);
         }
       } else {
-        // If the user document does not exist
-        console.log('User document not found');
+        // If there is no authenticated user
         commit('SET_USER_PINNED_PRACTICES', []);
       }
-    } else {
-      // If there is no authenticated user
+    } catch (error) {
+      console.error("Error fetching pinned practices (likely permissions):", error.message);
+      // Set to empty array on error to prevent breaking UI
       commit('SET_USER_PINNED_PRACTICES', []);
     }
   }),

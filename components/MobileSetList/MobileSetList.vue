@@ -162,7 +162,6 @@ export default {
     };
   },
   mounted() {
-    this.highlightCards();
     this.$refs.swipeCards.forEach(card => {
       card.addEventListener("touchstart", this.handleTouchStart);
       card.addEventListener("touchmove", this.handleTouchMove);
@@ -226,14 +225,6 @@ export default {
         console.log(this.userPinnedPractices);
         return this.userPinnedPractices.includes(practice.id);
       }
-    },
-    highlightCards() {
-      console.log('hello');
-      this.$refs.swipeCards.forEach(card => {
-        console.log('hello');
-        console.log(card);
-        card.style.backgroundColor = 'lightyellow';  // Changes background color of each card
-      });
     },
     async savePractice(id) {
       if(!this.userID) {
