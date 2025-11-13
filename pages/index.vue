@@ -90,6 +90,14 @@
               See All Practices
             </button>
 
+            <button
+              v-if="!user"
+              @click="openSignup"
+              class="bg-green-600 text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition duration-300 ease-in-out w-full mb-4 shadow-lg"
+            >
+              Log In / Sign Up
+            </button>
+
             <div class="flex space-x-5 mb-4">
               <button
                 @click="openDailyPractice"
