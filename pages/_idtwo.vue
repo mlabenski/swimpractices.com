@@ -1,22 +1,47 @@
 <template>
   <div class="p-2 md:p-4 bg-gray-900 min-h-screen">
-    <!-- START: Top Nav Bar -->
-    <div class="fixed top-0 left-0 right-0 bg-gray-400 p-2 flex justify-between items-center shadow-md z-50 mb-25 sm:mb-0 sm:hidden">
-      <router-link to="/" @click="isSeasonModalOpen = false" class="text-gray-800"><span class="material-icons">
-          close
-        </span></router-link>
+    <!-- Desktop Header -->
+    <div class="hidden sm:flex fixed top-0 left-0 right-0 bg-gray-800 p-4 justify-between items-center shadow-lg z-50">
+      <router-link to="/">
+        <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="h-10" />
+      </router-link>
+      <div class="flex space-x-4">
+        <router-link to="/" class="text-white bg-transparent border border-white rounded-full py-2 px-6 hover:bg-white hover:text-gray-900 transition duration-300">
+          Find a Practice
+        </router-link>
+        <button v-if="!user" @click="openLogin" class="text-white bg-transparent border border-white rounded-full py-2 px-6 hover:bg-white hover:text-gray-900 transition duration-300">
+          Log In
+        </button>
+        <button v-if="user" @click="logout" class="text-white bg-transparent border border-red-500 rounded-full py-2 px-6 hover:bg-red-500 hover:text-white transition duration-300">
+          Log Out
+        </button>
+      </div>
+    </div>
 
-      <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
-
-      <button @click="isDropdownOpen = !isDropdownOpen" class="text-gray-800">
-        <span class="material-icons">
-          expand_more
-        </span>
-      </button>
+    <!-- Mobile Header -->
+    <div class="sm:hidden fixed top-0 left-0 right-0 bg-gray-800 shadow-lg z-50">
+      <div class="p-3 flex justify-between items-center">
+        <router-link to="/">
+          <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="h-8" />
+        </router-link>
+        <div class="flex items-center space-x-2">
+          <router-link to="/" class="text-white text-sm border border-white rounded-full py-1 px-3 hover:bg-white hover:text-gray-900 transition duration-300">
+            Find
+          </router-link>
+          <button v-if="!user" @click="openLogin" class="text-white text-sm border border-white rounded-full py-1 px-3 hover:bg-white hover:text-gray-900 transition duration-300">
+            Log In
+          </button>
+          <button @click="isDropdownOpen = !isDropdownOpen" class="text-white">
+            <span class="material-icons">
+              expand_more
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- START: Dropdown Menu -->
-    <div v-if="isDropdownOpen" class="fixed top-12 left-0 right-0 bg-gray-400 p-2 flex flex-col space-y-2 shadow-md z-50 sm:hidden">
+    <div v-if="isDropdownOpen" class="fixed top-16 left-0 right-0 bg-gray-800 p-2 flex flex-col space-y-2 shadow-md z-50 sm:hidden">
       <button
         @click="isSeasonModalOpen = true"
         class="px-3 py-2 bg-blue-400 text-white rounded transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
@@ -51,7 +76,7 @@
       <div class="px-2 md:px-6 py-2 md:py-4">
         <div v-if="!practice">Loading...</div>
         <div v-else>
-          <div class="flex justify-between items-center mb-4 pt-12 sm:pt-0">
+          <div class="flex justify-between items-center mb-4 pt-20 sm:pt-20">
             <EditableField :templateNum=1 :value="practice.name" @input="newValue => practice.name = newValue"></EditableField>
             <div class="flex space-x-2">
               <button @click="toggleEditor" class="bg-transparent p-1 transform transition duration-500 ease-in-out hover:scale-110">
@@ -189,6 +214,11 @@ export default {
   methods: {
     ...mapActions('practices', ['addExerciseToSet']),
     ...mapActions(["addPracticeToSeason", "createSeason"]),
+    ...mapActions({
+      openLogin: 'auth/openLogin',
+      openSignup: 'auth/openSignup',
+      logout: 'auth/logout'
+    }),
     closeModal() {
       this.isSeasonModalOpen = false;
     },
