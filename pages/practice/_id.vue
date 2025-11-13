@@ -275,24 +275,19 @@ export default {
       // Firestore update using query
       if (this.user && this.user.id) {
         try {
-          const usersRef = this.$fire.firestore.collection('users');
-          const querySnapshot = await usersRef.where('user_id', '==', this.user.id).get();
+          // Use users_private collection for completed practices (personal data)
+          const userPrivateRef = this.$fire.firestore.collection('users_private').doc(this.user.id);
+          const arrayUnion = this.$fireModule.firestore.FieldValue.arrayUnion;
 
-          if (!querySnapshot.empty) {
-            const userDoc = querySnapshot.docs[0]; // assuming there's one match
-            const arrayUnion = this.$fireModule.firestore.FieldValue.arrayUnion; // Correctly accessing arrayUnion
-            await userDoc.ref.update({
-              practices: arrayUnion({
-                id: practiceId,
-                endedAt: this.$fireModule.firestore.Timestamp.fromDate(endTime) // Firestore server timestamp for consistency
-              })
-            });
-            console.log('Firestore updated with practice ID and end time for user:', this.user.id);
-          } else {
-            console.log('No user found with ID:', this.user.id);
-          }
+          await userPrivateRef.update({
+            practices: arrayUnion({
+              id: practiceId,
+              endedAt: this.$fireModule.firestore.Timestamp.fromDate(endTime)
+            })
+          });
+          console.log('Firestore updated with practice ID and end time for user:', this.user.id);
         } catch (error) {
-          console.error('Error querying Firestore:', error);
+          console.error('Error updating practice completion:', error);
         }
       } else {
         console.error('User not logged in or invalid user ID.');

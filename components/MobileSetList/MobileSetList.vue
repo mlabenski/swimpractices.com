@@ -280,8 +280,8 @@ export default {
       }
 
       try {
-        // Reference to the user's document in the Firestore "users" collection
-        const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
+        // Reference to the user's private document (for pinned/disliked practices)
+        const userDocRef = this.$fire.firestore.collection('users_private').doc(this.userID);
         const practiceDocRef = this.$fire.firestore.collection('practices').doc(practice.id);
 
         // Retrieve user data
@@ -327,8 +327,8 @@ export default {
       }
 
       try {
-        // Reference to the user's document in the Firestore "users" collection
-        const userDocRef = this.$fire.firestore.collection('users').doc(this.userID);
+        // Reference to the user's private document (for pinned/disliked practices)
+        const userDocRef = this.$fire.firestore.collection('users_private').doc(this.userID);
         // Get the current user document
         const userDoc = await userDocRef.get();
 

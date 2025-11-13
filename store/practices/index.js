@@ -187,7 +187,7 @@ const actions = {
         throw new Error('Http error unable to load practices');
       }
 
-      const usersRef = this.$fire.firestore.collection('users');
+      const usersPublicRef = this.$fire.firestore.collection('users_public');
       const mergedData = await Promise.all(practices.map(async (practice) => {
         // Compute totalYardage for each practice
         let practiceTotalYards = 0;
@@ -204,9 +204,9 @@ const actions = {
         }
         practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
 
-        // Fetch and merge user data
+        // Fetch and merge public user data (username, age, experience)
         if (practice.userID) {
-          const userDoc = await usersRef.doc(practice.userID).get();
+          const userDoc = await usersPublicRef.doc(practice.userID).get();
           if (userDoc.exists) {
             practice.userData = userDoc.data();
           }
@@ -280,7 +280,8 @@ const actions = {
   fetchPinnedPractices: firestoreAction(async function({ rootState, commit }) {
     if (rootState.auth.user) {
       const userID = rootState.auth.user.id;
-      const ref = this.$fire.firestore.collection('users').doc(userID);
+      // Use users_private collection for pinned practices (personal data)
+      const ref = this.$fire.firestore.collection('users_private').doc(userID);
       const doc = await ref.get();
 
       if (doc.exists) {

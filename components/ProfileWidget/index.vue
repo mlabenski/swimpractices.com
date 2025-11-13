@@ -66,25 +66,15 @@ export default {
     }
 
     try {
-      // Reference to the user's document in the Firestore "users" collection
-      const userDocRef = this.$fire.firestore.collection('users').doc(this.user.id);
+      // Update username in both legacy and new public profile collection
+      const legacyUserRef = this.$fire.firestore.collection('users').doc(this.user.id);
+      const publicUserRef = this.$fire.firestore.collection('users_public').doc(this.user.id);
 
-      // Fetch the user document
-      const userDoc = await userDocRef.get();
-
-      if (userDoc.exists) {
-        // Update the username in the user's document if it exists
-        await userDocRef.update({
-          username: newUsername
-        });
-      } else {
-        // Create a new document with the given user ID and username if it doesn't exist
-        await userDocRef.set({
-          id: this.user.id,
-          username: newUsername,
-          // set other initial fields as needed
-        });
-      }
+      // Update both collections in parallel
+      await Promise.all([
+        legacyUserRef.update({ username: newUsername }),
+        publicUserRef.update({ username: newUsername })
+      ]);
 
       alert('Username updated successfully');
     } catch (error) {

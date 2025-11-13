@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userID) {
+      return isAuthenticated() && request.auth.uid == userID;
+    }
+
+    // Practices collection
+    match /practices/{practiceId} {
+      // Anyone can read practices (public access)
+      allow read: if true;
+
+      // Authenticated users can create practices
+      // Must set userID to their own auth.uid
+      allow create: if isAuthenticated()
+                    && request.resource.data.userID == request.auth.uid;
+
+      // Users can only update/delete their own practices
+      allow update, delete: if isOwner(resource.data.userID);
+    }
+
+    // Daily practice collection (read-only for users)
+    match /daily_practice/{practiceId} {
+      // Anyone can read daily practices
+      allow read: if true;
+
+      // Only allow writes from authenticated requests (for admin/functions)
+      // You may want to add more restrictive rules here
+      allow write: if isAuthenticated();
+    }
+
+    // Seasons collection
+    match /seasons/{seasonId} {
+      // Anyone can read seasons
+      allow read: if true;
+
+      // Authenticated users can create seasons
+      allow create: if isAuthenticated()
+                    && request.resource.data.userID == request.auth.uid;
+
+      // Users can only update/delete their own seasons
+      allow update, delete: if isOwner(resource.data.userID);
+    }
+
+    // Users collection (legacy - for backward compatibility)
+    // Will eventually migrate to users_public and users_private split
+    match /users/{userId} {
+      // Users can only read their own document
+      allow read: if isOwner(userId);
+
+      // Users can create their own document on signup
+      // Must match their auth.uid and set user_id correctly
+      allow create: if isAuthenticated()
+                    && userId == request.auth.uid
+                    && request.resource.data.user_id == request.auth.uid;
+
+      // Users can only update their own document
+      allow update: if isOwner(userId);
+
+      // Users cannot delete their own document
+      allow delete: if false;
+    }
+
+    // Public user profiles (username, age, experience)
+    // Anyone can read these for displaying practice creators
+    match /users_public/{userId} {
+      // Anyone can read public user profiles
+      allow read: if true;
+
+      // Users can create their own public profile on signup
+      allow create: if isAuthenticated()
+                    && userId == request.auth.uid
+                    && request.resource.data.user_id == request.auth.uid;
+
+      // Users can only update their own public profile
+      allow update: if isOwner(userId);
+
+      // Users cannot delete their public profile
+      allow delete: if false;
+    }
+
+    // Private user data (email, pinned practices, completed practices)
+    // Only the owner can access
+    match /users_private/{userId} {
+      // Users can only read their own private data
+      allow read: if isOwner(userId);
+
+      // Users can create their own private data on signup
+      allow create: if isAuthenticated()
+                    && userId == request.auth.uid
+                    && request.resource.data.user_id == request.auth.uid;
+
+      // Users can only update their own private data
+      allow update: if isOwner(userId);
+
+      // Users cannot delete their private data
+      allow delete: if false;
+    }
+  }
+}

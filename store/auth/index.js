@@ -93,7 +93,32 @@ export const actions = {
   },
   async saveUserData({ commit }, user) {
     console.log('made it into save user data')
-    const userData = {
+
+    // Split user data into public and private
+    const publicData = {
+      user_id: user.id,
+      username: user.user_metadata.full_name,
+      selectedAge: 18,
+      selectedExperience: 2,
+      intervals: {
+        "100 free": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 backstroke": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 butterfly": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 breaststroke": { distance: 100, interval: 80, poolLength: "25 yards" },
+        "100 individual medley": { distance: 100, interval: 80, poolLength: "25 yards" }
+      }
+    };
+
+    const privateData = {
+      user_id: user.id,
+      external_ids: {"netlify": user.id},
+      email: user.email,
+      pinnedPractices: [],
+      practices: []
+    };
+
+    // Legacy: Keep writing to old 'users' collection for backward compatibility
+    const legacyUserData = {
       external_ids: {"netlify": user.id},
       username: user.user_metadata.full_name,
       email: user.email,
@@ -110,14 +135,19 @@ export const actions = {
     };
 
     const userRef = this.$fire.firestore.collection('users').doc(user.id);
+    const publicRef = this.$fire.firestore.collection('users_public').doc(user.id);
+    const privateRef = this.$fire.firestore.collection('users_private').doc(user.id);
 
     try {
       const doc = await userRef.get();
       if (!doc.exists) {
-        await userRef.set(userData);
-        console.log("User document created successfully.");
-        // Optionally commit to Vuex state if needed
-        // commit('SET_USER_DATA', userData);
+        // Create all three documents (legacy + new structure)
+        await Promise.all([
+          userRef.set(legacyUserData),
+          publicRef.set(publicData),
+          privateRef.set(privateData)
+        ]);
+        console.log("User documents created successfully (legacy + public/private split).");
       } else {
         console.log("User already exists.");
       }
