@@ -43,10 +43,7 @@
                 </button>
             </div>
 
-            <p class="text-md md:text-lg mb-4 italic">Experience personalized skill advancement with each session.</p>
-            <div class="mt-4">
-              <span class="text-md md:text-lg">Practice like your coach is on the pool deck!</span>
-            </div>
+            <realtime-metrics v-if="practiceMetrics" :metrics="practiceMetrics" class="mt-8" />
           </div>
         </div>
     <!-- Infinite Set List Container -->
@@ -198,6 +195,7 @@ import TopNavBar from "@/components/TopNavBar/index.vue";
 import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue';
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.vue";
+import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
@@ -239,7 +237,8 @@ export default {
     MobileNavBarTop,
     InfiniteSetList,
     PendingPracticeNotification,
-    AppInstallSuggestion
+    AppInstallSuggestion,
+    RealtimeMetrics // New component
   },
   async mounted() {
     this.handleResize();
@@ -253,6 +252,7 @@ export default {
         await this.$store.dispatch('practices/fetchUserPractices');
       }
       await this.$store.dispatch('practices/fetchPinnedPractices');
+      await this.fetchPracticeMetrics(); // New method call
     } catch (e) {
       console.error(e)
     }
@@ -283,7 +283,8 @@ export default {
         { name: 'iOS', icon: 'fas fa-apple' },
         { name: 'Android', icon: 'fab fa-android' },
         { name: 'Web', icon: 'fas fa-globe' }
-      ]
+      ],
+      practiceMetrics: null, // New data property
     }
   },
   computed: {
@@ -307,6 +308,18 @@ export default {
       openSignup: 'auth/openSignup',
       logout: 'auth/logout'
     }),
+    async fetchPracticeMetrics() { // New method
+      try {
+        const doc = await this.$fire.firestore.collection('metrics').doc('practice_summary').get();
+        if (doc.exists) {
+          this.practiceMetrics = doc.data();
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching practice metrics:", error);
+      }
+    },
     checkPendingPractice() {
       const practiceId = localStorage.getItem('pendingPractice');
       if (practiceId) {
