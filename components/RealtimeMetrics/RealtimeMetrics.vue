@@ -198,7 +198,8 @@ export default {
 /* Grid layout - responsive */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 1rem;
 }
 
@@ -289,7 +290,8 @@ export default {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .metrics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
 
