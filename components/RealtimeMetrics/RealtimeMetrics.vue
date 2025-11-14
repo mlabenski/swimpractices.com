@@ -1,67 +1,42 @@
 <template>
   <div class="realtime-metrics p-5 rounded-xl text-white">
     <div class="metrics-grid">
-      <!-- Live Practices Now -->
-      <div class="metric-card">
-        <div class="metric-icon">
-          <span class="pulsing-dot"></span>
-          <activity-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value text-green-400">
-          <span ref="currentPractices">0</span>
-        </div>
-        <div class="metric-label">Practices Now</div>
-      </div>
+      <!-- Dynamic card rendering based on displayCards computed property -->
+      <div
+        v-for="card in displayCards"
+        :key="card.index"
+        class="metric-card"
+        :class="{ 'cursor-pointer': isClickable(card), 'roadmap-card-style': card.type === 'roadmap' }"
+        @click="handleCardClick(card)">
 
-      <!-- Total Practices Library -->
-      <div v-if="metrics.total_practices" class="metric-card">
-        <div class="metric-icon">
-          <library-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value">
-          {{ formatNumber(metrics.total_practices) }}
-        </div>
-        <div class="metric-label">Total Practices</div>
-      </div>
+        <!-- Metric Card Content -->
+        <template v-if="card.type === 'metric'">
+          <div class="metric-icon">
+            <span v-if="card.hasPulse" class="pulsing-dot"></span>
+            <activity-icon v-if="card.icon === 'activity'" :size="20" class="icon" />
+            <library-icon v-else-if="card.icon === 'library'" :size="20" class="icon" />
+            <account-group-icon v-else-if="card.icon === 'account-group'" :size="20" class="icon" />
+            <plus-circle-icon v-else-if="card.icon === 'plus-circle'" :size="20" class="icon" />
+            <clock-icon v-else-if="card.icon === 'clock'" :size="20" class="icon" />
+            <fire-icon v-else-if="card.icon === 'fire'" :size="20" class="icon" />
+          </div>
+          <div class="metric-value" :class="card.color">
+            <span v-if="card.id === 'practices_now'" ref="currentPractices">0</span>
+            <span v-else>{{ card.value }}</span>
+          </div>
+          <div class="metric-label">{{ card.label }}</div>
+        </template>
 
-      <!-- Active Users Today -->
-      <div v-if="metrics.active_users_today" class="metric-card">
-        <div class="metric-icon">
-          <account-group-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value text-blue-400">
-          {{ formatNumber(metrics.active_users_today) }}
-        </div>
-        <div class="metric-label">Active Today</div>
-      </div>
-
-      <!-- Practices This Week -->
-      <div v-if="metrics.practices_this_week" class="metric-card">
-        <div class="metric-icon">
-          <plus-circle-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value text-purple-400">
-          +{{ formatNumber(metrics.practices_this_week) }}
-        </div>
-        <div class="metric-label">Added This Week</div>
-      </div>
-
-      <!-- Most Recent Activity -->
-      <div class="metric-card">
-        <div class="metric-icon">
-          <clock-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value text-sm">{{ mostRecentTimeAgo }}</div>
-        <div class="metric-label">Most Recent</div>
-      </div>
-
-      <!-- Trending Category (if available) -->
-      <div v-if="metrics.trending_category" class="metric-card">
-        <div class="metric-icon">
-          <fire-icon :size="20" class="icon" />
-        </div>
-        <div class="metric-value text-sm text-orange-400">{{ metrics.trending_category }}</div>
-        <div class="metric-label">Trending</div>
+        <!-- Roadmap Card Content -->
+        <template v-else-if="card.type === 'roadmap'">
+          <div class="roadmap-icon">
+            <svg class="w-6 h-6 mb-2 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="roadmap-title">{{ card.title }}</div>
+          <div class="roadmap-status">{{ card.status }}</div>
+        </template>
       </div>
     </div>
   </div>
@@ -89,6 +64,10 @@ export default {
       type: Object,
       required: true,
     },
+    cards: {
+      type: Array,
+      default: null,
+    },
   },
   data() {
     return {
@@ -107,6 +86,28 @@ export default {
     mostRecent() {
       // The timestamp from firestore needs to be converted to a Date object
       return this.metrics.most_recent.toDate();
+    },
+    displayCards() {
+      // If cards prop is not provided, use default metric cards
+      if (!this.cards) {
+        return this.getDefaultMetricCards();
+      }
+
+      // Map cards configuration to renderable card data
+      return this.cards.map((card, index) => {
+        if (card.type === 'metric') {
+          return this.getMetricCardData(card.id, index);
+        } else if (card.type === 'roadmap') {
+          return {
+            type: 'roadmap',
+            title: card.title,
+            status: card.status,
+            route: card.route,
+            index: index,
+          };
+        }
+        return card;
+      }).filter(card => card !== null);
     }
   },
   mounted() {
@@ -181,6 +182,86 @@ export default {
       }
       this.mostRecentTimeAgo = "just now";
     },
+    handleCardClick(card) {
+      // Emit event with card data for parent to handle navigation
+      this.$emit('card-clicked', card);
+    },
+    isClickable(card) {
+      // Card is clickable if it has a route or is a roadmap type
+      return card && (card.route || card.type === 'roadmap');
+    },
+    getDefaultMetricCards() {
+      // Return default metric cards when no cards prop is provided
+      return [
+        { type: 'metric', id: 'practices_now', index: 0 },
+        this.metrics.total_practices ? { type: 'metric', id: 'total_practices', index: 1 } : null,
+        this.metrics.active_users_today ? { type: 'metric', id: 'active_today', index: 2 } : null,
+        this.metrics.practices_this_week ? { type: 'metric', id: 'practices_this_week', index: 3 } : null,
+        { type: 'metric', id: 'most_recent', index: 4 },
+        this.metrics.trending_category ? { type: 'metric', id: 'trending', index: 5 } : null,
+      ].filter(card => card !== null).map(card => this.getMetricCardData(card.id, card.index));
+    },
+    getMetricCardData(metricId, index) {
+      const metricMap = {
+        'practices_now': {
+          type: 'metric',
+          id: 'practices_now',
+          icon: 'activity',
+          value: null, // Will be animated
+          label: 'Practices Now',
+          color: 'text-green-400',
+          hasPulse: true,
+          index: index,
+        },
+        'total_practices': this.metrics.total_practices ? {
+          type: 'metric',
+          id: 'total_practices',
+          icon: 'library',
+          value: this.formatNumber(this.metrics.total_practices),
+          label: 'Total Practices',
+          color: '',
+          index: index,
+        } : null,
+        'active_today': this.metrics.active_users_today ? {
+          type: 'metric',
+          id: 'active_today',
+          icon: 'account-group',
+          value: this.formatNumber(this.metrics.active_users_today),
+          label: 'Active Today',
+          color: 'text-blue-400',
+          index: index,
+        } : null,
+        'practices_this_week': this.metrics.practices_this_week ? {
+          type: 'metric',
+          id: 'practices_this_week',
+          icon: 'plus-circle',
+          value: '+' + this.formatNumber(this.metrics.practices_this_week),
+          label: 'Added This Week',
+          color: 'text-purple-400',
+          index: index,
+        } : null,
+        'most_recent': {
+          type: 'metric',
+          id: 'most_recent',
+          icon: 'clock',
+          value: this.mostRecentTimeAgo,
+          label: 'Most Recent',
+          color: 'text-sm',
+          index: index,
+        },
+        'trending': this.metrics.trending_category ? {
+          type: 'metric',
+          id: 'trending',
+          icon: 'fire',
+          value: this.metrics.trending_category,
+          label: 'Trending',
+          color: 'text-sm text-orange-400',
+          index: index,
+        } : null,
+      };
+
+      return metricMap[metricId] || null;
+    },
   },
 };
 </script>
@@ -222,6 +303,55 @@ export default {
   border-color: rgba(107, 114, 128, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.metric-card.cursor-pointer {
+  cursor: pointer;
+}
+
+.metric-card.cursor-pointer:active {
+  transform: translateY(0);
+}
+
+/* Roadmap card styling */
+.roadmap-card-style {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.roadmap-card-style:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.roadmap-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: rgba(96, 165, 250, 0.9);
+}
+
+.roadmap-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f3f4f6;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.roadmap-status {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(251, 191, 36, 0.9);
+  font-weight: 500;
+  text-align: center;
+  background: rgba(251, 191, 36, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 /* Icon container */

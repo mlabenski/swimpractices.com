@@ -45,7 +45,13 @@
                 </button>
             </div>
 
-            <realtime-metrics v-if="practiceMetrics" :metrics="practiceMetrics" class="mt-8" />
+            <realtime-metrics
+              v-if="practiceMetrics"
+              :metrics="practiceMetrics"
+              :cards="roadmapCards"
+              @card-clicked="handleCardClick"
+              class="mt-8"
+            />
           </div>
         </div>
     <!-- Infinite Set List Container -->
@@ -297,6 +303,14 @@ export default {
         { name: 'Web', icon: 'fas fa-globe' }
       ],
       practiceMetrics: null, // New data property
+      roadmapCards: [
+        { type: 'metric', id: 'practices_now', route: null },
+        { type: 'metric', id: 'total_practices', route: null },
+        { type: 'roadmap', title: 'AI Practice Generator', status: 'Coming Soon', route: '/roadmap?feature=ai-generator' },
+        { type: 'roadmap', title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
+        { type: 'roadmap', title: 'Performance Analytics', status: 'Planned', route: '/roadmap?feature=analytics' },
+        { type: 'roadmap', title: 'Social Features', status: 'Coming Soon', route: '/roadmap?feature=social' },
+      ],
     }
   },
   computed: {
@@ -456,6 +470,16 @@ export default {
       const contentElement = document.getElementById('content');
       if (contentElement) {
         contentElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+
+    handleCardClick(card) {
+      // Handle card click navigation
+      if (card && card.route) {
+        this.$router.push(card.route);
+      } else if (card && card.type === 'roadmap') {
+        // Fallback to general roadmap page if no specific route
+        this.$router.push('/roadmap');
       }
     },
 
