@@ -14,11 +14,11 @@
           <div class="flex justify-between items-start p-4">
             <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
             <div class="flex space-x-4">
-              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple">
-                Find a Practice
+              <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                <span>Find a Practice</span>
               </button>
-              <button class="text-white bg-transparent border border-white rounded-full py-2 px-4 hover:bg-white hover:text-dark-purple" @click="openSignup" >
-                Log In
+              <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" @click="openSignup" >
+                <span>Log In</span>
               </button>
             </div>
           </div>
@@ -309,9 +309,9 @@ export default {
       ],
       practiceMetrics: null, // New data property
       roadmapCards: [
+        { type: 'roadmap', title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
         { type: 'metric', id: 'practices_now', route: null },
         { type: 'metric', id: 'total_practices', route: null },
-        { type: 'roadmap', title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
         { type: 'roadmap', title: 'Wearable Devices', status: 'Coming Q1 2026', route: '/roadmap?feature=wearable-devices' },
         { type: 'roadmap', title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
       ],
@@ -500,6 +500,41 @@ export default {
 :root {
   --navbar-top-height: 20px; /* Adjust based on your top navbar height */
   --navbar-bottom-height: 4px; /* Adjust based on your bottom navbar height */
+}
+
+/* Header button hover effects */
+.header-button {
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+.header-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.header-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.header-button:active {
+  transform: scale(0.98);
+}
+
+.header-button span {
+  position: relative;
+  z-index: 1;
 }
 
 .mobile-landing-page {
