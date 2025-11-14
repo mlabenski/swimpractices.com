@@ -35,7 +35,7 @@
             </svg>
           </div>
           <div class="roadmap-title">{{ card.title }}</div>
-          <div class="roadmap-status">{{ card.status }}</div>
+          <div class="roadmap-status" :class="getRoadmapStatusClass(card.status)">{{ card.status }}</div>
         </template>
       </div>
     </div>
@@ -189,6 +189,17 @@ export default {
     isClickable(card) {
       // Card is clickable if it has a route or is a roadmap type
       return card && (card.route || card.type === 'roadmap');
+    },
+    getRoadmapStatusClass(status) {
+      // Return appropriate CSS class based on status
+      if (status && status.includes('Available')) {
+        return 'status-available';
+      } else if (status && status.includes('Development')) {
+        return 'status-development';
+      } else if (status && status.includes('2026')) {
+        return 'status-coming';
+      }
+      return 'status-default';
     },
     getDefaultMetricCards() {
       // Return default metric cards when no cards prop is provided
@@ -345,13 +356,35 @@ export default {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: rgba(251, 191, 36, 0.9);
   font-weight: 500;
   text-align: center;
-  background: rgba(251, 191, 36, 0.1);
   padding: 0.25rem 0.5rem;
   border-radius: 0.5rem;
+}
+
+/* Status color variations */
+.roadmap-status.status-available {
+  color: rgba(34, 197, 94, 0.9);
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.roadmap-status.status-development {
+  color: rgba(59, 130, 246, 0.9);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.roadmap-status.status-coming {
+  color: rgba(251, 191, 36, 0.9);
+  background: rgba(251, 191, 36, 0.1);
   border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.roadmap-status.status-default {
+  color: rgba(156, 163, 175, 0.9);
+  background: rgba(156, 163, 175, 0.1);
+  border: 1px solid rgba(156, 163, 175, 0.3);
 }
 
 /* Icon container */

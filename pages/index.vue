@@ -306,10 +306,9 @@ export default {
       roadmapCards: [
         { type: 'metric', id: 'practices_now', route: null },
         { type: 'metric', id: 'total_practices', route: null },
-        { type: 'roadmap', title: 'AI Practice Generator', status: 'Coming Soon', route: '/roadmap?feature=ai-generator' },
+        { type: 'roadmap', title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
+        { type: 'roadmap', title: 'Wearable Devices', status: 'Coming Q1 2026', route: '/roadmap?feature=wearable-devices' },
         { type: 'roadmap', title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
-        { type: 'roadmap', title: 'Performance Analytics', status: 'Planned', route: '/roadmap?feature=analytics' },
-        { type: 'roadmap', title: 'Social Features', status: 'Coming Soon', route: '/roadmap?feature=social' },
       ],
     }
   },

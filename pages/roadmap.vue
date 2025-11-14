@@ -88,22 +88,18 @@
       <!-- Legend -->
       <div class="mt-12 roadmap-card">
         <h3 class="text-xl font-semibold mb-4">Status Legend</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div class="flex items-center space-x-2">
-            <span class="status-badge status-planned text-xs">Planned</span>
-            <span class="text-sm text-gray-400">On the horizon</span>
-          </div>
-          <div class="flex items-center space-x-2">
-            <span class="status-badge status-coming-soon text-xs">Coming Soon</span>
-            <span class="text-sm text-gray-400">In design phase</span>
+            <span class="status-badge status-available text-xs">Available Now</span>
+            <span class="text-sm text-gray-400">Live and ready</span>
           </div>
           <div class="flex items-center space-x-2">
             <span class="status-badge status-in-development text-xs">In Development</span>
             <span class="text-sm text-gray-400">Actively building</span>
           </div>
           <div class="flex items-center space-x-2">
-            <span class="status-badge status-beta text-xs">Beta</span>
-            <span class="text-sm text-gray-400">Testing phase</span>
+            <span class="status-badge status-coming-soon text-xs">Coming Q1 2026</span>
+            <span class="text-sm text-gray-400">Planned release</span>
           </div>
         </div>
       </div>
@@ -131,92 +127,51 @@ export default {
       features: [
         {
           id: 'ai-generator',
-          title: 'AI Practice Generator',
-          description: 'Generate personalized swim practices using AI based on your team goals, skill level, and available time. The AI will create balanced, progressive practices tailored to your needs.',
-          status: 'Coming Soon',
-          timeline: 'Q2 2025',
+          title: 'Intelligent Practice Generator',
+          description: 'Generate personalized swim practices using intelligent algorithms based on your team goals, skill level, and available time. The system creates balanced, progressive practices tailored to your specific needs.',
+          status: 'Available Now',
+          timeline: 'Live',
           priority: 'High',
           icon: '🤖',
           features: [
             'Custom practice generation based on yardage, duration, and focus',
             'Progressive difficulty adjustment',
             'Integration with existing practice library',
-            'Save and share AI-generated practices',
+            'Save and share generated practices',
+            'Multi-stroke and multi-distance support',
+          ],
+        },
+        {
+          id: 'wearable-devices',
+          title: 'Wearable Devices',
+          description: 'Integration with popular swimming wearables and smart watches to track performance metrics, heart rate, stroke count, and lap times. Sync data directly from your device to your practice logs.',
+          status: 'Coming Q1 2026',
+          timeline: 'Q1 2026',
+          priority: 'High',
+          icon: '⌚',
+          features: [
+            'Support for Garmin, Apple Watch, and Fitbit devices',
+            'Real-time heart rate and lap time tracking',
+            'Stroke count and efficiency metrics',
+            'Automatic workout detection and sync',
+            'Performance analytics and trends',
           ],
         },
         {
           id: 'teams',
           title: 'Team Management',
-          description: 'Manage your swim team with tools for roster management, practice assignments, and progress tracking. Coaches can assign practices and track swimmer attendance.',
+          description: 'Comprehensive team management tools for coaches to organize rosters, assign practices, track attendance, and monitor progress. Build and manage your entire swim team from one central dashboard.',
           status: 'In Development',
-          timeline: 'Q1 2025',
+          timeline: 'Q2 2026',
           priority: 'High',
           icon: '👥',
           features: [
             'Team roster and swimmer profiles',
             'Assign practices to specific swimmers or groups',
-            'Attendance tracking',
+            'Attendance tracking and reporting',
             'Team-wide practice library',
-          ],
-        },
-        {
-          id: 'analytics',
-          title: 'Performance Analytics',
-          description: 'Track training volume, intensity, and progress over time with comprehensive analytics dashboards and insights for coaches and swimmers.',
-          status: 'Planned',
-          timeline: 'Q3 2025',
-          priority: 'Medium',
-          icon: '📊',
-          features: [
-            'Training volume tracking',
-            'Stroke and distance breakdowns',
-            'Progressive overload visualization',
-            'Export data to CSV',
-          ],
-        },
-        {
-          id: 'social',
-          title: 'Social Features',
-          description: 'Connect with other coaches, share practices, and collaborate on training plans. Build a community around swim practice excellence.',
-          status: 'Coming Soon',
-          timeline: 'Q4 2025',
-          priority: 'Medium',
-          icon: '🌐',
-          features: [
-            'Follow other coaches',
-            'Share and discover practices',
-            'Comment and rate practices',
-            'Community practice collections',
-          ],
-        },
-        {
-          id: 'mobile-app',
-          title: 'Native Mobile Apps',
-          description: 'Dedicated iOS and Android apps with offline support, push notifications, and enhanced mobile experience.',
-          status: 'Planned',
-          timeline: '2026',
-          priority: 'Medium',
-          icon: '📱',
-          features: [
-            'Full offline support',
-            'Push notifications for practice reminders',
-            'Native performance',
-            'Enhanced mobile UI',
-          ],
-        },
-        {
-          id: 'integrations',
-          title: 'Third-Party Integrations',
-          description: 'Integrate with popular swim timing systems, fitness trackers, and other swim coaching tools for seamless workflows.',
-          status: 'Planned',
-          timeline: '2026',
-          priority: 'Low',
-          icon: '🔗',
-          features: [
-            'Timing system integrations',
-            'Fitness tracker sync',
-            'Calendar exports',
-            'API access',
+            'Parent/guardian communication tools',
+            'Performance tracking per swimmer',
           ],
         },
       ],
@@ -235,9 +190,11 @@ export default {
     },
     getStatusClass(status) {
       const statusMap = {
+        'Available Now': 'status-available',
+        'In Development': 'status-in-development',
+        'Coming Q1 2026': 'status-coming-soon',
         'Planned': 'status-planned',
         'Coming Soon': 'status-coming-soon',
-        'In Development': 'status-in-development',
         'Beta': 'status-beta',
       };
       return statusMap[status] || 'status-planned';
@@ -289,6 +246,12 @@ export default {
   letter-spacing: 0.05em;
 }
 
+.status-available {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
 .status-planned {
   background: rgba(156, 163, 175, 0.2);
   color: #d1d5db;
@@ -302,9 +265,9 @@ export default {
 }
 
 .status-in-development {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.4);
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.4);
 }
 
 .status-beta {
