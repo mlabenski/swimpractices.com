@@ -104,12 +104,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <AppFooter />
   </div>
 </template>
 
 <script>
+import AppFooter from '@/components/AppFooter/AppFooter.vue';
 export default {
   name: 'RoadmapPage',
+  components: {
+    AppFooter,
+  },
   head() {
     return {
       title: 'Product Roadmap - SwimPractices',

@@ -196,6 +196,9 @@
         />
       </keep-alive>
     </div>
+
+    <!-- Footer -->
+    <AppFooter />
   </div>
 </template>
 
@@ -214,6 +217,7 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.vue";
 import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
+import AppFooter from '@/components/AppFooter/AppFooter.vue';
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
@@ -256,7 +260,8 @@ export default {
     InfiniteSetList,
     PendingPracticeNotification,
     AppInstallSuggestion,
-    RealtimeMetrics // New component
+    RealtimeMetrics, // New component
+    AppFooter
   },
   async mounted() {
     this.handleResize();
