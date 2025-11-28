@@ -79,11 +79,17 @@
           </div>
 
           <div class="flex-grow flex flex-col justify-center">
-            <div class="mb-6 bg-gray-800 p-4 rounded-lg shadow-inner">
-              <p class="text-center text-sm uppercase tracking-wide mb-3">Available on</p>
-              <div class="flex justify-center space-x-6">
+            <!-- App Store Badge - More prominent on iOS -->
+            <div class="mb-6 bg-gray-800 p-4 rounded-lg shadow-inner" :class="{ 'ring-2 ring-blue-500': isIOS }">
+              <p class="text-center text-sm uppercase tracking-wide mb-3">{{ isIOS ? 'Download Now' : 'Available on' }}</p>
+              <div class="flex justify-center items-center">
+                <a :href="appStoreUrl" target="_blank" rel="noopener noreferrer" class="inline-block transition-transform duration-200 hover:scale-105">
+                  <img src="@/static/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="h-12" />
+                </a>
+              </div>
+              <div class="flex justify-center space-x-6 mt-3">
                 <div class="flex flex-col items-center" v-for="platform in platforms" :key="platform.name">
-                  <i :class="platform.icon" class="text-2xl mb-1"></i>
+                  <i :class="platform.icon" class="text-xl mb-1"></i>
                   <span class="text-xs">{{ platform.name }}</span>
                 </div>
               </div>
@@ -267,6 +273,7 @@ export default {
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
     this.checkPendingPractice();
+    this.detectIOS(); // Detect iOS device
     try {
       await this.$store.dispatch('practices/fetchPractices');
       await this.$store.dispatch('practices/fetchDailyPractice')
@@ -315,6 +322,8 @@ export default {
         { type: 'roadmap', title: 'Wearable Devices', status: 'Coming Q1 2026', route: '/roadmap?feature=wearable-devices' },
         { type: 'roadmap', title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
       ],
+      isIOS: false, // iOS device detection
+      appStoreUrl: 'https://apps.apple.com/us/app/swim-practices/id6752208346', // App Store URL
     }
   },
   computed: {
@@ -374,6 +383,11 @@ export default {
     },
     handleResize() {
       this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
+    },
+    detectIOS() {
+      // Detect iOS devices (iPhone, iPad, iPod)
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      this.isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
     },
     openDailyPractice() {
       if (!this.dailyPractice) return;

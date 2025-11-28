@@ -65,8 +65,9 @@ export default {
     },
     installApp() {
       if (this.isIOS) {
-        window.location.href = 'https://apps.apple.com/app/your-app-id';
+        window.location.href = 'https://apps.apple.com/us/app/swim-practices/id6752208346';
       } else if (this.isAndroid) {
+        // TODO: Update with actual Play Store URL when available
         window.location.href = 'https://play.google.com/store/apps/details?id=your.app.package';
       }
     },
