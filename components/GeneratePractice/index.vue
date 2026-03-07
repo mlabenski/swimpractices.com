@@ -113,31 +113,41 @@ export default {
 
       this.submitting = true;
 
-      // Construct detailed stroke and equipment information
-      const strokeDetails = this.allStrokes.map(stroke => `${stroke}: ${this.strokePercentages[stroke]}%`).join(', ');
-      const equipmentList = this.practice.equipment.join(', ');
+      // Map form to Firebase generateSwimPractice API: userId, totalDistance, poolLength, equipment, strokeWeights
+      // strokeWeights order: [freestyle, backstroke, breaststroke, butterfly]
+      const strokeWeights = [
+        this.strokePercentages.freestyle || 0,
+        this.strokePercentages.back || 0,
+        this.strokePercentages.breast || 0,
+        this.strokePercentages.fly || 0
+      ];
 
-      // Generate the practice request sentence with detailed information
-      let sentence = `The last Practice you generated had distances distributed as 20% of the practice 50 yards, 60% of the practice 100 yards, the 20% of the practice 200 yards. Use those distributions as historical data so you do not write the same swim practice. The next practice should consist of at least 5 sets, with a mandatory 4 exercises per set. Generate a swim practice for a ${this.practice.poolSize}-meter pool, with a total distance of ${this.practice.distance} meters. Focus on the following strokes with their respective percentages [${strokeDetails}]. Allow the following equipment: [${this.practice.equipment.join(", ")}].`;
-
-      let responseString = null;
       const requestData = {
-        input_text: sentence,
-        user_id: this.user.id // Make sure `user.id` is properly defined elsewhere in your component
+        userId: this.user.id,
+        totalDistance: this.practice.distance,
+        poolLength: this.practice.poolSize || '25 meters',
+        equipment: this.practice.equipment || [],
+        strokeWeights
       };
 
-      console.log('Submitting prompt:', sentence);
+      const firebaseUrl = 'https://us-central1-swimpractices-92836.cloudfunctions.net/generateSwimPractice';
+      console.log('Submitting to Firebase generateSwimPractice:', requestData);
 
       try {
-        const response = await axios.post('https://genhppurl-mlabenski.replit.app/generate/v3/practice', requestData);
+        const response = await axios.post(firebaseUrl, requestData, {
+          headers: { 'Content-Type': 'application/json' }
+        });
         const { data } = response;
-        responseString = data.practice;
-        console.log('The practice ID is:', data.practice_id);
-        console.log('The response data is:', responseString);
+        console.log('Practice ID:', data.practiceId);
+        console.log('Practice data:', data.practice);
 
-        this.$emit('practice-generated', data.practice_id);
+        this.$emit('practice-generated', data.practiceId);
       } catch (error) {
         console.error('Error generating swim practice:', error);
+        this.$buefy.notification.open({
+          message: error.response?.data || error.message || 'Failed to generate practice',
+          type: 'is-danger'
+        });
       } finally {
         this.showModal = false;
         this.generatePracticeModal = false;
