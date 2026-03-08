@@ -139,6 +139,7 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
+        <AuthModal :open="authModalOpen" />
         <GeneratePractice
           v-if="generatePracticeModal"
           :user="user"
@@ -225,7 +226,8 @@ import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.v
 import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
 //VueX inputs
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
+import AuthModal from "@/components/AuthModal/index.vue";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
 import {theme} from "@/tailwind.config";
 export default {
@@ -257,6 +259,7 @@ export default {
     GenerateSetModel,
     SetList,
     SeasonCards,
+    AuthModal,
     NotificationModal,
     GeneratePractice: () => import("@/components/GeneratePractice/index.vue"),
     TopNavBar,
@@ -327,6 +330,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      authModalOpen: (state) => !!(state.auth && state.auth.authModalOpen),
+    }),
     ...mapGetters({
       user: "auth/user",
       practices: "practices/practices",
