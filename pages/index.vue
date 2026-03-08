@@ -352,7 +352,9 @@ export default {
   },
   methods: {
     openAuthModal() {
+      console.log("[Log In] openAuthModal() called")
       this.showAuthModal = true
+      console.log("[Log In] showAuthModal set to:", this.showAuthModal)
     },
     ...mapActions({
       openLogin: "auth/openLogin",

@@ -75,6 +75,11 @@ export default {
       default: false,
     },
   },
+  watch: {
+    open(val) {
+      console.log("[AuthModal] open prop changed to:", val)
+    },
+  },
   data() {
     return {
       loading: false,
