@@ -61,7 +61,9 @@
         </div>
       </b-form>
 
-      <p v-if="errorMessage" class="text-danger small mt-3 mb-0">{{ errorMessage }}</p>
+      <b-alert v-if="errorMessage" show variant="danger" class="mt-3 mb-0 small">
+        {{ errorMessage }}
+      </b-alert>
     </div>
   </b-modal>
 </template>
@@ -110,14 +112,30 @@ export default {
       this.$store.dispatch("auth/closeAuthModal")
       this.$emit("close")
     },
+    authError(err) {
+      const msg = err && (err.message || err.code || String(err))
+      const known = {
+        "auth/popup-closed-by-user": "Sign-in was cancelled.",
+        "auth/popup-blocked": "Sign-in popup was blocked. Allow popups for this site.",
+        "auth/cancelled-popup-request": "Sign-in was cancelled.",
+        "auth/unauthorized-domain": "This domain is not authorized for sign-in. Check Firebase Console.",
+        "auth/invalid-credential": "Invalid email or password.",
+        "auth/wrong-password": "Invalid email or password.",
+        "auth/user-not-found": "No account found for this email.",
+        "auth/email-already-in-use": "This email is already registered. Try logging in.",
+        "auth/weak-password": "Password should be at least 6 characters.",
+      }
+      return known[err && err.code] || msg || "Sign-in failed."
+    },
     async signInWithGoogle() {
       this.loading = true
       this.method = "google"
       this.errorMessage = ""
       try {
         await this.$store.dispatch("auth/signInWithGoogle")
+        this.$emit("close")
       } catch (err) {
-        this.errorMessage = err.message || "Sign in with Google failed."
+        this.errorMessage = this.authError(err)
       } finally {
         this.loading = false
         this.method = null
@@ -140,8 +158,9 @@ export default {
             password: this.password,
           })
         }
+        this.$emit("close")
       } catch (err) {
-        this.errorMessage = err.message || "Sign in failed."
+        this.errorMessage = this.authError(err)
       } finally {
         this.loading = false
         this.method = null
