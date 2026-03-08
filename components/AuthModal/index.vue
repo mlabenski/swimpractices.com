@@ -89,6 +89,7 @@ export default {
   methods: {
     close() {
       this.$store.dispatch("auth/closeAuthModal")
+      this.$emit("close")
     },
     onInput(value) {
       if (!value) {

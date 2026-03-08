@@ -20,7 +20,7 @@
               <button
                 type="button"
                 class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
-                @click="$store.dispatch('auth/openSignup')"
+                @click="openAuthModal"
               >
                 <span>Log In</span>
               </button>
@@ -110,7 +110,7 @@
               v-if="!user"
               type="button"
               class="bg-green-600 text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition duration-300 ease-in-out w-full mb-4 shadow-lg"
-              @click="$store.dispatch('auth/openSignup')"
+              @click="openAuthModal"
             >
               Log In / Sign Up
             </button>
@@ -144,7 +144,7 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <AuthModal :open="authModalOpen" />
+        <AuthModal :open="showAuthModal" @close="showAuthModal = false" />
         <GeneratePractice
           v-if="generatePracticeModal"
           :user="user"
@@ -231,7 +231,7 @@ import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.v
 import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
 //VueX inputs
-import { mapGetters, mapActions, mapState } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import AuthModal from "@/components/AuthModal/index.vue";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
 import {theme} from "@/tailwind.config";
@@ -303,6 +303,7 @@ export default {
   },
   data() {
     return {
+      showAuthModal: false,
       isModalOpen: false,
       pastedPractice: '',
       hasNotification: false,
@@ -335,9 +336,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      authModalOpen: (state) => !!(state.auth && state.auth.authModalOpen),
-    }),
     ...mapGetters({
       user: "auth/user",
       practices: "practices/practices",
@@ -353,10 +351,13 @@ export default {
     this.forceRerender();
   },
   methods: {
+    openAuthModal() {
+      this.showAuthModal = true
+    },
     ...mapActions({
-      openLogin: 'auth/openLogin',
-      openSignup: 'auth/openSignup',
-      logout: 'auth/logout'
+      openLogin: "auth/openLogin",
+      openSignup: "auth/openSignup",
+      logout: "auth/logout",
     }),
     async fetchPracticeMetrics() {
       try {
@@ -415,8 +416,7 @@ export default {
     },
     handleSignUpClicked() {
       this.generatePracticeModal = false;
-      // This method will be triggered when the 'sign-up-clicked' event is emitted by the child
-      this.openSignup();
+      this.openAuthModal();
     },
     async shareUrl(practiceId) {
       const urlToCopy = `https://swimpractices.com/${practiceId}`;
