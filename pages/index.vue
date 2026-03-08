@@ -17,7 +17,11 @@
               <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <span>Find a Practice</span>
               </button>
-              <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" @click="openSignup" >
+              <button
+                type="button"
+                class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                @click="$store.dispatch('auth/openSignup')"
+              >
                 <span>Log In</span>
               </button>
             </div>
@@ -104,8 +108,9 @@
 
             <button
               v-if="!user"
-              @click="openSignup"
+              type="button"
               class="bg-green-600 text-white font-bold py-3 px-6 rounded-full hover:bg-green-700 transition duration-300 ease-in-out w-full mb-4 shadow-lg"
+              @click="$store.dispatch('auth/openSignup')"
             >
               Log In / Sign Up
             </button>
@@ -541,6 +546,7 @@ export default {
   background: rgba(255, 255, 255, 0.8);
   transform: translate(-50%, -50%);
   transition: width 0.6s ease, height 0.6s ease;
+  pointer-events: none;
 }
 
 .header-button:hover::before {
