@@ -1,12 +1,11 @@
 <template>
   <b-modal
-    :value="open"
+    ref="authModal"
     title="Log In / Sign Up"
     centered
     size="md"
     class="shadow-lg bg-gray-100 rounded-lg z-350"
     hide-footer
-    @input="onInput"
     @hide="close"
   >
     <div class="p-5 bg-white rounded-lg shadow-sm">
@@ -78,7 +77,22 @@ export default {
   watch: {
     open(val) {
       console.log("[AuthModal] open prop changed to:", val)
+      this.$nextTick(() => {
+        const modal = this.$refs.authModal
+        if (modal) {
+          if (val) {
+            modal.show()
+          } else {
+            modal.hide()
+          }
+        }
+      })
     },
+  },
+  mounted() {
+    if (this.open && this.$refs.authModal) {
+      this.$refs.authModal.show()
+    }
   },
   data() {
     return {
@@ -95,11 +109,6 @@ export default {
     close() {
       this.$store.dispatch("auth/closeAuthModal")
       this.$emit("close")
-    },
-    onInput(value) {
-      if (!value) {
-        this.close()
-      }
     },
     async signInWithGoogle() {
       this.loading = true
