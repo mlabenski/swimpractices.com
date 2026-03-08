@@ -1,7 +1,10 @@
 /**
  * Firebase Auth Helper Plugin
- * Provides utilities for managing Firebase authentication tokens
+ * Provides utilities for managing Firebase authentication tokens and sign-in methods
  */
+
+import firebase from "firebase/app"
+import "firebase/auth"
 
 export default ({ app, store }, inject) => {
   const firebaseAuth = {
@@ -71,7 +74,41 @@ export default ({ app, store }, inject) => {
      */
     getCurrentUser() {
       return app.$fire.auth.currentUser
-    }
+    },
+
+    /**
+     * Sign in with Google popup (Firebase Auth)
+     * @returns {Promise<Object>} User credential
+     */
+    async signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      return app.$fire.auth.signInWithPopup(provider)
+    },
+
+    /**
+     * Sign in with email and password (Firebase Auth)
+     * @param {string} email
+     * @param {string} password
+     * @returns {Promise<Object>} User credential
+     */
+    async signInWithEmail(email, password) {
+      return app.$fire.auth.signInWithEmailAndPassword(email, password)
+    },
+
+    /**
+     * Create account with email and password (Firebase Auth)
+     * @param {string} email
+     * @param {string} password
+     * @param {string} [displayName]
+     * @returns {Promise<Object>} User credential
+     */
+    async createUserWithEmail(email, password, displayName) {
+      const credential = await app.$fire.auth.createUserWithEmailAndPassword(email, password)
+      if (displayName && credential.user) {
+        await credential.user.updateProfile({ displayName })
+      }
+      return credential
+    },
   }
 
   // Inject into context as $firebaseAuth

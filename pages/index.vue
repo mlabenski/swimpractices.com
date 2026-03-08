@@ -210,9 +210,9 @@
 
 <script>
 // Component imports
-import GenerateSetModel from '@/components/GenerateSetModel';
-import SetList from '@/components/SetList/SetList.vue';
-import MobileSetList from '@/components/MobileSetList/MobileSetList.vue';
+import GenerateSetModel from "@/components/GenerateSetModel";
+import SetList from "@/components/SetList/SetList.vue";
+import MobileSetList from "@/components/MobileSetList/MobileSetList.vue";
 import MobileNavBarTop from '@/components/MobileNavBarTop';
 import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
@@ -258,7 +258,7 @@ export default {
     SetList,
     SeasonCards,
     NotificationModal,
-    GeneratePractice: () => import('@/components/GeneratePractice/index.vue'),
+    GeneratePractice: () => import("@/components/GeneratePractice/index.vue"),
     TopNavBar,
     LogsNotificationModel,
     ProfileWidget,
@@ -328,13 +328,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
-      practices: 'practices/practices',
-      dailyPractice: 'practices/dailyPractice',
-      seasonPractices: 'seasons',
-      userPractices: 'practices/userPractices',
-      filteredPractices: 'practices/filteredPractices',
-      userPinnedPractices: 'practices/userPinnedPractices'
+      user: "auth/user",
+      practices: "practices/practices",
+      dailyPractice: "practices/dailyPractice",
+      seasonPractices: "seasons",
+      userPractices: "practices/userPractices",
+      filteredPractices: "practices/filteredPractices",
+      userPinnedPractices: "practices/userPinnedPractices",
     }),
   },
   created() {
