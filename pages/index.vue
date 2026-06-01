@@ -56,6 +56,10 @@
               @card-clicked="handleCardClick"
               class="mt-8"
             />
+
+            <div v-if="leaderboardData" class="flex justify-center mt-10">
+              <Leaderboard :leaderboard-data="leaderboardData" />
+            </div>
           </div>
         </div>
     <!-- Infinite Set List Container -->
@@ -130,6 +134,12 @@
                 ?
               </button>
             </div>
+
+            <Leaderboard
+              v-if="leaderboardData"
+              :leaderboard-data="leaderboardData"
+              class="mt-4 mb-4"
+            />
           </div>
         </div>
       </div>
@@ -230,6 +240,7 @@ import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.vue";
 import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
+import Leaderboard from '@/components/Leaderboard/Leaderboard.vue';
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
 import AuthModal from "@/components/AuthModal/index.vue";
@@ -274,8 +285,9 @@ export default {
     InfiniteSetList,
     PendingPracticeNotification,
     AppInstallSuggestion,
-    RealtimeMetrics, // New component
-    AppFooter
+    RealtimeMetrics,
+    AppFooter,
+    Leaderboard
   },
   async mounted() {
     this.handleResize();
@@ -290,7 +302,8 @@ export default {
         await this.$store.dispatch('practices/fetchUserPractices');
       }
       await this.$store.dispatch('practices/fetchPinnedPractices');
-      await this.fetchPracticeMetrics(); // New method call
+      await this.fetchPracticeMetrics();
+      await this.fetchLeaderboard();
     } catch (e) {
       console.error(e)
     }
@@ -323,7 +336,8 @@ export default {
         { name: 'Android', icon: 'fab fa-android' },
         { name: 'Web', icon: 'fas fa-globe' }
       ],
-      practiceMetrics: null, // New data property
+      practiceMetrics: null,
+      leaderboardData: null,
       roadmapCards: [
         { type: 'roadmap', title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
         { type: 'metric', id: 'practices_now', route: null },
@@ -379,6 +393,16 @@ export default {
         }
       } catch (error) {
         console.error("Error fetching practice metrics:", error);
+      }
+    },
+    async fetchLeaderboard() {
+      try {
+        const doc = await this.$fire.firestore.collection('analytics').doc('leaderboard').get();
+        if (doc.exists) {
+          this.leaderboardData = doc.data();
+        }
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
       }
     },
     checkPendingPractice() {
