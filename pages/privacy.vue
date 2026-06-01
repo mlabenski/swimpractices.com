@@ -300,7 +300,7 @@
       </div>
 
       <!-- Summary -->
-      <div class="privacy-card bg-blue-900 bg-opacity-30 border-blue-500">
+      <div class="privacy-card bg-blue-900/30 border-blue-500">
         <h2 class="section-title">Summary</h2>
         <p class="section-text">
           At SwimPractices, your privacy matters. We collect only the information necessary to provide you with an exceptional swimming training experience. Your data is secured, never sold, and you maintain control over your information at all times.
@@ -324,24 +324,25 @@ export default {
   components: {
     AppFooter,
   },
-  head() {
-    return {
-      title: 'Privacy Policy - SwimPractices',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Privacy Policy for SwimPractices - Learn how we collect, use, and protect your personal information including Apple Sign-In, HealthKit data, and Firebase storage.',
-        },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: 'privacy policy, data protection, HealthKit privacy, Apple Sign-In, Firebase security, swimming app privacy',
-        },
-      ],
-    };
-  },
 };
+</script>
+
+<script setup>
+useHead({
+  title: 'Privacy Policy - SwimPractices',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Privacy Policy for SwimPractices - Learn how we collect, use, and protect your personal information including Apple Sign-In, HealthKit data, and Firebase storage.',
+    },
+    {
+      name: 'keywords',
+      content:
+        'privacy policy, data protection, HealthKit privacy, Apple Sign-In, Firebase security, swimming app privacy',
+    },
+  ],
+})
 </script>
 
 <style scoped>

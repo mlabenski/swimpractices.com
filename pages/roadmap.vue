@@ -117,18 +117,6 @@ export default {
   components: {
     AppFooter,
   },
-  head() {
-    return {
-      title: 'Product Roadmap - SwimPractices',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'See what features and improvements are coming to SwimPractices',
-        },
-      ],
-    };
-  },
   data() {
     return {
       features: [
@@ -208,6 +196,18 @@ export default {
     },
   },
 };
+</script>
+
+<script setup>
+useHead({
+  title: 'Product Roadmap - SwimPractices',
+  meta: [
+    {
+      name: 'description',
+      content: 'See what features and improvements are coming to SwimPractices',
+    },
+  ],
+})
 </script>
 
 <style scoped>

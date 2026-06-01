@@ -45,6 +45,7 @@
             <span class="text-blue-600" @click.stop="">Share</span>
           </div>
         </div>
+        </div>
       </div>
 
       <!-- Pagination Controls -->
@@ -104,6 +105,8 @@
 </template>
 
 <script>
+import { practicePath } from '@/lib/practiceRoutes'
+
 export default {
   props: {
     title: {
@@ -167,8 +170,8 @@ export default {
     }
   },
   methods: {
-    openPractice(practiceId) {
-      this.$router.push({ name: 'id', params: { id: practiceId } });
+    openPractice (practiceId) {
+      this.$router.push(practicePath(practiceId))
     },
     goToPage(page) {
       if (page >= 1 && page <= this.totalPages) {

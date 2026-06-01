@@ -118,62 +118,6 @@ import { mapGetters, mapActions } from "vuex";
 import SeasonList from '@/components/SeasonList/index.vue';
 import PendingPracticeNotification from "@/components/PendingPracticeNotification/PendingPracticeNotification.vue";
 export default {
-  async asyncData({ params, app }) {
-    const db = app.$fire.firestore;
-    try {
-      const doc = await db.collection('practices').doc(params.id).get();
-      if(!doc.exists) {
-        throw new Error("This practice was not found!");
-      }
-      return { practice: doc.data() };
-    } catch (error) {
-      console.log('Error fetching practices: ', error);
-      throw error;
-    }
-
-  },
-  head() {
-    const jsonLd = {
-      "@context": "http://schema.org",
-      "@type": "SportsEvent",
-      "name": this.practice.name,
-      "description": this.practice.review,
-    }
-    return {
-      title: this.practice.name,
-      meta: [
-        { hid: 'description',
-          name: 'description',
-          content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`,
-      },
-      {
-        hid: 'json-ld',
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify(jsonLd)
-      },
-      {
-        name: 'apple-mobile-web-app-capable',
-        content: 'yes'
-      },
-      // Mobile-Optimized Content
-      {
-        name: 'mobile-optimized',
-        content: 'width'
-      }
-      ],
-      link: [
-        // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-        { rel: 'canonical', href:`https://www.swimpractices.com/${this.practice.id}`}
-      ],
-      script: [
-      { type: 'application/ld+json', json: jsonLd }
-      ],
-      __dangerouslyDisableSanitizersByTagID: {
-        'json-ld': ['innerHTML'] // This disables sanitization for the JSON-LD
-      }
-    }
-  },
   components: {
     EditableField,
     SeasonList,
@@ -224,9 +168,9 @@ export default {
     closeModal() {
       this.isSeasonModalOpen = false;
     },
-    async fetchPractice() {
-      console.log('the route is:' + this.$route.params.idtwotwo);
-      await this.$store.dispatch('practices/fetchPracticeByID', this.$route.params.idtwo);
+    async fetchPractice () {
+      const practiceId = this.$route.params.id
+      await this.$store.dispatch('practices/fetchPracticeByID', practiceId)
       this.practice = this.$store.state.practices.practice;
       console.log('the practice is:')
       console.log(this.practice);
@@ -238,7 +182,7 @@ export default {
       return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     },
     async addToSeason(seasonID) {
-      const practiceID = this.$route.params.idtwo;
+      const practiceID = this.$route.params.id;
       await this.addPracticeToSeason({ seasonID, practiceID });
     },
     async createNewSeason(seasonData) {
@@ -314,7 +258,7 @@ export default {
 
       // Dispatch Vuex action
       this.$store.dispatch('practices/addOrUpdateSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex,
         set: newSet
       });
@@ -334,7 +278,7 @@ export default {
 
       // Dispatch Vuex action
       await this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex,
         exercise: newExercise,
       }).then(r => this.fetchPractice());
@@ -342,7 +286,7 @@ export default {
     updateExercise(property, newValue, setIndex, exerciseIndex) {
       console.log(`Updating ${property} to ${newValue} for setIndex ${setIndex} and exerciseIndex ${exerciseIndex}`);
       this.$store.dispatch('practices/addOrUpdateExerciseToSet', {
-        practiceID: this.$route.params.idtwo,
+        practiceID: this.$route.params.id,
         setIndex: setIndex,
         exerciseIndex: exerciseIndex,
         property: property,
@@ -351,7 +295,7 @@ export default {
       //Now lets fetch the practice again to reload it??
     },
     toggleTableVisibility(setIndex) {
-      this.$set(this.tableVisibility, setIndex, !this.tableVisibility[setIndex]);
+      this.tableVisibility[setIndex] = !this.tableVisibility[setIndex]
     },
     updateExerciseStroke({ exercise, newValue }) {
       this.$store.dispatch('practices/updateExerciseStroke', { exerciseId: exercise.id, newValue });
@@ -363,7 +307,7 @@ export default {
         await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
         return;
       }
-      const practiceID = this.$route.params.idtwo;
+      const practiceID = this.$route.params.id;
       const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID);
       console.log('We will only work with this new practice:')
       console.log(practice);
@@ -458,11 +402,37 @@ export default {
       }
     }
   },
-  mounted() {
-    this.checkPendingPractice();
-    //window.addEventListener('scroll', this.checkActiveSet);
+  async mounted () {
+    await this.fetchPractice()
+    this.checkPendingPractice()
+    const jsonLd = {
+      '@context': 'http://schema.org',
+      '@type': 'SportsEvent',
+      name: this.practice?.name,
+      description: this.practice?.review,
+    }
+    if (this.practice) {
+      useHead({
+        title: this.practice.name,
+        meta: [
+          {
+            name: 'description',
+            content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`,
+          },
+          { name: 'apple-mobile-web-app-capable', content: 'yes' },
+          { name: 'mobile-optimized', content: 'width' },
+        ],
+        link: [
+          {
+            rel: 'canonical',
+            href: `https://www.swimpractices.com/${this.practice.id}`,
+          },
+        ],
+        script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(jsonLd) }],
+      })
+    }
   },
-  beforeDestroy() {
+  beforeUnmount () {
     this.closeZoom();
     window.removeEventListener('scroll', this.checkActiveSet);
   },

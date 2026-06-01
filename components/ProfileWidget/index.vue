@@ -55,7 +55,7 @@ export default {
     this.user = this.$store.state.auth.user;
     this.numPractices = this.$store.state.practices.userPractices.length;
   },
-  beforeDestroy() {
+  beforeUnmount () {
     this.$store.dispatch('practices/clearFilteredPractices');
   },
   methods: {

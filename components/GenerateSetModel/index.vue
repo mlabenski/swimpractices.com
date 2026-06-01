@@ -11,8 +11,8 @@
           <button @click="increment('distance')">+</button>
         </div>
         <div class="flex">
-          <template v-for="star in distanceStars">
-        <span :key="star">
+          <template v-for="star in distanceStars" :key="'distance-' + star">
+        <span>
           <svg class="w-6 h-6 cursor-pointer" @click="setDistance(star)" :class="getStarClass('distance', star)" viewBox="0 0 24 24">
             <path d="M12 1L15.09 8.69L23 9.82L17 15.12L18.18 23L12 19.77L5.82 23L7 15.12L1 9.82L8.91 8.69L12 1Z" />
           </svg>
@@ -29,8 +29,8 @@
           <button @click="increment('speed')">+</button>
         </div>
         <div class="flex">
-          <template v-for="star in speedStars">
-        <span :key="star">
+          <template v-for="star in speedStars" :key="'speed-' + star">
+        <span>
           <svg class="w-6 h-6 cursor-pointer" @click="setSpeed(star)" :class="getStarClass('speed', star)" viewBox="0 0 24 24">
             <path d="M12 1L15.09 8.69L23 9.82L17 15.12L18.18 23L12 19.77L5.82 23L7 15.12L1 9.82L8.91 8.69L12 1Z" />
           </svg>
@@ -47,8 +47,8 @@
           <button @click="increment('difficulty')">+</button>
         </div>
         <div class="flex">
-          <template v-for="star in difficultyStars">
-            <span :key="star">
+          <template v-for="star in difficultyStars" :key="'difficulty-' + star">
+            <span>
           <svg class="w-6 h-6 cursor-pointer" @click="setDifficulty(star)" :class="getStarClass('difficulty', star)" viewBox="0 0 24 24">
             <path d="M12 1L15.09 8.69L23 9.82L17 15.12L18.18 23L12 19.77L5.82 23L7 15.12L1 9.82L8.91 8.69L12 1Z" />
           </svg>

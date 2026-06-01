@@ -138,7 +138,7 @@
     </div>
     <div class="container mx-auto">
       <div class="sm:px-4" v-if="user">
-        <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" v-b-hover="hoverHandler">
+        <b-button pill variant="outline-primary" class="floating-button" @click.prevent="startPractice" title="Create practice" @mouseenter="hoverHandler(true)" @mouseleave="hoverHandler(false)">
           <span class="material-icons" style="color: white">add</span>
           {{ buttonText }}
         </b-button>
@@ -146,7 +146,6 @@
 
       <!-- Modal components -->
       <div class="flex flex-col sm:flex-row justify-center">
-        <AuthModal :open="showAuthModal" @close="showAuthModal = false" />
         <GeneratePractice
           v-if="generatePracticeModal"
           :user="user"
@@ -230,38 +229,13 @@ import AppFooter from '@/components/AppFooter/AppFooter.vue';
 import Leaderboard from '@/components/Leaderboard/Leaderboard.vue';
 //VueX inputs
 import { mapGetters, mapActions } from "vuex";
-import AuthModal from "@/components/AuthModal/index.vue";
-import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue';
-import {theme} from "@/tailwind.config";
+import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue'
+import { practicePath } from '@/lib/practiceRoutes'
+
 export default {
-  head() {
-    return {
-      title: 'Swim Practice Generator',
-      meta: [
-        { hid: 'description',
-          name: 'description',
-          content: `Check out swim practices created by AI for free. Sign-up to track your season goals and to generate aligned practices to reach them`,
-        },
-        {
-          name: 'apple-mobile-web-app-capable',
-          content: 'yes'
-        },
-        // Mobile-Optimized Content
-        {
-          name: 'mobile-optimized',
-          content: 'width'
-        }
-      ],
-      link: [
-        // Add this
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
-      ],
-    }
-  },
   components: {
     GenerateSetModel,
     SetList,
-    AuthModal,
     NotificationModal,
     GeneratePractice: () => import("@/components/GeneratePractice/index.vue"),
     TopNavBar,
@@ -294,14 +268,14 @@ export default {
     }
   },
 
-  beforeDestroy() {
+  beforeUnmount () {
     window.removeEventListener('resize', this.handleResize);
     this.$store.dispatch('practices/unbindPractices');
     this.$store.dispatch('practices/unbindUserPractices');
   },
   data() {
     return {
-      showAuthModal: false,
+      isDesktop: false,
       isModalOpen: false,
       pastedPractice: '',
       hasNotification: false,
@@ -349,10 +323,8 @@ export default {
     this.forceRerender();
   },
   methods: {
-    openAuthModal() {
-      console.log("[Log In] openAuthModal() called")
-      this.showAuthModal = true
-      console.log("[Log In] showAuthModal set to:", this.showAuthModal)
+    openAuthModal () {
+      this.openLogin()
     },
     ...mapActions({
       openLogin: "auth/openLogin",
@@ -415,7 +387,7 @@ export default {
       if (!this.dailyPractice) return;
       console.log(this.dailyPractice)
       const daily_id = this.dailyPractice.id
-      this.$router.push({ name: 'idtwo', params: { idtwo: daily_id } });
+      this.$router.push(practicePath(daily_id))
     },
     startEmptyPractice() {
       // Logic to start an empty practice
@@ -447,7 +419,7 @@ export default {
         this.$forceUpdate();
         console.log('new practice ID equals '+ newPracticeId)
         await this.$store.dispatch('practices/fetchUserPractices');
-        this.$router.push({ name: 'id', params: { id: newPracticeId } });
+        this.$router.push(practicePath(newPracticeId))
       }
       else {
         await this.$store.dispatch('notifications/addNotification', {message: 'Something broke while creating the new practice '+ newPracticeId, type: 2})
@@ -484,7 +456,7 @@ export default {
     onSetListChange(e) {
       this.selectedSetList = e.target.value;
       if (this.selectedSetList === 'Featured Practice') {
-        this.$router.push({ name: 'id', params: { id: '3PMtTR93QWGvy2n1tlBC' } });
+        this.$router.push(practicePath('3PMtTR93QWGvy2n1tlBC'))
       }
     },
     handleHidePractice(practiceId) {
@@ -515,6 +487,11 @@ export default {
     }
   }
 }
+</script>
+
+<script setup>
+import { indexPageHead } from './index-head'
+useHead(indexPageHead)
 </script>
 
 <style scoped>

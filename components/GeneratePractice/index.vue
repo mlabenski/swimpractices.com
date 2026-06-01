@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="value" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350" hide-footer>
+  <b-modal v-model="modalOpen" title="Generate Swim Practice" centered size="md" class="shadow-lg bg-gray-100 rounded-lg z-350" hide-footer>
     <div v-if="!user" class="p-5 bg-white rounded-lg shadow-sm text-center">
       <div class="mb-4">
         <h2 class="font-semibold text-xl text-gray-700">Join Us!</h2>
@@ -33,7 +33,14 @@
         <b-form-group label="Acceptable Strokes:" label-for="strokes" class="font-semibold text-gray-700">
           <div v-for="stroke in allStrokes" :key="stroke" class="flex items-center my-2">
             <span class="text-sm text-gray-600 mr-3">{{ stroke }}</span>
-            <b-form-slider v-model="strokePercentages[stroke]" @input="debouncedUpdateStrokePercentages(stroke)" :min=0 :max=100 variant="primary"></b-form-slider>
+            <input
+              type="range"
+              v-model.number="strokePercentages[stroke]"
+              min="0"
+              max="100"
+              class="w-full accent-blue-500"
+              @input="debouncedUpdateStrokePercentages(stroke)"
+            />
             <span class="text-sm ml-2">{{ strokePercentages[stroke] }}%</span>
           </div>
         </b-form-group>
@@ -61,17 +68,26 @@
 
 
 <script>
-import _ from 'lodash';
-import axios from "axios";
-import 'bootstrap-slider/dist/css/bootstrap-slider.css'
-import bFormSlider from 'vue-bootstrap-slider/es/form-slider';
-import { onMounted } from 'vue';
+import _ from 'lodash'
+import axios from 'axios'
+
 export default {
-  components: {
-    bFormSlider
+  props: {
+    user: { type: Object, default: null },
+    modelValue: { type: Boolean, default: false },
   },
-  props: ["user", "value"],
-  data() {
+  emits: ['update:modelValue', 'practice-generated', 'sign-up-clicked'],
+  computed: {
+    modalOpen: {
+      get () {
+        return this.modelValue
+      },
+      set (value) {
+        this.$emit('update:modelValue', value)
+      },
+    },
+  },
+  data () {
     return {
       showModal: false,
       generatePracticeModal: false,
@@ -91,10 +107,10 @@ export default {
         'freestyle': 0
       },
       equipmentItems: [
-        { name: 'fins', image: require('@/static/equipment/fins-image.png') },
-        { name: 'snorkel', image: require('~/static/equipment/snorkel-image.png')},
-        { name: 'paddles', image: require('~/static/equipment/paddle-image.png') },
-        { name: 'pull boy', image: require('~/static/equipment/pull-boy-image.png') },
+        { name: 'fins', image: '/equipment/fins-image.png' },
+        { name: 'snorkel', image: '/equipment/snorkel-image.png' },
+        { name: 'paddles', image: '/equipment/paddle-image.png' },
+        { name: 'pull boy', image: '/equipment/pull-boy-image.png' },
       ],
     };
   },

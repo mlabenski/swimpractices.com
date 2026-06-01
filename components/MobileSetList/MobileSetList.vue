@@ -12,7 +12,7 @@
         :key="practice.practiceId"
         ref="swipeCards"
         :data-id="practice.id"
-        @click="showPracticeOverlay(practice)"
+        @click="openPractice(practice.id || practice.practiceId)"
         :class="[
           'bg-white shadow-md p-4 rounded border-b border-gray-300 transform transition-transform duration-150 block z-122',
           isPinned(practice) ? 'pinned' : ''
@@ -112,7 +112,8 @@ function debounce(func, wait) {
   };
 }
 
-import SeasonCreationComponent from '~/components/SeasonList';
+import SeasonCreationComponent from '~/components/SeasonList'
+import { practicePath } from '@/lib/practiceRoutes'
 
 export default {
   components: {
@@ -445,8 +446,9 @@ export default {
       this.$emit('hide-practice', practice.id)
     },
 
-    openPractice(practiceId) {
-      this.$router.push({ name: 'idtwo', params: { idtwo: practiceId } });
+    openPractice (practiceId) {
+      if (!practiceId) return
+      this.$router.push(practicePath(practiceId))
     },
     emitShareEvent(practiceId) {
       this.$emit('share-practice', practiceId);
@@ -496,19 +498,17 @@ export default {
     showSeasonCreationComponent() {
       this.showSeasonCreation = true;
     },
-    confirmNavigate() {
-      // Navigate to the selected practice page
-      //this.$router.push({ name: 'idtwo', params: { idtwo: this.selectedPractice.id } });
-      console.log(this.selectedPractice.id)
-      this.$router.push({ path: `/practice/${this.selectedPractice.id}` });
-      this.closeOverlay();
+    confirmNavigate () {
+      const id = this.selectedPractice?.id || this.selectedPractice?.practiceId
+      this.openPractice(id)
+      this.closeOverlay()
     },
     closeOverlay() {
       this.showOverlay = false;
       this.selectedPractice = null;
     }
   },
-  beforeDestroy() {
+  beforeUnmount () {
     this.$refs.swipeCards.forEach(card => {
       card.removeEventListener("touchstart", this.handleTouchStart);
       card.removeEventListener("touchmove", this.handleTouchMove);

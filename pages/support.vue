@@ -145,19 +145,20 @@ export default {
   components: {
     AppFooter,
   },
-  head() {
-    return {
-      title: 'Support - SwimPractices',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Get support for SwimPractices. Contact us via email or join our Discord community for help and updates.',
-        },
-      ],
-    };
-  },
 };
+</script>
+
+<script setup>
+useHead({
+  title: 'Support - SwimPractices',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Get support for SwimPractices. Contact us via email or join our Discord community for help and updates.',
+    },
+  ],
+})
 </script>
 
 <style scoped>

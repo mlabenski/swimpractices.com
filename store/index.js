@@ -1,101 +1,105 @@
-import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
-
 export const state = () => ({
   userPractices: [],
   isLoading: false,
-  seasons: {},
+  seasons: [],
   totalYards: 0,
-});
+  _seasonsUnsubscribe: null,
+})
 
 export const mutations = {
-  ...vuexfireMutations,
   SET_SEASONS: (state, seasonData) => {
-    state.seasons = seasonData;
+    state.seasons = seasonData
   },
   UPDATE_SEASON_PRACTICES: (state, rootPractices) => {
-    // Loop through each season
-    for (let season of state.seasons) {
-      // Create a new array for the updated practices
-      let updatedPractices = [];
-
-      // Loop through each practice ID in the current season
-      for (let practiceID of season.practices) {
-        // Check if the practice exists in the Vuex state
-        let matchingPractice = rootPractices.find(practice => practice.id === practiceID);
+    if (!Array.isArray(state.seasons)) return
+    for (const season of state.seasons) {
+      const updatedPractices = []
+      for (const practiceID of season.practices || []) {
+        const matchingPractice = rootPractices?.find(
+          (practice) => practice.id === practiceID
+        )
         if (matchingPractice) {
-          // If a matching practice is found, add it to the updatedPractices array
-          updatedPractices.push(matchingPractice);
+          updatedPractices.push(matchingPractice)
         }
       }
-
-      // Update the current season's practices array with the updatedPractices array
-      season.practices = updatedPractices;
+      season.practices = updatedPractices
     }
   },
   SET_LOADING: (state, isLoading) => {
-    state.isLoading = isLoading;
+    state.isLoading = isLoading
   },
-  ADD_PRACTICE_TO_SEASON(state, { seasonID, practiceID }) {
-    state.seasons[seasonID].practices.push(practiceID);
+  ADD_PRACTICE_TO_SEASON (state, { seasonID, practiceID }) {
+    if (state.seasons[seasonID]) {
+      state.seasons[seasonID].practices.push(practiceID)
+    }
   },
-  CREATE_SEASON(state, { seasonID, seasonData }) {
-    state.seasons[seasonID] = seasonData;
-  }
-};
+  CREATE_SEASON (state, { seasonID, seasonData }) {
+    state.seasons[seasonID] = seasonData
+  },
+  SET_SEASONS_UNSUBSCRIBE (state, fn) {
+    state._seasonsUnsubscribe = fn
+  },
+}
 
 export const actions = {
-
-  async nuxtServerInit({ dispatch, rootState, commit }) {
+  async nuxtClientInit ({ dispatch, commit }) {
     try {
-      const fakeUserID = '2416d01c-e811-4f40-81c1-6ac762a89453';
-      commit('auth/SET_USER', {id: fakeUserID});
+      const fakeUserID = '2416d01c-e811-4f40-81c1-6ac762a89453'
+      commit('auth/SET_USER', { id: fakeUserID }, { root: true })
 
-      await dispatch('practices/fetchUserPractices');
-      await dispatch('practices/fetchPinnedPractices');
-      // Dispatch actions that are needed universally, not user-specific
-      await dispatch('practices/fetchPractices');
-      await dispatch('bindSeasonPractices');
-
-      // For user-specific data, ensure the user is authenticated
+      await dispatch('practices/fetchUserPractices', null, { root: true })
+      await dispatch('practices/fetchPinnedPractices', null, { root: true })
+      await dispatch('practices/fetchPractices', null, { root: true })
+      await dispatch('bindSeasonPractices')
     } catch (error) {
-      console.error('Error in nuxtServerInit:', error);
+      console.error('Error in nuxtClientInit:', error)
     }
   },
-  addPracticeToSeason({ commit }, payload) {
-    commit('ADD_PRACTICE_TO_SEASON', payload);
+
+  addPracticeToSeason ({ commit }, payload) {
+    commit('ADD_PRACTICE_TO_SEASON', payload)
   },
-  createSeason({ commit }, payload) {
-    commit('CREATE_SEASON', payload);
+
+  createSeason ({ commit }, payload) {
+    commit('CREATE_SEASON', payload)
   },
-  bindSeasonPractices: firestoreAction(async function ({ bindFirestoreRef, commit, rootState }) {
+
+  bindSeasonPractices ({ commit, rootState, state }) {
     try {
-      commit('SET_LOADING', true);
-      console.log('inside bind seasons')
-      const ref = this.$fire.firestore.collection('seasons');
-      await bindFirestoreRef('seasons', ref, { wait: true });
-      commit('UPDATE_SEASON_PRACTICES', rootState.practices.practices);
+      commit('SET_LOADING', true)
+      const ref = this.$fire.firestore.collection('seasons')
+      if (state._seasonsUnsubscribe) {
+        state._seasonsUnsubscribe()
+      }
+      const unsubscribe = ref.onSnapshot((snapshot) => {
+        const seasons = snapshot.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }))
+        commit('SET_SEASONS', seasons)
+        commit('UPDATE_SEASON_PRACTICES', rootState.practices.practices)
+        commit('SET_LOADING', false)
+      })
+      commit('SET_SEASONS_UNSUBSCRIBE', unsubscribe)
     } catch (error) {
-      console.log(error);
-    } finally {
-      commit('SET_LOADING', false);
+      console.log(error)
+      commit('SET_LOADING', false)
     }
-  }),
-  unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
-    unbindFirestoreRef('practices', false);
-  }),
-  unbindUserPractices: firestoreAction(function ({ unbindFirestoreRef }) {
-    unbindFirestoreRef('userPractices', false);
-  }),
-  unbindSeasonPractices: firestoreAction(function ({ unbindFirestoreRef }) {
-    unbindFirestoreRef('seasonPractices', false);
-  }),
-};
+  },
+
+  unbindSeasonPractices ({ state, commit }) {
+    if (state._seasonsUnsubscribe) {
+      state._seasonsUnsubscribe()
+      commit('SET_SEASONS_UNSUBSCRIBE', null)
+    }
+  },
+}
 
 export const getters = {
-  seasons(state) {
-    return state.seasons;
+  seasons (state) {
+    return state.seasons
   },
-  getLoading(state) {
-    return state.isLoading;
+  getLoading (state) {
+    return state.isLoading
   },
-};
+}

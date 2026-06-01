@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { practicePath } from '@/lib/practiceRoutes'
+
 export default {
   name: 'PendingPracticeNotification',
   data() {
@@ -28,7 +30,7 @@ export default {
     navigateToPractice() {
       if (this.practiceId) {
         // Using Vue Router to navigate
-        this.$router.push(`/practice/${this.practiceId}`);
+        this.$router.push(practicePath(this.practiceId))
       } else {
         console.error('No practice ID found for navigation.');
       }

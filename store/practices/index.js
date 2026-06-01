@@ -1,6 +1,3 @@
-// /store/practices/index.js
-import {vuexfireMutations, firestoreAction, firebaseAction} from 'vuexfire';
-
 const state = () => ({
   practices: null,
   lastFetch: null,
@@ -9,477 +6,423 @@ const state = () => ({
   loading: false,
   totalYards: 0,
   userPractices: null,
-  filter: {            // filter criteria
+  practice: null,
+  filter: {
     minYardage: 0,
     maxYardage: 1000,
     applied: false,
   },
-  userPinnedPractices: null
-});
+  userPinnedPractices: null,
+})
 
 const mutations = {
-  SET_SEARCH_TERM(state, searchTerm) {
-    state.filteredPractices = state.practices.filter(practice => {
-        return practice.name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+  SET_SEARCH_TERM (state, searchTerm) {
+    state.filteredPractices = state.practices.filter((practice) =>
+      practice.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   },
-  SET_PRACTICES_NEW(state, practices) {
-    console.log('setting practices to: '+ practices);
-    state.practices = practices;
+  SET_PRACTICES (state, practices) {
+    state.practices = practices
   },
-  SET_PRACTICES(state, practices) {
-    state.practices = practices;
+  SET_DAILY_PRACTICES (state, practices) {
+    state.dailyPractice = practices
   },
-  SET_DAILY_PRACTICES(state, practices) {
-    state.dailyPractice = practices;
+  SET_USER_PRACTICES (state, userPractices) {
+    state.userPractices = userPractices
   },
-  SET_USER_PRACTICES(state, userPractices) {
-    console.log('setting user practices to: '+ userPractices);
-    state.userPractices = userPractices;
+  SET_LOADING (state, value) {
+    state.loading = value
   },
-  SET_LOADING(state, value) {
-    state.loading = value;
+  SET_TOTAL_YARDS (state, value) {
+    state.totalYards = value
   },
-  SET_TOTAL_YARDS(state, value) {
-    state.totalYards = value;
+  SET_FILTER (state, payload) {
+    state.filter = { ...payload, applied: true }
   },
-  SET_FILTER(state, payload) {
-    state.filter = { ...payload, applied: true };
+  CLEAR_FILTER (state) {
+    state.filter.applied = false
   },
-  CLEAR_FILTER(state) {
-    state.filter.applied = false;
+  SET_PRACTICE (state, practice) {
+    state.practice = practice
   },
-  SET_PRACTICE(state, practice) {
-    state.practice = practice;
+  SET_USER_PINNED_PRACTICES (state, value) {
+    state.userPinnedPractices = value
   },
-  SET_USER_PINNED_PRACTICES(state, value) {
-    state.userPinnedPractices = value;
-  },
-  UPDATE_PRACTICE(state, payload) {
-    // Ensure the practice exists
-    if (!state.practices.hasOwnProperty(payload.id)) {
-      console.error(`Cannot update practice: no practice with ID ${payload.id} found.`);
-      return;
+  UPDATE_PRACTICE (state, payload) {
+    if (!state.practices) return
+    const index = state.practices.findIndex((p) => p.id === payload.id)
+    if (index === -1) {
+      console.error(`Cannot update practice: no practice with ID ${payload.id} found.`)
+      return
     }
-    // Update the practice
-    state.practices[payload.id] = Object.assign({}, state.practices[payload.id], payload.updates);
+    state.practices[index] = Object.assign(
+      {},
+      state.practices[index],
+      payload.updates
+    )
   },
-
-  ADD_OR_UPDATE_EXERCISE_TO_SET(state, { practiceID, setIndex, exerciseIndex, property, newValue, exercise }) {
-    const practice = state.practices.find(practice => practice.id === practiceID);
-    console.log(`will make an edit to ${practice}`)
-    if (practice) {
-      if (typeof newValue !== 'undefined') {
-        // Update existing exercise property
-        console.log('property is '+ property)
-        console.log('update an existing exercise here')
-        const exerciseToUpdate = practice.sets[setIndex].exercises[exerciseIndex];
-        console.log('exercise found is:')
-        console.log(exerciseToUpdate)
-        if (exerciseToUpdate) {
-          exerciseToUpdate[property] = newValue;
-          console.log('done')
-        }
-      } else {
-        // Add new exercise to set
-        console.log('add new exercise here')
-        practice.sets[setIndex].exercises.push(exercise);
+  ADD_OR_UPDATE_EXERCISE_TO_SET (
+    state,
+    { practiceID, setIndex, exerciseIndex, property, newValue, exercise }
+  ) {
+    const practice = state.practices.find((p) => p.id === practiceID)
+    if (!practice) return
+    if (typeof newValue !== 'undefined') {
+      const exerciseToUpdate = practice.sets[setIndex].exercises[exerciseIndex]
+      if (exerciseToUpdate) {
+        exerciseToUpdate[property] = newValue
       }
+    } else {
+      practice.sets[setIndex].exercises.push(exercise)
     }
   },
-  ADD_OR_UPDATE_SET(state, { practiceID, set, setIndex, property, newValue }) {
-    const practice = state.practices.find(practice => practice.id === practiceID);
-    if (practice) {
-      if (typeof setIndex !== 'undefined' && property && newValue) {
-        // Update existing set property
-        console.log('property is '+ property)
-        const setToUpdate = practice.sets[setIndex];
-        console.log('set found is:')
-        console.log(setToUpdate)
-        if (setToUpdate) {
-          setToUpdate[property] = newValue;
-          console.log('done')
-        }
-      } else {
-        // Add new set to practice
-        console.log('add new set here')
-        practice.sets.push(set);
+  ADD_OR_UPDATE_SET (state, { practiceID, set, setIndex, property, newValue }) {
+    const practice = state.practices.find((p) => p.id === practiceID)
+    if (!practice) return
+    if (typeof setIndex !== 'undefined' && property && newValue) {
+      const setToUpdate = practice.sets[setIndex]
+      if (setToUpdate) {
+        setToUpdate[property] = newValue
       }
+    } else {
+      practice.sets.push(set)
     }
   },
-  CLEAR_FILTERED_PRACTICES(state) {
-    state.filteredPractices = null; // or set it to the initial state
+  CLEAR_FILTERED_PRACTICES (state) {
+    state.filteredPractices = null
   },
-  removePractice(state, practiceId) {
-    const index = state.practices.findIndex(p => p.practiceId === practiceId);
+  removePractice (state, practiceId) {
+    const index = state.practices.findIndex((p) => p.id === practiceId)
     if (index !== -1) {
-      state.practices.splice(index, 1);
+      state.practices.splice(index, 1)
     }
   },
-  SET_FILTERED_PRACTICES(state, practices) {
-    state.filteredPractices = practices;
+  SET_FILTERED_PRACTICES (state, practices) {
+    state.filteredPractices = practices
   },
-  FILTER_PRACTICES_BY_USER(state, userID) {
-    state.filteredPractices = state.practices.filter(practice => practice.userID === userID)
+  FILTER_PRACTICES_BY_USER (state, userID) {
+    state.filteredPractices = state.practices.filter(
+      (practice) => practice.userID === userID
+    )
   },
-  SET_LAST_FETCH(state, timestamp) {
-    console.log('last fetch!');
-    state.lastFetch = timestamp;
-  }
+  SET_LAST_FETCH (state, timestamp) {
+    state.lastFetch = timestamp
+  },
 }
 
 const actions = {
-
-  fetchDailyPractice: firestoreAction(async function ({ commit, state }) {
-    const firestoreRef = this.$fire.firestore.collection('daily_practice');
-    const snapshot = await firestoreRef.get();
-    const practices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
+  async fetchDailyPractice ({ commit }) {
+    const firestoreRef = this.$fire.firestore.collection('daily_practice')
+    const snapshot = await firestoreRef.get()
+    const practices = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     if (practices.length === 0) {
-      console.log('No daily practice found.');
-      commit('SET_DAILY_PRACTICES', []);
-      return;
+      commit('SET_DAILY_PRACTICES', [])
+      return
     }
-    //compute total yardage for the practice
-    const mergedData = await Promise.all(practices.map(async (practice) => {
-      // Compute totalYardage for each practice
-      let practiceTotalYards = 0;
+    const mergedData = practices.map((practice) => {
+      let practiceTotalYards = 0
       if (practice.sets) {
-        practice.sets.forEach(set => {
+        practice.sets.forEach((set) => {
           if (set.exercises && set.numRounds) {
-            set.exercises.forEach(exercise => {
+            set.exercises.forEach((exercise) => {
               if (exercise) {
-                practiceTotalYards += set.numRounds * (exercise.distance * exercise.quantity);
+                practiceTotalYards +=
+                  set.numRounds * (exercise.distance * exercise.quantity)
               }
-            });
+            })
           }
-        });
+        })
       }
-      practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
-      return practice;
-    }));
-    commit('SET_DAILY_PRACTICES', mergedData);
-  }
+      practice.totalYardage = practiceTotalYards
+      return practice
+    })
+    commit('SET_DAILY_PRACTICES', mergedData)
+  },
 
-  ),
-
-  fetchPractices: firestoreAction(async function ({ commit, state }) {
+  async fetchPractices ({ commit, state }) {
     try {
-      const cacheTimeout = 3000000;
-      const now = Date.now();
+      const cacheTimeout = 3000000
+      const now = Date.now()
 
-      const lastFetch = localStorage.getItem('lastFetch');
-      const cachedPractices = localStorage.getItem('practices');
+      const lastFetch = localStorage.getItem('lastFetch')
+      const cachedPractices = localStorage.getItem('practices')
 
-      if (lastFetch && cachedPractices && (now - parseInt(lastFetch) < cacheTimeout)) {
-        console.log('We have cached data - no firebase requests!');
-        commit('SET_PRACTICES', JSON.parse(cachedPractices));  // Assuming the data structure aligns with what's expected
-        commit('SET_LOADING', false);
-        return;  // Use cached data
+      if (
+        lastFetch &&
+        cachedPractices &&
+        now - parseInt(lastFetch, 10) < cacheTimeout
+      ) {
+        commit('SET_PRACTICES', JSON.parse(cachedPractices))
+        commit('SET_LOADING', false)
+        return
       }
-      commit('SET_LOADING', true);
+      commit('SET_LOADING', true)
 
-
-      // Fetch Firestore data
-      const firestoreRef = this.$fire.firestore.collection('practices');
-      const snapshot = await firestoreRef.get();
-      const practices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      const firestoreRef = this.$fire.firestore.collection('practices')
+      const snapshot = await firestoreRef.get()
+      const practices = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
 
       if (practices.length === 0) {
-        throw new Error('Http error unable to load practices');
+        throw new Error('Http error unable to load practices')
       }
 
-      const usersPublicRef = this.$fire.firestore.collection('users_public');
-      const mergedData = await Promise.all(practices.map(async (practice) => {
-        // Compute totalYardage for each practice
-        let practiceTotalYards = 0;
-        if (practice.sets) {
-          practice.sets.forEach(set => {
-            if (set.exercises && set.numRounds) {
-              set.exercises.forEach(exercise => {
-                if (exercise) {
-                  practiceTotalYards += set.numRounds * (exercise.distance * exercise.quantity);
-                }
-              });
-            }
-          });
-        }
-        practice.totalYardage = practiceTotalYards;  // Store the total yardage directly in the practice object
-
-        // Fetch and merge public user data (username, age, experience)
-        if (practice.userID) {
-          const userDoc = await usersPublicRef.doc(practice.userID).get();
-          if (userDoc.exists) {
-            practice.userData = userDoc.data();
+      const usersPublicRef = this.$fire.firestore.collection('users_public')
+      const mergedData = await Promise.all(
+        practices.map(async (practice) => {
+          let practiceTotalYards = 0
+          if (practice.sets) {
+            practice.sets.forEach((set) => {
+              if (set.exercises && set.numRounds) {
+                set.exercises.forEach((exercise) => {
+                  if (exercise) {
+                    practiceTotalYards +=
+                      set.numRounds * (exercise.distance * exercise.quantity)
+                  }
+                })
+              }
+            })
           }
-        }
+          practice.totalYardage = practiceTotalYards
 
-        return practice;
-      }));
+          if (practice.userID) {
+            const userDoc = await usersPublicRef.doc(practice.userID).get()
+            if (userDoc.exists) {
+              practice.userData = userDoc.data()
+            }
+          }
 
-      // Cache the practices and the fetch timestamp in local storage
-      localStorage.setItem('practices', JSON.stringify(mergedData));
-      localStorage.setItem('lastFetch', now.toString());
+          return practice
+        })
+      )
 
-      commit('SET_PRACTICES', mergedData);
-      commit('SET_LAST_FETCH', now);
+      localStorage.setItem('practices', JSON.stringify(mergedData))
+      localStorage.setItem('lastFetch', now.toString())
 
+      commit('SET_PRACTICES', mergedData)
+      commit('SET_LAST_FETCH', now)
     } catch (error) {
-      console.error("Error fetching practices:", error);
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  }),
-
-  fetchUserPractices: firestoreAction(async function ({ commit, rootState }) {
-    try {
-      commit('SET_LOADING', true)
-      const userID = rootState.auth.user.id;
-      const ref = this.$fire.firestore.collection('practices').where('userID', '==', userID);
-      const snapshot = await ref.get();
-      const userPractices = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-
-      let totalYards = 0;
-      userPractices.forEach(practice => {
-        practice.sets.forEach(set => {
-          set.exercises.forEach(exercise => {
-            totalYards += exercise.distance * exercise.quantity;
-          });
-        });
-      });
-      commit('SET_USER_PRACTICES', userPractices);  // Assumes there is a mutation to handle this
-      commit('SET_TOTAL_YARDS', totalYards);
-    } catch (error) {
-      console.error("Error fetching user practices:", error);
+      console.error('Error fetching practices:', error)
     } finally {
       commit('SET_LOADING', false)
     }
-  }),
+  },
 
-  fetchPracticeByID: firestoreAction(async function({ state, commit }, id) {
-    // First, check if state.practices exists and try to find the practice in it
+  async fetchUserPractices ({ commit, rootState }) {
+    try {
+      commit('SET_LOADING', true)
+      const userID = rootState.auth.user?.id
+      if (!userID) return
+
+      const ref = this.$fire.firestore
+        .collection('practices')
+        .where('userID', '==', userID)
+      const snapshot = await ref.get()
+      const userPractices = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+
+      let totalYards = 0
+      userPractices.forEach((practice) => {
+        practice.sets?.forEach((set) => {
+          set.exercises?.forEach((exercise) => {
+            totalYards += exercise.distance * exercise.quantity
+          })
+        })
+      })
+      commit('SET_USER_PRACTICES', userPractices)
+      commit('SET_TOTAL_YARDS', totalYards)
+    } catch (error) {
+      console.error('Error fetching user practices:', error)
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+
+  async fetchPracticeByID ({ state, commit }, id) {
     if (state.practices) {
-      const practice = state.practices.find(practice => practice.id === id);
+      const practice = state.practices.find((p) => p.id === id)
       if (practice) {
-        commit('SET_PRACTICE', practice);
-        return;
+        commit('SET_PRACTICE', practice)
+        return
       }
     }
 
-    // Check if it's the daily practice in state
-    if (state.dailyPractice && state.dailyPractice.length > 0) {
-      const dailyPractice = state.dailyPractice[0];
+    if (state.dailyPractice?.length > 0) {
+      const dailyPractice = state.dailyPractice[0]
       if (dailyPractice.id === id) {
-        commit('SET_PRACTICE', dailyPractice);
-        return;
+        commit('SET_PRACTICE', dailyPractice)
+        return
       }
     }
 
-    // If we didn't return above, we either don't have state.practices or didn't find the practice in it.
-    // In this case, fetch the practice from Firestore.
-    const ref = this.$fire.firestore.collection('practices').doc(id);
-    const doc = await ref.get();
+    const docRef = this.$fire.firestore.collection('practices').doc(id)
+    const doc = await docRef.get()
 
     if (doc.exists) {
-      // Commit the practice to the Vuex store
-      commit('SET_PRACTICE', { id, ...doc.data() });
-    } else {
-      // Try fetching from daily_practice collection as fallback
-      const dailyRef = this.$fire.firestore.collection('daily_practice').doc(id);
-      const dailyDoc = await dailyRef.get();
-
-      if (dailyDoc.exists) {
-        commit('SET_PRACTICE', { id, ...dailyDoc.data() });
-      } else {
-        console.log('Practice not found');
-      }
+      commit('SET_PRACTICE', { id, ...doc.data() })
+      return
     }
-  }),
 
-  fetchPinnedPractices: firestoreAction(async function({ rootState, commit }) {
+    const dailyRef = this.$fire.firestore.collection('daily_practice').doc(id)
+    const dailyDoc = await dailyRef.get()
+
+    if (dailyDoc.exists) {
+      commit('SET_PRACTICE', { id, ...dailyDoc.data() })
+    } else {
+      console.log('Practice not found')
+    }
+  },
+
+  async fetchPinnedPractices ({ rootState, commit }) {
     try {
       if (rootState.auth.user) {
-        const userID = rootState.auth.user.id;
-        // Use users_private collection for pinned practices (personal data)
-        const ref = this.$fire.firestore.collection('users_private').doc(userID);
-        const doc = await ref.get();
+        const userID = rootState.auth.user.id
+        const ref = this.$fire.firestore.collection('users_private').doc(userID)
+        const doc = await ref.get()
 
         if (doc.exists) {
-          const data = doc.data();
-          console.log(data);  // Optional: for debugging, can be removed in production
-          if (data.pinnedPractices) {
-            commit('SET_USER_PINNED_PRACTICES', data.pinnedPractices);
-          } else {
-            // Handle the case where there are no pinned practices
-            commit('SET_USER_PINNED_PRACTICES', []);
-          }
+          const data = doc.data()
+          commit(
+            'SET_USER_PINNED_PRACTICES',
+            data.pinnedPractices || []
+          )
         } else {
-          // If the user document does not exist
-          console.log('User document not found');
-          commit('SET_USER_PINNED_PRACTICES', []);
+          commit('SET_USER_PINNED_PRACTICES', [])
         }
       } else {
-        // If there is no authenticated user
-        commit('SET_USER_PINNED_PRACTICES', []);
+        commit('SET_USER_PINNED_PRACTICES', [])
       }
     } catch (error) {
-      console.error("Error fetching pinned practices (likely permissions):", error.message);
-      // Set to empty array on error to prevent breaking UI
-      commit('SET_USER_PINNED_PRACTICES', []);
-    }
-  }),
-
-  filterPracticesByUser({ commit, rootState }) {
-    if(rootState.auth.user && rootState.auth.user.id) {
-      commit('FILTER_PRACTICES_BY_USER', rootState.auth.user.id);
+      console.error(
+        'Error fetching pinned practices (likely permissions):',
+        error.message
+      )
+      commit('SET_USER_PINNED_PRACTICES', [])
     }
   },
-  clearFilteredPractices({ commit }) {
-    commit('CLEAR_FILTERED_PRACTICES');
+
+  filterPracticesByUser ({ commit, rootState }) {
+    if (rootState.auth.user?.id) {
+      commit('FILTER_PRACTICES_BY_USER', rootState.auth.user.id)
+    }
   },
 
-  applyFilter({ commit, state }, { minYardage, maxYardage, strokes, showPinnedOnly }) {
-    if(showPinnedOnly && state.userPinnedPractices) {
-      console.log('apply pinned practice filter')
-      console.log(filteredPractices)
-      //only show the pinned practices, this can be extended later to allow more filters on top of the pinned practices
-      const pinnedPracticeIds = state.userPinnedPractices || [];
-      let filteredPractices = state.practices.filter(practice =>
+  clearFilteredPractices ({ commit }) {
+    commit('CLEAR_FILTERED_PRACTICES')
+  },
+
+  applyFilter (
+    { commit, state },
+    { minYardage, maxYardage, strokes, showPinnedOnly }
+  ) {
+    if (showPinnedOnly && state.userPinnedPractices) {
+      const pinnedPracticeIds = state.userPinnedPractices || []
+      const filteredPractices = state.practices.filter((practice) =>
         pinnedPracticeIds.includes(practice.id)
-      );
-      commit('SET_FILTERED_PRACTICES', filteredPractices);
-    }
-    else {
-      console.log('apply normal filter')
-      console.log(filteredPractices)
-      let filteredPractices = state.practices.filter(practice => {
-        return practice.totalYardage >= minYardage &&
-               practice.totalYardage <= maxYardage &&
-               (strokes.length === 0 || strokes.includes(practice.primaryStroke));
-      });
-      console.log(filteredPractices)
-      commit('SET_FILTERED_PRACTICES', filteredPractices);
+      )
+      commit('SET_FILTERED_PRACTICES', filteredPractices)
+    } else {
+      const filteredPractices = state.practices.filter(
+        (practice) =>
+          practice.totalYardage >= minYardage &&
+          practice.totalYardage <= maxYardage &&
+          (strokes.length === 0 || strokes.includes(practice.primaryStroke))
+      )
+      commit('SET_FILTERED_PRACTICES', filteredPractices)
     }
   },
-  clearFilter({ commit }) {
-    commit('CLEAR_FILTER');
-  },
-  addExerciseToSet({ commit }, payload) {
-    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
-  },
-  addOrUpdateExerciseToSet({ commit }, payload) {
-    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload);
-  },
-  addOrUpdateSet({ commit }, payload) {
-    commit('ADD_OR_UPDATE_SET', payload);
-  },
-  updateFilters({ commit }, filters) { // new action to trigger filter updates
-    commit('SET_FILTERS', filters);
-  },
-  updatePractice({ commit }, payload) {
-    commit('UPDATE_PRACTICE', payload);
-  },
-  searchPractices({ commit }, searchTerm) {
-    commit('SET_SEARCH_TERM', searchTerm);
-  },
-  unbindPractices: firestoreAction(function ({ unbindFirestoreRef }) {
-    unbindFirestoreRef('practices', false);
-  }),
-  unbindUserPractices: firestoreAction(function ({ unbindFirestoreRef }) {
-    unbindFirestoreRef('userPractices', false);
-  }),
-  async savePractice({ state, commit }, rootState, practiceId) {
-    // This function saves a practice ID to the user data collection
-    // It could be improved for free users by offering a cache system
-    const userID = rootState.auth.user.id;
 
-    const userRef = firebase.firestore().collection('userData').doc(userId);
+  clearFilter ({ commit }) {
+    commit('CLEAR_FILTER')
+  },
 
+  addExerciseToSet ({ commit }, payload) {
+    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload)
+  },
+
+  addOrUpdateExerciseToSet ({ commit }, payload) {
+    commit('ADD_OR_UPDATE_EXERCISE_TO_SET', payload)
+  },
+
+  addOrUpdateSet ({ commit }, payload) {
+    commit('ADD_OR_UPDATE_SET', payload)
+  },
+
+  updatePractice ({ commit }, payload) {
+    commit('UPDATE_PRACTICE', payload)
+  },
+
+  searchPractices ({ commit }, searchTerm) {
+    commit('SET_SEARCH_TERM', searchTerm)
+  },
+
+  async savePractice ({ rootState }, practiceId) {
+    const userID = rootState.auth.user?.id
+    if (!userID) return { success: false, message: 'Not authenticated' }
+
+    const userRef = this.$fire.firestore.collection('users_private').doc(userID)
     try {
-        await userRef.update({
-            likes: firebase.firestore.FieldValue.arrayUnion(practiceId)
-        });
-        // You can commit any changes to the state here if needed.
-        // e.g. commit('ADD_LIKE', practiceId);
-        return { success: true };  // Indicate success
+      await userRef.update({
+        pinnedPractices: this.$fireModule.firestore.FieldValue.arrayUnion(
+          practiceId
+        ),
+      })
+      return { success: true }
     } catch (error) {
-        console.error('Error saving practice: ', error);
-        return { success: false, message: error.message };  // Indicate failure with a message
+      console.error('Error saving practice: ', error)
+      return { success: false, message: error.message }
     }
-},
-
+  },
 }
 
 const getters = {
-  practices(state) {
-    return state.practices;
+  practices (state) {
+    return state.practices
   },
-  dailyPractice(state) {
-    if (state.dailyPractice && state.dailyPractice.length > 0) {
-      return state.dailyPractice[0];
+  dailyPractice (state) {
+    if (state.dailyPractice?.length > 0) {
+      return state.dailyPractice[0]
     }
-    return null;
+    return null
   },
-  userPractices(state) {
-    return state.userPractices;
+  userPractices (state) {
+    return state.userPractices
   },
-  userPinnedPractices(state) {
-    return state.userPinnedPractices;
+  userPinnedPractices (state) {
+    return state.userPinnedPractices
   },
-  filteredPractices: state => {
-    if(state.filteredPractices) return state.filteredPractices;
-    else if (!state.filter.applied) return state.practices;
+  filteredPractices: (state) => {
+    if (state.filteredPractices) return state.filteredPractices
+    if (!state.filter.applied) return state.practices
+    return state.practices
   },
-  uniqueStrokes(state) {
-    console.log('calling unique strokes')
-    const strokesSet = new Set();
-    state.practices.forEach(practice => {
-      strokesSet.add(practice.primaryStroke);
-    });
-    console.log('loggigng unique strokes');
-    console.log(strokesSet)
-    return [...strokesSet];
+  uniqueStrokes (state) {
+    const strokesSet = new Set()
+    state.practices?.forEach((practice) => {
+      strokesSet.add(practice.primaryStroke)
+    })
+    return [...strokesSet]
   },
-
-  isLoading: state => state.loading,
-  filters: state => state.filters, // new getter for filters,
+  isLoading: (state) => state.loading,
   getPracticeByID: (state) => (id) => {
-    return async () => {
-      let practice;
-
-      if (Array.isArray(state.practices)) {
-        // If state.practices is an array, use the find method
-        console.log('If statement 1: Array')
-        practice = state.practices.find(practice => practice.id === id);
-      } else if (state.practices && typeof state.practices === 'object') {
-        console.log('If statement 2: Object')
-        // If state.practices is an object, use the id as a key
-        practice = state.practices[id];
-      } else if (state.practices === null) {
-        console.log('If statement 3: Array')
-        // If state.practices is null, fetch the practice from Firestore
-
-        const doc = await this.$fire.firestore.collection('practices').doc(id).get();
-        if (doc.exists) {
-          practice = doc.data();
-          practice.id = doc.id; // add the document id to the practice object
-        }
-      }
-
-      if (practice) {
-        console.log('found a practice with the id');
-        return practice;
-      } else {
-        console.log('unable to find ID');
-      }
+    if (Array.isArray(state.practices)) {
+      return state.practices.find((practice) => practice.id === id)
     }
+    if (state.practices && typeof state.practices === 'object') {
+      return state.practices[id]
+    }
+    return null
   },
 }
 
-
 export default {
-  namedspaced: true,
+  namespaced: true,
   state,
   getters,
   actions,
-  mutations
+  mutations,
 }

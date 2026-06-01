@@ -13,12 +13,12 @@
         <template v-if="card.type === 'metric'">
           <div class="metric-icon">
             <span v-if="card.hasPulse" class="pulsing-dot"></span>
-            <activity-icon v-if="card.icon === 'activity'" :size="20" class="icon" />
-            <library-icon v-else-if="card.icon === 'library'" :size="20" class="icon" />
-            <account-group-icon v-else-if="card.icon === 'account-group'" :size="20" class="icon" />
-            <plus-circle-icon v-else-if="card.icon === 'plus-circle'" :size="20" class="icon" />
-            <clock-icon v-else-if="card.icon === 'clock'" :size="20" class="icon" />
-            <fire-icon v-else-if="card.icon === 'fire'" :size="20" class="icon" />
+            <span v-if="card.icon === 'activity'" class="material-icons icon">show_chart</span>
+            <span v-else-if="card.icon === 'library'" class="material-icons icon">library_books</span>
+            <span v-else-if="card.icon === 'account-group'" class="material-icons icon">group</span>
+            <span v-else-if="card.icon === 'plus-circle'" class="material-icons icon">add_circle</span>
+            <span v-else-if="card.icon === 'clock'" class="material-icons icon">schedule</span>
+            <span v-else-if="card.icon === 'fire'" class="material-icons icon">local_fire_department</span>
           </div>
           <div class="metric-value" :class="card.color">
             <span v-if="card.id === 'practices_now'" ref="currentPractices">0</span>
@@ -43,22 +43,7 @@
 </template>
 
 <script>
-import ActivityIcon from 'vue-material-design-icons/ChartLineVariant.vue';
-import LibraryIcon from 'vue-material-design-icons/BookMultiple.vue';
-import AccountGroupIcon from 'vue-material-design-icons/AccountGroup.vue';
-import PlusCircleIcon from 'vue-material-design-icons/PlusCircle.vue';
-import ClockIcon from 'vue-material-design-icons/ClockOutline.vue';
-import FireIcon from 'vue-material-design-icons/Fire.vue';
-
 export default {
-  components: {
-    ActivityIcon,
-    LibraryIcon,
-    AccountGroupIcon,
-    PlusCircleIcon,
-    ClockIcon,
-    FireIcon,
-  },
   props: {
     metrics: {
       type: Object,
@@ -115,7 +100,7 @@ export default {
     this.intervalId = setInterval(this.updateTimeAgo, 60000); // Update every minute
     this.animateCurrentPractices();
   },
-  beforeDestroy() {
+  beforeUnmount () {
     clearInterval(this.intervalId);
     clearInterval(this.animationIntervalId);
   },
