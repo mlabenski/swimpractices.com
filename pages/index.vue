@@ -28,8 +28,8 @@
           </div>
           <!-- Centered content -->
           <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1>
-            <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p>
+            <!-- <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
+            <!-- <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p> -->
 
             <div class="flex space-x-5 mb-4">
                 <button
@@ -82,8 +82,8 @@
         <div class="flex flex-col justify-between h-full p-4 z-200">
           <div class="flex-shrink-0 pt-safe">
             <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
-            <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1>
-            <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p>
+            <!-- <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
+            <!-- <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p> -->
           </div>
 
           <div class="flex-grow flex flex-col justify-center">
