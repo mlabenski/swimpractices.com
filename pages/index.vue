@@ -57,9 +57,6 @@
               class="mt-8"
             />
 
-            <div v-if="leaderboardData" class="flex justify-center mt-10">
-              <Leaderboard :leaderboard-data="leaderboardData" />
-            </div>
           </div>
         </div>
     <!-- Infinite Set List Container -->
@@ -135,11 +132,6 @@
               </button>
             </div>
 
-            <Leaderboard
-              v-if="leaderboardData"
-              :leaderboard-data="leaderboardData"
-              class="mt-4 mb-4"
-            />
           </div>
         </div>
       </div>
@@ -196,15 +188,11 @@
     </div>
 
 
-    <!-- Grouped Practices section -->
-    <div class="grid grid-cols-1 mt-2 md:mt-4 pb-24 lg:pb-32 sm:pb-6 pt-12 sm:pt-0">
-      <div class="flex flex-wrap w-full">
-        <div class="flex items-center justify-between sm:block">
-        </div>
-        <!-- Grouped Practices cards -->
-        <SeasonCards v-for="(season, index) in seasonPractices" :season="season" :id="season.id" :user="user" :rank="index + 1" :key="season.id" @like="handleLike(season.id)" class="pb-2 sm:pb-2 pt-6 sm:pt-6 md:pt-10 lg:pt-24"/>
-      </div>
+    <!-- Leaderboard Section -->
+    <div v-if="leaderboardData" class="flex justify-center px-4 py-10 sm:py-16">
+      <Leaderboard :leaderboard-data="leaderboardData" />
     </div>
+
     <!-- Header -->
     <div class="sm:hidden" v-if="user">
       <keep-alive>
@@ -230,7 +218,6 @@ import GenerateSetModel from "@/components/GenerateSetModel";
 import SetList from "@/components/SetList/SetList.vue";
 import MobileSetList from "@/components/MobileSetList/MobileSetList.vue";
 import MobileNavBarTop from '@/components/MobileNavBarTop';
-import SeasonCards from "@/components/SeasonCards/index.vue";
 import notificationsData from '@/data/notifications';
 import NotificationModal from '@/components/NotificationModal';
 import ProfileWidget from '@/components/ProfileWidget';
@@ -274,7 +261,6 @@ export default {
   components: {
     GenerateSetModel,
     SetList,
-    SeasonCards,
     AuthModal,
     NotificationModal,
     GeneratePractice: () => import("@/components/GeneratePractice/index.vue"),
@@ -297,7 +283,6 @@ export default {
     try {
       await this.$store.dispatch('practices/fetchPractices');
       await this.$store.dispatch('practices/fetchDailyPractice')
-      await this.$store.dispatch('bindSeasonPractices');
       if (this.$store.state.auth.user) {
         await this.$store.dispatch('practices/fetchUserPractices');
       }
@@ -354,7 +339,6 @@ export default {
       user: "auth/user",
       practices: "practices/practices",
       dailyPractice: "practices/dailyPractice",
-      seasonPractices: "seasons",
       userPractices: "practices/userPractices",
       filteredPractices: "practices/filteredPractices",
       userPinnedPractices: "practices/userPinnedPractices",
@@ -496,19 +480,6 @@ export default {
     },
     forceRerender() {
       this.componentKey += 1;
-    },
-    handleLike(seasonId) {
-      if (!this.user) return;
-      const jwt = this.user.token;
-      console.log(jwt);
-      console.log(seasonId);
-      const seasonRef = this.$fire.firestore.collection('seasons').doc(seasonId);
-
-      seasonRef.update({
-        likes: this.$fire.firestore.FieldValue.increment(1),
-      }).catch((error) => {
-        console.error('Error updating likes: ', error);
-      });
     },
     onSetListChange(e) {
       this.selectedSetList = e.target.value;

@@ -1,6 +1,6 @@
 <template>
   <div class="leaderboard-container p-5 rounded-xl text-white">
-    <h2 class="leaderboard-title">Community Leaderboard</h2>
+    <h2 class="leaderboard-title">iOS Leaderboard</h2>
     <p class="leaderboard-subtitle" v-if="updatedAt">
       Updated {{ updatedAtFormatted }}
     </p>
