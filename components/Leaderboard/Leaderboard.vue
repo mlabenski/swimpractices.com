@@ -15,7 +15,7 @@
       <div class="high-score-content">
         <span class="high-score-label">Longest Single Workout</span>
         <span class="high-score-value">{{ formatDistance(highScore.distance) }}</span>
-        <span class="high-score-user">by {{ highScore.username || 'Unknown' }}</span>
+        <span v-if="showUsernames" class="high-score-user">by {{ highScore.username || 'Unknown' }}</span>
       </div>
     </div>
 
@@ -50,7 +50,7 @@
           <span v-else class="rank-number">{{ index + 1 }}</span>
         </div>
         <div class="user-info">
-          <span class="username">{{ entry.username }}</span>
+          <span v-if="showUsernames" class="username">{{ entry.username }}</span>
           <span class="user-stat-secondary">{{ entry.practiceCount }} practices</span>
         </div>
         <div class="stat-value">{{ formatDistance(entry.totalDistance) }}</div>
@@ -73,7 +73,7 @@
           <span v-else class="rank-number">{{ index + 1 }}</span>
         </div>
         <div class="user-info">
-          <span class="username">{{ entry.username }}</span>
+          <span v-if="showUsernames" class="username">{{ entry.username }}</span>
           <span class="user-stat-secondary">{{ formatDistance(entry.totalDistance) }}</span>
         </div>
         <div class="stat-value">{{ entry.practiceCount }}</div>
@@ -86,6 +86,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Leaderboard',
   props: {
@@ -100,6 +102,15 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      user: 'auth/user',
+    }),
+    accessLevel() {
+      return this.user ? 'full' : 'free';
+    },
+    showUsernames() {
+      return this.accessLevel === 'full';
+    },
     byTotalDistance() {
       return this.leaderboardData?.byTotalDistance || [];
     },
