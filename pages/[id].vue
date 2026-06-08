@@ -86,13 +86,15 @@
           <UiCardHeader class="pb-4">
             <div class="flex flex-wrap items-start justify-between gap-3">
               <table class="min-w-0 flex-1">
-                <tr>
-                  <EditableField
-                    :template-num="1"
-                    :value="practice.name"
-                    @input="(v) => (practice.name = v)"
-                  />
-                </tr>
+                <tbody>
+                  <tr>
+                    <EditableField
+                      :template-num="1"
+                      :value="practice.name"
+                      @input="(v) => (practice.name = v)"
+                    />
+                  </tr>
+                </tbody>
               </table>
             </div>
             <div class="flex flex-wrap gap-2 pt-2">
@@ -126,12 +128,14 @@
               <div class="flex flex-wrap items-start justify-between gap-3">
                 <div class="min-w-0 flex-1 space-y-1">
                   <table>
-                    <tr>
-                      <EditableField
-                        :value="set.name"
-                        @input="(v) => (set.name = v)"
-                      />
-                    </tr>
+                    <tbody>
+                      <tr>
+                        <EditableField
+                          :value="set.name"
+                          @input="(v) => (set.name = v)"
+                        />
+                      </tr>
+                    </tbody>
                   </table>
                   <UiCardDescription>
                     {{ set.description || 'Set topic' }}
