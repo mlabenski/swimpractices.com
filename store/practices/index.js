@@ -18,7 +18,7 @@ const state = () => ({
 const mutations = {
   SET_SEARCH_TERM (state, searchTerm) {
     state.filteredPractices = state.practices.filter((practice) =>
-      practice.name.toLowerCase().includes(searchTerm.toLowerCase())
+      (practice.title || practice.name || '').toLowerCase().includes(searchTerm.toLowerCase())
     )
   },
   SET_PRACTICES (state, practices) {
@@ -102,7 +102,7 @@ const mutations = {
   },
   FILTER_PRACTICES_BY_USER (state, userID) {
     state.filteredPractices = state.practices.filter(
-      (practice) => practice.userID === userID
+      (practice) => (practice.createdBy || practice.userID) === userID
     )
   },
   SET_LAST_FETCH (state, timestamp) {
@@ -187,8 +187,9 @@ const actions = {
           }
           practice.totalYardage = practiceTotalYards
 
-          if (practice.userID) {
-            const userDoc = await usersPublicRef.doc(practice.userID).get()
+          const ownerID = practice.createdBy || practice.userID
+          if (ownerID) {
+            const userDoc = await usersPublicRef.doc(ownerID).get()
             if (userDoc.exists) {
               practice.userData = userDoc.data()
             }
@@ -218,7 +219,7 @@ const actions = {
 
       const ref = this.$fire.firestore
         .collection('practices')
-        .where('userID', '==', userID)
+        .where('createdBy', '==', userID)
       const snapshot = await ref.get()
       const userPractices = snapshot.docs.map((doc) => ({
         ...doc.data(),

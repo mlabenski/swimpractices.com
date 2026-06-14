@@ -8,7 +8,7 @@
         <a class="text-gray-800 material-icons" href="https://swimpractices.com">
           close
         </a>
-        <div class="font-medium text-gray-800" v-if="practice">{{ practice.name }}</div>
+        <div class="font-medium text-gray-800" v-if="practice">{{ practice.title || practice.name }}</div>
         <!-- Placeholder for alignment. Can be removed if not needed -->
         <div class="opacity-0">
           <span class="material-icons">
@@ -301,32 +301,35 @@ export default {
       this.$store.dispatch('practices/updateExerciseStroke', { exerciseId: exercise.id, newValue });
     },
     async savePractice() {
-      console.log('attempting to save');
       if (!this.user) {
-        const error = 'guests are not allowed to save practices.'
         await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice: guests are not allowed to save practices', type: 3});
         return;
       }
       const practiceID = this.$route.params.id;
-      const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID);
-      console.log('We will only work with this new practice:')
-      console.log(practice);
+      const practice = this.$store.state.practices.practices.find(practice => practice.id === practiceID) || this.practice;
 
-      // Check if user ID matches original
-      if (practice.userID === this.user.id) {
-        // Update existing practice
+      const title = (practice.title || practice.name || '').trim();
+      if (!title || title.length > 100) {
+        await this.$store.dispatch('notifications/addNotification', {message: 'Please give this practice a title (1–100 characters).', type: 3});
+        return;
+      }
+
+      // Drop client-only fields so they are not persisted to Firestore.
+      const { id, userData, totalYardage, ...rest } = practice;
+      const owner = practice.createdBy || practice.userID;
+
+      if (owner === this.user.id) {
+        // Update existing practice; createdBy is immutable per the security rules.
+        const payload = { ...rest, title, createdBy: this.user.id };
         try {
-          await this.$fire.firestore.collection('practices').doc(practiceID).update(practice);
+          await this.$fire.firestore.collection('practices').doc(practiceID).update(payload);
           await this.$store.dispatch('notifications/addNotification', {message: 'Practice saved successfully',type: 2})
         } catch (error) {
           await this.$store.dispatch('notifications/addNotification', {message: 'Error updating practice', type: 1});
         }
       } else {
-        // If user ID does not match original, save as new practice
-        // Replace user.id
-        practiceData.userID = this.user.id;
-
-        // Create a new document with a new ID
+        // Save as a new practice owned by the current user.
+        const practiceData = { ...rest, title, createdBy: this.user.id };
         try {
           const newPracticeRef = await this.$fire.firestore.collection('practices').add(practiceData);
           console.log('New practice saved with ID: ', newPracticeRef.id);
@@ -405,19 +408,20 @@ export default {
   async mounted () {
     await this.fetchPractice()
     this.checkPendingPractice()
+    const practiceTitle = this.practice?.title || this.practice?.name
     const jsonLd = {
       '@context': 'http://schema.org',
       '@type': 'SportsEvent',
-      name: this.practice?.name,
+      name: practiceTitle,
       description: this.practice?.review,
     }
     if (this.practice) {
       useHead({
-        title: this.practice.name,
+        title: practiceTitle,
         meta: [
           {
             name: 'description',
-            content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`,
+            content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${practiceTitle}`,
           },
           { name: 'apple-mobile-web-app-capable', content: 'yes' },
           { name: 'mobile-optimized', content: 'width' },

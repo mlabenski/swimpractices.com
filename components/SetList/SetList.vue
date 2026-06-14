@@ -21,7 +21,7 @@
       </thead>
       <tbody class="bg-customGrey">
       <tr v-for="practice in paginatedData" :key="practice.practiceId" class="text-center bg-white shadow-md">
-        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ practice.name }}</td>
+        <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ practice.title || practice.name }}</td>
         <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">{{ getTotalYardage(practice.sets) }}</td>
         <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
           <router-link :to="practicePath(practice.id)" class="text-blue-600 underline"><span class="material-icons">
@@ -29,7 +29,7 @@
     </span></router-link>
         </td>
         <td class="px-2 sm:px-4 py-2 border text-xs sm:text-base">
-          <button v-if="practice.userID === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
+          <button v-if="(practice.createdBy || practice.userID) === userID" @click="deletePractice(practiceId)" class="text-red-600 underline ml-4"><span class="material-icons">
     delete_forever
     </span></button>
         </td>

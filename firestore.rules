@@ -1,0 +1,227 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userID) {
+      return request.auth != null && request.auth.uid == userID;
+    }
+
+    function isValidUserData() {
+      return request.resource.data.keys().hasAll(['username']) &&
+             request.resource.data.username is string &&
+             request.resource.data.username.size() > 0 &&
+             request.resource.data.username.size() <= 50;
+    }
+
+    function isValidPracticeRecap() {
+      return request.resource.data.keys().hasAll(['practiceID', 'timestamp', 'duration', 'distance']) &&
+             request.resource.data.practiceID is string &&
+             request.resource.data.duration is number &&
+             request.resource.data.distance is number &&
+             request.resource.data.duration >= 0 &&
+             request.resource.data.distance >= 0;
+    }
+
+    function isValidPracticeData() {
+      return request.resource.data.keys().hasAll(['title', 'createdBy']) &&
+             request.resource.data.title is string &&
+             request.resource.data.title.size() > 0 &&
+             request.resource.data.title.size() <= 100 &&
+             request.resource.data.createdBy == request.auth.uid;
+    }
+
+    // ====== USERS COLLECTION ======
+    match /users/{userID} {
+      allow read: if isAuthenticated();
+
+      allow create: if isOwner(userID) && isValidUserData();
+
+      // Owner can update their own profile, OR any authenticated user
+      // can update only the social like fields on another user's profile.
+      allow update: if (isOwner(userID) && isValidUserData()) ||
+                    (isAuthenticated() &&
+                     request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['likedBy', 'likeCount']));
+
+      // Only the owner can delete their profile (account deletion flow)
+      allow delete: if isOwner(userID);
+
+      // ====== USER PRACTICE HISTORY SUBCOLLECTION ======
+      match /practices/{practiceRecapID} {
+        allow read: if isAuthenticated();
+
+        allow create: if isOwner(userID) && isValidPracticeRecap();
+        allow update: if isOwner(userID) && isValidPracticeRecap();
+        allow delete: if isOwner(userID);
+      }
+
+      // ====== ACTIVE SESSION SUBCOLLECTION ======
+      match /activeSession/{docId} {
+        allow read: if isAuthenticated();
+
+        allow create: if isOwner(userID);
+        allow update: if isOwner(userID);
+        allow delete: if isOwner(userID);
+      }
+
+      // ====== CUSTOM GOALS SUBCOLLECTION ======
+      match /customGoals/{goalId} {
+        allow read: if isAuthenticated();
+
+        allow create: if isOwner(userID);
+        allow update: if isOwner(userID);
+        allow delete: if isOwner(userID);
+      }
+
+      // ====== GOAL PROGRESS SUBCOLLECTION ======
+      match /goalProgress/{docId} {
+        allow read: if isAuthenticated();
+
+        allow create: if isOwner(userID);
+        allow update: if isOwner(userID);
+        allow delete: if false;
+      }
+    }
+
+    // ====== GLOBAL PRACTICES COLLECTION ======
+    // Public read so the Nuxt web app can show the practice library and
+    // individual practices to logged-out visitors. Writes stay hardened.
+    match /practices/{practiceID} {
+      allow read: if true;
+
+      allow create: if isAuthenticated() && isValidPracticeData();
+
+      // Owner can update, but createdBy is immutable and core fields must survive.
+      allow update: if isAuthenticated() &&
+                     resource.data.createdBy == request.auth.uid &&
+                     request.resource.data.createdBy == resource.data.createdBy &&
+                     request.resource.data.keys().hasAny(['title', 'name']) &&
+                     request.resource.data.sets is list;
+
+      // Owners may delete their own practice (web has an owner-gated delete UI).
+      allow delete: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+    }
+
+    // ====== DAILY PRACTICE COLLECTION ======
+    // Public read: shown on the web home page to logged-out visitors.
+    match /daily_practice/{practiceID} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ====== SETS COLLECTION ======
+    match /sets/{setID} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ====== ANALYTICS COLLECTION (server-managed) ======
+    // Public read: leaderboard + practice_summary are shown to logged-out web users.
+    match /analytics/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ====== RACES COLLECTION (server-managed) ======
+    match /races/{raceId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+
+      match /leaderboard/{entryId} {
+        allow read: if isAuthenticated();
+        allow write: if false;
+      }
+    }
+
+    // ====== WIDGET RESPONSES (telemetry, create-only) ======
+    match /widget_responses/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ====== HALF SHEET TRACKING (telemetry, create-only) ======
+    match /half_sheet_tracking/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ====== PRACTICE TRACKER (server-managed) ======
+    match /practiceTracker/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ====== TEAMS COLLECTION ======
+    match /teams/{teamId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // ====== TEAM SESSIONS COLLECTION ======
+    match /team_sessions/{sessionId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if false;
+
+      match /participants/{participantId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+        allow update: if isAuthenticated() && request.auth.uid == participantId;
+        allow delete: if false;
+      }
+
+      match /messages/{messageId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+
+    // ====== TEAM JOIN REQUESTS ======
+    match /team_join_requests/{requestId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // ====== USERS_PUBLIC COLLECTION (web) ======
+    // Public profile data (username, age, intervals) used to enrich the
+    // practice library shown to anonymous visitors. Owner-only writes.
+    match /users_public/{userID} {
+      allow read: if true;
+      allow create, update, delete: if isOwner(userID);
+    }
+
+    // ====== USERS_PRIVATE COLLECTION (web) ======
+    // Private per-user data (pinned practices, completed practices). Owner only.
+    match /users_private/{userID} {
+      allow read, write: if isOwner(userID);
+    }
+
+    // ====== SEASONS COLLECTION (web) ======
+    // Authenticated read (the web client uses an unfiltered realtime listener);
+    // writes restricted to the season owner via the userID field.
+    match /seasons/{seasonId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.userID == request.auth.uid;
+      allow update, delete: if isAuthenticated() && resource.data.userID == request.auth.uid;
+    }
+
+    // ====== FALLBACK RULE ======
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

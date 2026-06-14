@@ -1,6 +1,6 @@
 <template>
   <div class="z-121">
-    <season-creation-component v-if="showSeasonCreation" @close="showSeasonCreation = false" :owner="selectedPractice.userID"  :practiceID="selectedPractice.id" />
+    <season-creation-component v-if="showSeasonCreation" @close="showSeasonCreation = false" :owner="selectedPractice.createdBy || selectedPractice.userID"  :practiceID="selectedPractice.id" />
 
 
 
@@ -32,7 +32,7 @@
           </div>
         <!-- Title -->
         <div class="flex justify-between items-center mb-2" v-if="!hiddenPractices.includes(practice)">
-          <div class="font-bold text-lg">{{ practice.name }}</div>
+          <div class="font-bold text-lg">{{ practice.title || practice.name }}</div>
           <div class="text-lg text-gray-600">{{ practice.totalTime }}</div>
         </div>
 

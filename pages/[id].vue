@@ -11,7 +11,7 @@
 
         <div class="min-w-0 flex-1">
           <p v-if="practice" class="truncate text-sm font-medium">
-            {{ practice.name }}
+            {{ practice.title || practice.name }}
           </p>
           <p v-else-if="loadError" class="text-sm text-destructive">
             Practice not found
@@ -90,8 +90,8 @@
                   <tr>
                     <EditableField
                       :template-num="1"
-                      :value="practice.name"
-                      @input="(v) => (practice.name = v)"
+                      :value="practice.title || practice.name"
+                      @input="(v) => (practice.title = v)"
                     />
                   </tr>
                 </tbody>
@@ -340,7 +340,7 @@
         </h2>
         <SeasonList
           v-if="practice"
-          :owner="practice.userID"
+          :owner="practice.createdBy || practice.userID"
           :practice-i-d="practice.id"
           @close="closeModal"
         />
@@ -430,18 +430,19 @@ export default {
     try {
       const id = this.$route.params.id
       this.practice = await loadPracticeById($fire, id)
+      const practiceTitle = this.practice.title || this.practice.name
       const jsonLd = {
         '@context': 'http://schema.org',
         '@type': 'SportsEvent',
-        name: this.practice.name,
+        name: practiceTitle,
         description: this.practice.review
       }
       useHead({
-        title: this.practice.name,
+        title: practiceTitle,
         meta: [
           {
             name: 'description',
-            content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${this.practice.name}`
+            content: `This is a swim practice with a total yardage of ${this.practice.totalYardage} and the title is ${practiceTitle}`
           }
         ],
         link: [
@@ -567,12 +568,26 @@ export default {
         })
         return
       }
-      const practiceID = this.$route.params.id
-      const practice = this.$store.state.practices.practices.find((p) => p.id === practiceID)
 
-      if (practice && practice.userID === this.user.id) {
+      const title = (this.practice.title || this.practice.name || '').trim()
+      if (!title || title.length > 100) {
+        await this.$store.dispatch('notifications/addNotification', {
+          message: 'Please give this practice a title (1–100 characters).',
+          type: 3
+        })
+        return
+      }
+
+      // Drop client-only fields so they are not persisted to Firestore.
+      const { id, userData, totalYardage, ...rest } = this.practice
+      const practiceID = this.$route.params.id
+      const owner = this.practice.createdBy || this.practice.userID
+
+      if (owner === this.user.id) {
+        // Update existing practice; createdBy is immutable per the security rules.
+        const payload = { ...rest, title, createdBy: this.user.id }
         try {
-          await this.$fire.firestore.collection('practices').doc(practiceID).update(this.practice)
+          await this.$fire.firestore.collection('practices').doc(practiceID).update(payload)
           await this.$store.dispatch('notifications/addNotification', {
             message: 'Practice saved successfully',
             type: 2
@@ -584,7 +599,8 @@ export default {
           })
         }
       } else {
-        const practiceData = { ...this.practice, userID: this.user.id }
+        // Save as a new practice owned by the current user.
+        const practiceData = { ...rest, title, createdBy: this.user.id }
         try {
           const newPracticeRef = await this.$fire.firestore.collection('practices').add(practiceData)
           await this.$store.dispatch('notifications/addNotification', {

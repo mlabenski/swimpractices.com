@@ -11,7 +11,7 @@
         >
         <!-- Title -->
         <div class="flex justify-between items-center mb-2">
-          <div class="font-bold text-lg">{{ practice.name }}</div>
+          <div class="font-bold text-lg">{{ practice.title || practice.name }}</div>
           <div class="text-lg text-gray-600">{{ practice.totalTime }}</div>
         </div>
 
