@@ -12,7 +12,10 @@
 
           <!-- Logo and top-right buttons container -->
           <div class="flex justify-between items-start p-4">
-            <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
+            <div class="flex items-center space-x-4">
+              <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
+              <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
+            </div>
             <div class="flex space-x-4">
               <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <span>Find a Practice</span>
@@ -78,7 +81,10 @@
       <div class="landing-page-container w-screen flex flex-col justify-between bg-gray-900 text-white overflow-hidden">
         <div class="flex flex-col justify-between h-full p-4 z-200">
           <div class="flex-shrink-0 pt-safe">
-            <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="w-2/3 max-w-xs mb-4 rounded-lg shadow-lg" />
+            <div class="flex items-center justify-between mb-4">
+              <img src="@/static/swim-practices-logo-blue.png" alt="Swim Practices" class="w-2/3 max-w-xs rounded-lg shadow-lg" />
+              <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
+            </div>
             <!-- <h1 class="text-3xl font-bold mb-2 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
             <!-- <p class="text-lg mb-4">1000+ achievable and thought out practices to use.</p> -->
           </div>
@@ -225,6 +231,7 @@ import LogsNotificationModel from '@/components/LogsNotificationModel/index.vue'
 import InfiniteSetList from '@/components/InfiniteScrollSetList/SetList.vue'
 import AppInstallSuggestion from "@/components/AppInstall/AppInstallSuggestion.vue";
 import RealtimeMetrics from '@/components/RealtimeMetrics/RealtimeMetrics.vue'; // New import
+import RoadmapMenu from '@/components/RoadmapMenu/RoadmapMenu.vue';
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
 import Leaderboard from '@/components/Leaderboard/Leaderboard.vue';
 //VueX inputs
@@ -246,6 +253,7 @@ export default {
     PendingPracticeNotification,
     AppInstallSuggestion,
     RealtimeMetrics,
+    RoadmapMenu,
     AppFooter,
     Leaderboard
   },
@@ -297,12 +305,16 @@ export default {
       ],
       practiceMetrics: null,
       leaderboardData: null,
+      // Live metrics shown in the hero (roadmap features moved to RoadmapMenu)
       roadmapCards: [
-        { type: 'roadmap', title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
         { type: 'metric', id: 'practices_now', route: null },
         { type: 'metric', id: 'total_practices', route: null },
-        { type: 'roadmap', title: 'Wearable Devices', status: 'Coming Q1 2026', route: '/roadmap?feature=wearable-devices' },
-        { type: 'roadmap', title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
+      ],
+      // Compact roadmap menu (top-left on desktop, hamburger on mobile)
+      roadmapItems: [
+        { title: 'Intelligent Practice Generator', status: 'Available Now', route: '/roadmap?feature=ai-generator' },
+        { title: 'Wearable Devices', status: 'Available Now', route: '/roadmap?feature=wearable-devices' },
+        { title: 'Team Management', status: 'In Development', route: '/roadmap?feature=teams' },
       ],
       isIOS: false, // iOS device detection
       appStoreUrl: 'https://apps.apple.com/us/app/swim-practices/id6752208346', // App Store URL

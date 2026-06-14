@@ -139,9 +139,9 @@ export default {
         {
           id: 'wearable-devices',
           title: 'Wearable Devices',
-          description: 'Integration with popular swimming wearables and smart watches to track performance metrics, heart rate, stroke count, and lap times. Sync data directly from your device to your practice logs.',
-          status: 'Coming Q1 2026',
-          timeline: 'Q1 2026',
+          description: 'Now available on the SwimPractices iOS app! Integration with popular swimming wearables and smart watches to track performance metrics, heart rate, stroke count, and lap times. Sync data directly from your device to your practice logs.',
+          status: 'Available Now',
+          timeline: 'Live on iOS',
           priority: 'High',
           icon: '⌚',
           features: [
