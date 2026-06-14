@@ -5,7 +5,7 @@
     <button
       type="button"
       :class="cn(
-        'inline-flex items-center gap-2 rounded-md border border-border bg-popover/80 px-3 py-2 text-sm font-medium text-popover-foreground backdrop-blur transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+        'inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-white hover:text-blue-900 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
       )"
       :aria-expanded="open"
       aria-haspopup="true"
@@ -36,7 +36,7 @@
     >
       <div
         v-if="open"
-        class="absolute right-0 z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] origin-top-right overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-xl sm:left-0 sm:right-auto sm:origin-top-left"
+        class="absolute right-0 z-50 mt-2 w-72 max-w-[calc(100vw-2rem)] origin-top-right overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-xl"
         role="menu"
       >
         <div class="px-4 pb-2 pt-3">

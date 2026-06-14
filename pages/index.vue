@@ -12,11 +12,9 @@
 
           <!-- Logo and top-right buttons container -->
           <div class="flex justify-between items-start p-4">
+            <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
             <div class="flex items-center space-x-4">
-              <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
               <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
-            </div>
-            <div class="flex space-x-4">
               <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <span>Find a Practice</span>
               </button>
