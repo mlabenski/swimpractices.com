@@ -15,6 +15,20 @@
             <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
             <div class="flex items-center space-x-4">
               <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
+              <button
+                @click="scrollToContent"
+                class="bg-blue-600 text-white font-bold rounded-full py-2 px-5 hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+              >
+                See All Practices
+              </button>
+              <button
+                @click="openDailyPractice"
+                :disabled="!dailyPractice"
+                class="bg-white text-black font-bold rounded-full py-2 px-5 hover:bg-green-600 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+                :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
+              >
+                Daily Practice
+              </button>
               <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <span>Find a Practice</span>
               </button>
@@ -31,24 +45,6 @@
           <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
             <!-- <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
             <!-- <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p> -->
-
-            <div class="flex space-x-5 mb-4">
-                <button
-                @click="scrollToContent"
-                class="bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out shadow-lg"
-                >
-                See All Practices
-                </button>
-
-                <button
-                    @click="openDailyPractice"
-                    :disabled="!dailyPractice"
-                    class="bg-white text-black font-bold py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 ease-in-out shadow-lg"
-                    :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
-                >
-                    Daily Practice
-                </button>
-            </div>
 
             <realtime-metrics
               v-if="practiceMetrics"
