@@ -5,7 +5,7 @@
     <button
       type="button"
       :class="cn(
-        'inline-flex items-center gap-2 rounded-full border-2 border-white bg-transparent px-4 py-2 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-105 hover:bg-white hover:text-blue-900 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
+        'inline-flex items-center gap-2 rounded-full border border-white/40 bg-transparent px-4 py-2 text-sm font-medium text-white transition-all duration-200 ease-in-out hover:bg-white hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white'
       )"
       :aria-expanded="open"
       aria-haspopup="true"

@@ -10,37 +10,50 @@
 
         <div class="relative h-auto min-h-72 text-white"> <!-- Ensure the height is auto to accommodate content -->
 
-          <!-- Logo and top-right buttons container -->
-          <div class="flex justify-between items-start p-4">
+          <!-- Top navigation bar -->
+          <nav class="flex justify-between items-center p-4">
             <img src="@/static/swim-practices-logo-blue.png" class="w-52" />
+
             <div class="flex items-center space-x-4">
-              <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
-              <button
-                @click="scrollToContent"
-                class="bg-blue-600 text-white font-bold rounded-full py-2 px-5 hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
-              >
-                See All Practices
-              </button>
-              <button
-                @click="openDailyPractice"
-                :disabled="!dailyPractice"
-                class="bg-white text-black font-bold rounded-full py-2 px-5 hover:bg-green-600 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
-                :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
-              >
-                Daily Practice
-              </button>
-              <button class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-                <span>Find a Practice</span>
-              </button>
-              <button
-                type="button"
-                class="header-button text-white bg-transparent border-2 border-white rounded-full py-2 px-4 hover:bg-white hover:text-blue-900 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
-                @click="openAuthModal"
-              >
-                <span>Log In</span>
-              </button>
+              <!-- Primary actions -->
+              <div class="flex items-center space-x-3">
+                <button
+                  @click="scrollToContent"
+                  class="bg-blue-600 text-white font-semibold rounded-full py-2 px-5 hover:bg-blue-700 transition-all duration-200 ease-in-out shadow-md hover:shadow-lg"
+                >
+                  See All Practices
+                </button>
+                <button
+                  @click="openDailyPractice"
+                  :disabled="!dailyPractice"
+                  class="bg-white text-blue-900 font-semibold rounded-full py-2 px-5 hover:bg-green-500 hover:text-white transition-all duration-200 ease-in-out shadow-md hover:shadow-lg"
+                  :class="{ 'opacity-50 cursor-not-allowed': !dailyPractice }"
+                >
+                  Daily Practice
+                </button>
+              </div>
+
+              <!-- Divider -->
+              <div class="h-6 w-px bg-white/25"></div>
+
+              <!-- Utility actions -->
+              <div class="flex items-center space-x-2">
+                <RoadmapMenu :items="roadmapItems" @navigate="$router.push($event)" />
+                <button
+                  class="text-white/90 font-medium rounded-full py-2 px-4 hover:bg-white/10 hover:text-white transition-colors duration-200"
+                >
+                  Find a Practice
+                </button>
+                <button
+                  type="button"
+                  class="text-white font-medium rounded-full py-2 px-4 border border-white/40 hover:bg-white hover:text-blue-900 transition-all duration-200"
+                  @click="openAuthModal"
+                >
+                  Log In
+                </button>
+              </div>
             </div>
-          </div>
+          </nav>
           <!-- Centered content -->
           <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
             <!-- <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
