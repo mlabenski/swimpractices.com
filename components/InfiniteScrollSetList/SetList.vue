@@ -45,13 +45,6 @@
           <option value="adv">Advanced</option>
         </select>
 
-        <select v-model="selectedPool" class="filter-select" aria-label="Filter by pool">
-          <option value="">All Pools</option>
-          <option value="1">25 Yards</option>
-          <option value="2">25 Meters</option>
-          <option value="3">50 Meters</option>
-        </select>
-
         <select v-model="sortBy" class="filter-select" aria-label="Sort practices">
           <option value="random">Sort: Shuffle</option>
           <option value="distance-asc">Distance: Low → High</option>
@@ -286,7 +279,6 @@ export default {
       // Filter & sort state (all client-side; Firestore query is untouched)
       selectedStroke: '',
       selectedLevel: '',
-      selectedPool: '',
       sortBy: 'random',
       shuffledSets: []
     };
@@ -303,7 +295,7 @@ export default {
       return Array.from(strokes).sort();
     },
     hasActiveFilters() {
-      return !!(this.selectedStroke || this.selectedLevel || this.selectedPool);
+      return !!(this.selectedStroke || this.selectedLevel);
     },
     processedPractices() {
       // Start from the shuffled copy so the default order is randomized
@@ -312,7 +304,6 @@ export default {
       let list = base.filter((p) => {
         if (this.selectedStroke && p.primaryStroke !== this.selectedStroke) return false;
         if (this.selectedLevel && this.levelOf(p) !== this.selectedLevel) return false;
-        if (this.selectedPool && String(p.measurement) !== this.selectedPool) return false;
         return true;
       });
 
@@ -393,7 +384,6 @@ export default {
     clearFilters() {
       this.selectedStroke = '';
       this.selectedLevel = '';
-      this.selectedPool = '';
       this.currentPage = 1;
     },
     openPractice (practiceId) {
@@ -478,9 +468,6 @@ export default {
       this.currentPage = 1;
     },
     selectedLevel() {
-      this.currentPage = 1;
-    },
-    selectedPool() {
       this.currentPage = 1;
     },
     sortBy() {
