@@ -289,7 +289,7 @@ export default {
     },
     availableStrokes() {
       const strokes = new Set();
-      this.practiceSets.forEach((p) => {
+      (this.practiceSets || []).forEach((p) => {
         if (p.primaryStroke) strokes.add(p.primaryStroke);
       });
       return Array.from(strokes).sort();
@@ -299,7 +299,7 @@ export default {
     },
     processedPractices() {
       // Start from the shuffled copy so the default order is randomized
-      const base = this.shuffledSets.length ? this.shuffledSets : this.practiceSets;
+      const base = this.shuffledSets.length ? this.shuffledSets : (this.practiceSets || []);
 
       let list = base.filter((p) => {
         if (this.selectedStroke && p.primaryStroke !== this.selectedStroke) return false;
@@ -370,7 +370,7 @@ export default {
     },
     buildShuffled() {
       // Fisher–Yates shuffle of a shallow copy (does not mutate the prop)
-      const arr = [...this.practiceSets];
+      const arr = [...(this.practiceSets || [])];
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];

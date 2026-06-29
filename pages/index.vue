@@ -76,7 +76,7 @@
       <div class="flex justify-center">
         <div class="w-full max-w-8xl"> <!-- This should match the max-width of the video element in the design -->
           <!-- Title and other elements here should match the style of the video title -->
-         <div v-if="isDesktop">
+         <div v-if="isDesktop && practices">
            <infinite-set-list class="align-center" title="All Practices" :practice-sets="practices"/>
          </div>
         </div>
