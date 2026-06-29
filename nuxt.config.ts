@@ -1,6 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+// Single source of truth for the canonical site URL. Used by the sitemap and
+// robots modules (via `site.url`) and by in-app canonical/OG tags (via
+// `runtimeConfig.public.siteUrl`). Override per environment with NUXT_PUBLIC_SITE_URL.
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://swimpractices.com'
+
 export default defineNuxtConfig({
-  ssr: false,
+  ssr: true,
+
+  site: {
+    url: siteUrl,
+    name: 'SwimPractices',
+  },
 
   // Workaround: Nuxt 3.21.3+ dev server regression for SPA mode
   // https://github.com/nuxt/nuxt/issues/34957
@@ -12,6 +23,17 @@ export default defineNuxtConfig({
     preset: 'static',
   },
 
+  // Hybrid rendering for a static deploy: prerender the marketing pages to real
+  // HTML (crawlable meta + content); everything else falls back to the SPA shell.
+  routeRules: {
+    '/': { prerender: true },
+    '/privacy': { prerender: true },
+    '/roadmap': { prerender: true },
+    '/support': { prerender: true },
+    // Interactive practice player duplicates /[id]; keep it client-only.
+    '/practice/**': { ssr: false },
+  },
+
   dir: {
     public: 'static',
   },
@@ -20,7 +42,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'swimpractices',
+      title: 'SwimPractices — Free AI Swim Practice Generator',
       htmlAttrs: {
         lang: 'en',
       },
@@ -30,8 +52,15 @@ export default defineNuxtConfig({
           name: 'viewport',
           content: 'width=device-width, initial-scale=1, shrink-to-fit=no',
         },
-        { name: 'description', content: '' },
+        {
+          name: 'description',
+          content:
+            'Free AI-generated swim practices and workouts. Browse, customize, and track swim sets for every stroke, distance, and skill level.',
+        },
         { name: 'format-detection', content: 'telephone=no' },
+        { name: 'theme-color', content: '#0B1220' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -58,7 +87,15 @@ export default defineNuxtConfig({
     '~/static/main.css',
   ],
 
-  modules: ['@nuxtjs/tailwindcss'],
+  // @nuxtjs/robots auto-generates robots.txt (allow-all in production) and
+  // @nuxtjs/sitemap generates /sitemap.xml (auto-discovers static routes; the
+  // dynamic /[id] practice URLs are added as a source in a later phase).
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+
+  // Keep the duplicate practice-player path out of search results.
+  robots: {
+    disallow: ['/practice/'],
+  },
 
   tailwindcss: {
     configPath: '~/tailwind.config.js',
@@ -66,6 +103,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      siteUrl,
       firebaseApiKey:
         process.env.NUXT_PUBLIC_FIREBASE_API_KEY ||
         process.env.VUE_APP_FIREBASE_apiKey ||

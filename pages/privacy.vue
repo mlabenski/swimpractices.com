@@ -324,25 +324,17 @@ export default {
   components: {
     AppFooter,
   },
-};
-</script>
-
-<script setup>
-useHead({
-  title: 'Privacy Policy - SwimPractices',
-  meta: [
-    {
-      name: 'description',
-      content:
+  setup () {
+    useSeoMeta({
+      title: 'Privacy Policy',
+      description:
         'Privacy Policy for SwimPractices - Learn how we collect, use, and protect your personal information including Apple Sign-In, HealthKit data, and Firebase storage.',
-    },
-    {
-      name: 'keywords',
-      content:
-        'privacy policy, data protection, HealthKit privacy, Apple Sign-In, Firebase security, swimming app privacy',
-    },
-  ],
-})
+      ogTitle: 'Privacy Policy · SwimPractices',
+      ogDescription:
+        'How SwimPractices collects, uses, and protects your personal information.',
+    })
+  },
+};
 </script>
 
 <style scoped>

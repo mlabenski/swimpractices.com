@@ -145,20 +145,17 @@ export default {
   components: {
     AppFooter,
   },
-};
-</script>
-
-<script setup>
-useHead({
-  title: 'Support - SwimPractices',
-  meta: [
-    {
-      name: 'description',
-      content:
+  setup () {
+    useSeoMeta({
+      title: 'Support',
+      description:
         'Get support for SwimPractices. Contact us via email or join our Discord community for help and updates.',
-    },
-  ],
-})
+      ogTitle: 'Support · SwimPractices',
+      ogDescription:
+        'Get support for SwimPractices via email or our Discord community.',
+    })
+  },
+};
 </script>
 
 <style scoped>

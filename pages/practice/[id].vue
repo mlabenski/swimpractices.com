@@ -429,7 +429,7 @@ export default {
         link: [
           {
             rel: 'canonical',
-            href: `https://www.swimpractices.com/${this.practice.id}`,
+            href: `${useRuntimeConfig().public.siteUrl}/${this.practice.id}`,
           },
         ],
         script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(jsonLd) }],

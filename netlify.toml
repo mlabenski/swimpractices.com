@@ -1,6 +1,16 @@
+# Canonical host: force apex (non-www). Must precede the SPA catch-all below.
+[[redirects]]
+from = "https://www.swimpractices.com/*"
+to = "https://swimpractices.com/:splat"
+status = 301
+force = true
+
+# SPA fallback for non-prerendered routes (e.g. /[practiceId]). Serve the empty
+# shell (200.html), NOT index.html — index.html now holds prerendered home
+# content and would cause a hydration mismatch on deep links.
 [[redirects]]
 from = "/*"
-to = "/index.html"
+to = "/200.html"
 status = 200
 
 [build]

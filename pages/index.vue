@@ -1,6 +1,7 @@
 <template>
   <!-- Root Div -->
   <div id="app">
+    <ClientOnly>
     <MobileNavBarTop v-if="user" class="sm:hidden block z-200 fixed pt-10" @openProfile="openProfile"/>
     <PendingPracticeNotification/>
     <LogsNotificationModel> </LogsNotificationModel>
@@ -221,6 +222,27 @@
 
     <!-- Footer -->
     <AppFooter />
+
+      <!-- Server-rendered hero: crawlable above-the-fold content for SEO,
+           shown as a branded loading state until the SPA mounts on the client. -->
+      <template #fallback>
+        <section class="ssr-hero">
+          <img src="@/static/swim-practices-logo-blue.png" alt="SwimPractices" class="ssr-hero__logo" />
+          <h1 class="ssr-hero__title">Free AI Swim Practice Generator</h1>
+          <p class="ssr-hero__text">
+            Browse 1,000+ swim practices and workouts, then generate custom sets
+            for every stroke, distance, and skill level. Track your season goals
+            and reach them faster with SwimPractices.
+          </p>
+          <nav class="ssr-hero__links">
+            <NuxtLink to="/roadmap">Roadmap</NuxtLink>
+            <NuxtLink to="/support">Support</NuxtLink>
+            <NuxtLink to="/privacy">Privacy</NuxtLink>
+          </nav>
+          <p class="ssr-hero__loading">Loading practices…</p>
+        </section>
+      </template>
+    </ClientOnly>
   </div>
 </template>
 
@@ -245,8 +267,12 @@ import Leaderboard from '@/components/Leaderboard/Leaderboard.vue';
 import { mapGetters, mapActions } from "vuex";
 import PendingPracticeNotification from '@/components/PendingPracticeNotification/PendingPracticeNotification.vue'
 import { practicePath } from '@/lib/practiceRoutes'
+import { indexPageHead } from '~/lib/indexHead'
 
 export default {
+  setup () {
+    useSeoMeta(indexPageHead)
+  },
   components: {
     GenerateSetModel,
     SetList,
@@ -508,12 +534,26 @@ export default {
 }
 </script>
 
-<script setup>
-import { indexPageHead } from './index-head'
-useHead(indexPageHead)
-</script>
-
 <style scoped>
+/* Server-rendered hero (SEO content + branded loading state until SPA mounts) */
+.ssr-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  background: #0b1220;
+  color: #fff;
+}
+.ssr-hero__logo { width: 13rem; max-width: 70%; }
+.ssr-hero__title { font-size: 2.25rem; font-weight: 700; line-height: 1.15; }
+.ssr-hero__text { max-width: 40rem; color: #cbd5e1; }
+.ssr-hero__links { display: flex; gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+.ssr-hero__links a { color: #60a5fa; font-weight: 600; }
+.ssr-hero__loading { color: #94a3b8; font-size: 0.875rem; }
 
 :root {
   --navbar-top-height: 20px; /* Adjust based on your top navbar height */

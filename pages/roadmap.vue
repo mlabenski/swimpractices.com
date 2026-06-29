@@ -117,6 +117,14 @@ export default {
   components: {
     AppFooter,
   },
+  setup () {
+    useSeoMeta({
+      title: 'Product Roadmap',
+      description: 'See what features and improvements are coming to SwimPractices.',
+      ogTitle: 'Product Roadmap · SwimPractices',
+      ogDescription: 'See what features and improvements are coming to SwimPractices.',
+    })
+  },
   data() {
     return {
       features: [
@@ -196,18 +204,6 @@ export default {
     },
   },
 };
-</script>
-
-<script setup>
-useHead({
-  title: 'Product Roadmap - SwimPractices',
-  meta: [
-    {
-      name: 'description',
-      content: 'See what features and improvements are coming to SwimPractices',
-    },
-  ],
-})
 </script>
 
 <style scoped>
