@@ -92,9 +92,41 @@ export default defineNuxtConfig({
   // dynamic /[id] practice URLs are added as a source in a later phase).
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots'],
 
-  // Keep the duplicate practice-player path out of search results.
+  // robots.txt config. Top-level rules form the default `User-agent: *` group;
+  // `groups` adds explicit per-crawler groups.
   robots: {
+    // Keep the duplicate practice-player path out of search results.
     disallow: ['/practice/'],
+    groups: [
+      {
+        // Explicitly welcome AI/LLM crawlers. Same crawl scope as everyone
+        // else (the client-only /practice/ duplicate stays excluded).
+        comment: ['Explicitly allow AI / LLM crawlers'],
+        userAgent: [
+          'GPTBot', // OpenAI training
+          'ChatGPT-User', // ChatGPT on-demand fetch
+          'OAI-SearchBot', // OpenAI search
+          'ClaudeBot', // Anthropic
+          'Claude-Web',
+          'Claude-SearchBot',
+          'anthropic-ai',
+          'PerplexityBot', // Perplexity
+          'Perplexity-User',
+          'Google-Extended', // Gemini / Vertex training
+          'Applebot-Extended', // Apple Intelligence
+          'Amazonbot',
+          'Bytespider', // ByteDance
+          'Meta-ExternalAgent', // Meta AI
+          'FacebookBot',
+          'cohere-ai',
+          'DuckAssistBot',
+          'YouBot',
+          'CCBot', // Common Crawl (feeds many LLM datasets)
+        ],
+        allow: ['/'],
+        disallow: ['/practice/'],
+      },
+    ],
   },
 
   tailwindcss: {
