@@ -9,13 +9,14 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import AuthModal from '@/components/AuthModal/index.vue'
 
-// The Vuex store is registered via a client-only plugin, so `useStore()` is
-// undefined during SSR/prerender. Guard the access and keep the auth modal
-// (interactive, no SEO value) client-only.
-const store = useStore()
+// The Vuex store is registered via a client-only plugin, so it's absent during
+// SSR/prerender and the first client tick. Read it from the Nuxt app context
+// (exposed by the plugin as `$store`) rather than Vue's `useStore()`, which
+// emits an "injection not found" warning when the store isn't provided yet.
+// The auth modal is interactive (no SEO value) and stays client-only.
+const { $store: store } = useNuxtApp()
 const authModalOpen = computed(
   () => store?.state?.auth?.authModalOpen === true
 )

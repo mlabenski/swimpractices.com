@@ -9,7 +9,7 @@
     <div class="md:block hidden">
       <div id="top" class="min-h-screen">
 
-        <div class="relative h-auto min-h-72 text-white"> <!-- Ensure the height is auto to accommodate content -->
+        <div class="relative h-auto text-white"> <!-- Ensure the height is auto to accommodate content -->
 
           <!-- Top navigation bar -->
           <nav class="flex justify-between items-center p-4">
@@ -56,7 +56,7 @@
             </div>
           </nav>
           <!-- Centered content -->
-          <div class="flex flex-col items-center justify-center text-center p-4 md:p-8 lg:p-16">
+          <div class="flex flex-col items-center justify-center text-center px-4 pt-4 pb-6">
             <!-- <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">Reward-Driven Swim Practice Repository</h1> -->
             <!-- <p class="text-lg md:text-xl mb-6">1000+ achievable and thought out practices to use.</p> -->
 
@@ -65,13 +65,13 @@
               :metrics="practiceMetrics"
               :cards="roadmapCards"
               @card-clicked="handleCardClick"
-              class="mt-8"
+              class="mt-2"
             />
 
           </div>
         </div>
     <!-- Infinite Set List Container -->
-      <div class="container mx-auto py-10 flex items-center mt-8 justify-center"><!-- You may adjust the padding as needed -->
+      <div class="container mx-auto pt-2 pb-10 flex items-center justify-center"><!-- You may adjust the padding as needed -->
       <!-- Centering the component and following the same design as the video -->
       <div class="flex justify-center">
         <div class="w-full max-w-8xl"> <!-- This should match the max-width of the video element in the design -->
