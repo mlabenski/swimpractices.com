@@ -410,10 +410,11 @@ export default {
     this.checkPendingPractice()
     const practiceTitle = this.practice?.title || this.practice?.name
     const jsonLd = {
-      '@context': 'http://schema.org',
-      '@type': 'SportsEvent',
+      '@context': 'https://schema.org',
+      '@type': 'ExercisePlan',
       name: practiceTitle,
       description: this.practice?.review,
+      exerciseType: 'Swimming',
     }
     if (this.practice) {
       useHead({

@@ -432,10 +432,11 @@ export default {
       this.practice = await loadPracticeById($fire, id)
       const practiceTitle = this.practice.title || this.practice.name
       const jsonLd = {
-        '@context': 'http://schema.org',
-        '@type': 'SportsEvent',
+        '@context': 'https://schema.org',
+        '@type': 'ExercisePlan',
         name: practiceTitle,
-        description: this.practice.review
+        description: this.practice.review,
+        exerciseType: 'Swimming'
       }
       useHead({
         title: practiceTitle,
